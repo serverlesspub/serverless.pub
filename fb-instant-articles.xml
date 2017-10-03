@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title></title>
-    <link>effortless-serverless.com</link>
+    <link>https://effortless-serverless.com</link>
     <description>
       Website about serverless architecture. Checkout our book: Serverless apps with Node.js and Claudia
     </description>
@@ -10,7 +10,7 @@
         
             <item>
                 <title>Checkout our book - Serverless apps with Node and Claudia.js</title>
-                <link>effortless-serverless.com/claudia/book/2017/10/03/new-book/</link>
+                <link>https://effortless-serverless.com/claudia/book/2017/10/03/new-book/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>Our book “Serverless apps with Node and Claudia.js” is now available as a MEAP release on Manning Publication website.</p>
@@ -39,7 +39,7 @@
         
             <item>
                 <title>Single command deployment for single page apps</title>
-                <link>effortless-serverless.com/aws/s3/cloudfront/2017/08/25/single-command-deployment-for-single-page-apps/</link>
+                <link>https://effortless-serverless.com/aws/s3/cloudfront/2017/08/25/single-command-deployment-for-single-page-apps/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>Developing a single page app is hard. From the very beginning, you’ll need to make many decisions — decisions like picking a framework, setting the folder structure, configuring linter, and many others.</p>
@@ -279,7 +279,7 @@ As the last step, if your project is a website or a single page app, Scotty will
         
             <item>
                 <title>How To Develop A Chat Bot With Node.js</title>
-                <link>effortless-serverless.com/claudia/bot/2016/10/17/how-to-develop-a-chat-bot-with-nodejs/</link>
+                <link>https://effortless-serverless.com/claudia/bot/2016/10/17/how-to-develop-a-chat-bot-with-nodejs/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>In the past few months, chat bots have become very popular, thanks to Slack, Telegram and Facebook Messenger. But the chat bot idea is not new at all.</p>

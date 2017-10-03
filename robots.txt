@@ -1,1 +1,1 @@
-Sitemap: effortless-serverless.com/sitemap.xml
+Sitemap: https://effortless-serverless.com/sitemap.xml
