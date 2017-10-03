@@ -3,8 +3,8 @@
   <channel>
     <title>Effortless Serverless</title>
     <description>Effortless Serverless</description>
-    <link>https://effortless-serverless.comhttps://effortless-serverless.com/</link>
-    <atom:link href="https://effortless-serverless.comhttps://effortless-serverless.com/feed.xml" rel="self" type="application/rss+xml" />
+    <link>effortless-serverless.com/</link>
+    <atom:link href="effortless-serverless.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
         <title>Single command deployment for single page apps</title>
@@ -232,8 +232,8 @@ As the last step, if your project is a website or a single page app, Scotty will
 &lt;p&gt;Originally published on &lt;a href=&quot;https://hackernoon.com/single-command-deployment-for-single-page-apps-29941d62ef97&quot;&gt;Hackernoon&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Fri, 25 Aug 2017 12:00:00 +0200</pubDate>
-        <link>https://effortless-serverless.comhttps://effortless-serverless.com/aws/s3/cloudfront/2017/08/25/single-command-deployment-for-single-page-apps/</link>
-        <guid isPermaLink="true">https://effortless-serverless.comhttps://effortless-serverless.com/aws/s3/cloudfront/2017/08/25/single-command-deployment-for-single-page-apps/</guid>
+        <link>effortless-serverless.com/aws/s3/cloudfront/2017/08/25/single-command-deployment-for-single-page-apps/</link>
+        <guid isPermaLink="true">effortless-serverless.com/aws/s3/cloudfront/2017/08/25/single-command-deployment-for-single-page-apps/</guid>
       </item>
     
       <item>
@@ -553,8 +553,8 @@ As the last step, if your project is a website or a single page app, Scotty will
 &lt;p&gt;Originally published on: &lt;a href=&quot;https://www.smashingmagazine.com/2016/10/how-to-develop-a-chat-bot-with-node-js/&quot;&gt;Smashing magazine&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Mon, 17 Oct 2016 12:00:00 +0200</pubDate>
-        <link>https://effortless-serverless.comhttps://effortless-serverless.com/claudia/bot/2016/10/17/how-to-develop-a-chat-bot-with-nodejs/</link>
-        <guid isPermaLink="true">https://effortless-serverless.comhttps://effortless-serverless.com/claudia/bot/2016/10/17/how-to-develop-a-chat-bot-with-nodejs/</guid>
+        <link>effortless-serverless.com/claudia/bot/2016/10/17/how-to-develop-a-chat-bot-with-nodejs/</link>
+        <guid isPermaLink="true">effortless-serverless.com/claudia/bot/2016/10/17/how-to-develop-a-chat-bot-with-nodejs/</guid>
       </item>
     
   </channel>
