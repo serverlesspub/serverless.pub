@@ -19,4 +19,9 @@ You'll learn to simplify the design and development process so you can focus on 
 Plus, you'll learn how to migrate your existing Express apps to serverless!
 {: .book-page-description }
 
+You can get your own copy with a 50% discount with promo code `mlstojanovic`.
+<a id="book-buy-btn" href="/some-link">Buy now</a>
+{: .book-page-discount }
 
+
+In this book you'll learn
