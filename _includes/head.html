@@ -63,8 +63,8 @@
         <meta name="twitter:site" content="@{{ site.twitter_username }}" />
         <meta name="twitter:creator" content="@{{ site.twitter_username }}" />
     {% endif %}
-    <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
-    <meta name="twitter:description" content="{% if page.summary %}{{ page.summary }}{% else %}{{ site.description }}{% endif %}" />
+    <meta name="twitter:title" content="{% if page.socialtitle %}{{ page.socialtitle | xml_escape }}{% else %}{{ site.title | xml_escape }}{% endif %}" />
+    <meta name="twitter:description" content="{% if page.description %}{{ page.description | xml_escape }}{% else %}{{ site.description | xml_escape }}{% endif %}" />
     <meta name="twitter:url" content="{{ site.url }}{{ page.url }}" />
     <meta name="twitter:image" content="{{ site.url }}/images/effortless-serverless-social.png" />
 
