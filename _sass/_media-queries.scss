@@ -32,7 +32,18 @@
 
   blockquote {
     margin-left: $space-3;
-    padding: $space-3;
+    padding: $space-blockquote;
+    font-size: $text-font-size;
+    p {
+      font-size: $text-font-size;
+      margin-bottom: 0.1rem;
+    }
+  }
+
+  ul {
+    li {
+      font-size: $text-font-size;
+    }
   }
 
   .social-icons-left {

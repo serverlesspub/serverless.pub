@@ -22,7 +22,8 @@ $h00-responsive-max: 7.68rem !default;
 $h0-responsive-max: 5.76rem !default;
 $h1-responsive-max: 3.84rem !default;
 $abbr-border-bottom: 1px black dotted;
-$text-font-size: 0.88rem;
+$text-font-size: 0.85rem;
+$code-font-size: 0.8rem;
 
 // Page width
 $measure-width: 42rem !default;
@@ -67,6 +68,7 @@ $space-1: .5rem !default;
 $space-2: 1rem !default;
 $space-3: 2rem !default;
 $space-4: 4rem !default;
+$space-blockquote: 0.2rem 1rem;
 
 // Buttons
 $button-font-size: inherit !default;
