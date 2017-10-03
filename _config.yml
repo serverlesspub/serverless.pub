@@ -1,10 +1,10 @@
 # Site settings
 title:       Effortless Serverless
 email:       your_email@example.com
-author:      John Otander
-description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
+author:      Aleksandar Simović and Slobodan Stojanović
+description: "Effortless Serverless"
 baseurl:     ""
-url:         "https://effortlessserverless.com"
+url:         "https://effortless-serverless.com"
 date_format: "%b %-d, %Y"
 header_pages:
  - about.md
