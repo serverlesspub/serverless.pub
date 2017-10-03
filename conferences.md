@@ -6,6 +6,8 @@ permalink: /conferences/
 
 We are speaking often on leading software development conferences, if you are interesting in having us on your conference or do a workshop, send us an email. 
 
+If none of these suit you or you're interested in having an on-site workshop, feel free to contact us.
+
 ### Upcoming
 
 - _Oct 20, 2017_ - [Hackference](https://2017.hackference.co.uk), Birmingham, 🇬🇧 -- _How to build a website that will (eventually) work on Mars?_
