@@ -1,4 +1,44 @@
 .measure {
   margin: 0 auto;
   max-width: $measure-width;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#book-cover {
+
+}
+
+#book-description {
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+
+  .call-to-action {
+    margin-top: 4px;
+    margin-bottom: 5px;
+    font-size: 17px;
+    font-style: italic;
+  }
+
+  #book-title {
+    font-size: 24px;
+  }
+
+  #book-title-description {
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  #book-actions {
+    display: flex;
+    justify-content: space-between;
+
+    .book-action-button {
+      background-color: $action-background;
+      color: white;
+      font-size: 14px;
+      padding: .3rem .7rem;
+    }
+  }
 }
