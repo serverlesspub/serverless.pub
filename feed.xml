@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Effortless Serverless</title>
-    <description>Website about serverless architecture. Checkout our book: Serverless apps with Node.js and Claudia</description>
+    <description>Effortless Serverless. Checkout our new book: Serverless apps with Node.js and Claudia</description>
     <link>https://effortless-serverless.com/</link>
     <atom:link href="https://effortless-serverless.com/feed.xml" rel="self" type="application/rss+xml" />
     
@@ -10,7 +10,9 @@
         <title>Checkout our book - Serverless apps with Node and Claudia.js</title>
         <description>&lt;p&gt;Our book “Serverless apps with Node and Claudia.js” is now available as a MEAP release on Manning Publication website.&lt;/p&gt;
 
-&lt;p&gt;walks you through building serverless apps on AWS using JavaScript. Inside, you’ll create a full project designed to help you understand and apply general serverless design principles and concepts.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/effortless-serverless-social.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The book walks you through building serverless apps on AWS using JavaScript. Inside, you’ll create a full project designed to help you understand and apply general serverless design principles and concepts.&lt;/p&gt;
 
 &lt;p&gt;Along the way, you’ll also discover what Claudia brings to the table as you build and deploy a scalable event-based serverless application that is fully integrated with AWS services including Lambda and API Gateway.&lt;/p&gt;
 
