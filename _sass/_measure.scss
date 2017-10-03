@@ -40,14 +40,15 @@
   #book-actions {
     display: flex;
     justify-content: space-between;
-
-    .book-action-button {
-      color: white;
-      font-size: 14px;
-      padding: .3rem .7rem;
-      text-decoration: none;
-      text-shadow: none;
-      background: $action-background none;
-    }
   }
+}
+
+.book-action-button {
+  color: white;
+  font-size: 14px;
+  padding: .3rem .7rem;
+  text-decoration: none;
+  text-shadow: none;
+  background: $action-background none;
+  border: none;
 }
