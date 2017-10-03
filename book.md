@@ -20,6 +20,7 @@ Plus, you'll learn how to migrate your existing Express apps to serverless!
 {: .book-page-description }
 
 You can get your own copy with a 50% discount with promo code `mlstojanovic`.
+<a id="book-buy-btn" href="/some-link">Buy now</a>
 {: .book-page-discount }
 
 

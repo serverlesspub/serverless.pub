@@ -20,3 +20,17 @@
   background-color: aliceblue;
   padding: 20px;
 }
+
+#book-buy-btn {
+  display: block;
+  margin: auto;
+  margin-top: 15px;
+
+  color: white;
+  font-size: 14px;
+  padding: .3rem .7rem;
+  text-decoration: none;
+  text-shadow: none;
+  background: $action-background none;
+  width: 80px;
+}
