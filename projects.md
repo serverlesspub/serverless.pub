@@ -4,7 +4,7 @@ title: Projects
 permalink: /projects/
 ---
 
-Most notable projects we are involved with:
+Most notable projects we are involved in:
 
 **Claudia** - Deploy Node.js projects to AWS Lambda and API Gateway easily: [website](https://claudiajs.com) / [github](https://github.com/claudiajs/claudia)
 
