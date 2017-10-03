@@ -4,14 +4,14 @@ title: About
 permalink: /about/
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Slobodan Stojanović and Aleksandar Simović are core contributors to the Claudia.js project and are the lead developers and maintainers of Claudia Bot Builder. They are also co-authors of [_Serverless apps with Node and Claudia.js_](/book) and conference speakers.
 
-**Aleksandar Simović** ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+**Aleksandar** has been a senior software consultant and engineer for over 7 years, mostly but not only, in JavaScript. He also dabbles in Swift, Python, Rust. Aleksandar is based in Belgrade and is co-organizer of the JS Belgrade meetups.
 
 Github: [simalexan](https://github.com/simalexan),
 twitter: [@simalexan](https://twitter.com/simalexan)
 
-**Slobodan Stojanović** ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+**Slobodan** is CTO of Cloud Horizon, a software development studio based in Montreal Canada. He is based in Belgrade and is the JS Belgrade meetup co-organizer.
 
 Github: [stojanovic](https://github.com/stojanovic),
 twitter: [@slobodan_](https://twitter.com/slobodan_)
