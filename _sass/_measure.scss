@@ -35,10 +35,12 @@
     justify-content: space-between;
 
     .book-action-button {
-      background-color: $action-background;
       color: white;
       font-size: 14px;
       padding: .3rem .7rem;
+      text-decoration: none;
+      text-shadow: none;
+      background: $action-background none;
     }
   }
 }
