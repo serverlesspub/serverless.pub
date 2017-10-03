@@ -4,7 +4,7 @@ title: Projects
 permalink: /projects/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Projects we are involved with:
 
 **Claudia** - Deploy Node.js projects to AWS Lambda and API Gateway easily: [website](https://claudiajs.com) / [github](https://github.com/claudiajs/claudia)
 
