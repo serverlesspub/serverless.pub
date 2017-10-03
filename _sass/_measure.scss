@@ -9,7 +9,10 @@
 }
 
 #book-cover {
-
+  img {
+    height: auto;
+    max-width: 135px;
+  }
 }
 
 #book-description {
