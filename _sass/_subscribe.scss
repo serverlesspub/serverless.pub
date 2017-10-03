@@ -1,0 +1,25 @@
+#subscribe-title {
+  font-weight: 400;
+}
+
+#subscribe-group {
+  display: flex;
+  justify-content: center;
+}
+
+#mce-EMAIL {
+  background-color: #fff;
+  border: 1px solid #d7ecff;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  transition: border .2s;
+  outline: none;
+  padding: 6px 12px;
+  color: #3f536e;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+#mc-embedded-subscribe {
+  padding: .3rem .7rem;
+}
