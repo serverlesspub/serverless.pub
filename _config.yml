@@ -2,7 +2,7 @@
 title:       Effortless Serverless
 email:       contact@effortless-serverless.com
 author:      Aleksandar Simović and Slobodan Stojanović
-description: "Website about serverless architecture. Checkout our book: Serverless apps with Node.js and Claudia"
+description: "Effortless Serverless. Checkout our new book: Serverless apps with Node.js and Claudia"
 baseurl:     ""
 url:         "https://effortless-serverless.com"
 date_format: "%b %-d, %Y"
