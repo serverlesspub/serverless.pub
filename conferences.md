@@ -4,15 +4,15 @@ title: Conferences
 permalink: /conferences/
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+We are speaking often on leading software development conferences, if you are interesting in having us on your conference or do a workshop, send us an email. 
 
-### Future events
+### Upcoming
 
 - _Oct 20, 2017_ - [Hackference](https://2017.hackference.co.uk), Birmingham, 🇬🇧 -- _How to build a website that will (eventually) work on Mars?_
 - _Oct 29 & 30, 2017_ - [KharkivJS](http://kharkivjs.org), Kharkiv, 🇺🇦 -- _Effortless Serverless_
 - _Dec 10 & 11, 2017_ - [HolyJS](https://holyjs-moscow.ru/talks/5hfhepewii0iesi46gmgou/), Moscow, 🇷🇺 -- _Testing serverless applications_
 
-### Past events
+### Previous events
 
 - _Sep 30, 2017_ - FDConf, Minsk 🇧🇾 ([slides](https://speakerdeck.com/slobodan/8-half-things-about-serverless-fdconf-2017))
 - _Sep 16, 2017_ - FrontTalks, Yekatarinburg 🇷🇺 ([slides](https://speakerdeck.com/slobodan/8-half-things-about-serverless-fronttalks))
