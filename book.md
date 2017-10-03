@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Book
+socialtitle: Serverless Apps with Node and Claudia.js
 permalink: /book/
 ---
 
