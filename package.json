@@ -1,0 +1,25 @@
+{
+  "name": "effortlessserverless.com",
+  "version": "1.0.0",
+  "description": "Effortless serverless website",
+  "main": "index.js",
+  "dependencies": {
+    "gh-pages": "^1.0.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^1.0.0"
+  },
+  "scripts": {
+    "deploy": "gh-pages -d _site"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/effortless-serverless/effortless-serverless.com.git"
+  },
+  "author": "Slobodan Stojanović <slobodan@cloudhorizon.com> (http://slobodan.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/effortless-serverless/effortless-serverless.com/issues"
+  },
+  "homepage": "https://github.com/effortless-serverless/effortless-serverless.com#readme"
+}
