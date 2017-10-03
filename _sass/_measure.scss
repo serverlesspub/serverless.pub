@@ -1,6 +1,9 @@
 .measure {
   margin: 0 auto;
   max-width: $measure-width;
+}
+
+.book-header {
   display: flex;
   justify-content: space-evenly;
 }
