@@ -11,7 +11,8 @@
   },
   "scripts": {
     "start": "bundle exec jekyll serve",
-    "deploy": "JEKYLL_ENV=production gh-pages -d _site"
+    "deploy": "JEKYLL_ENV=production gh-pages -d _site",
+    "build": "JEKYLL_ENV=production jekyll build"
   },
   "repository": {
     "type": "git",
