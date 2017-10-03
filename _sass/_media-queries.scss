@@ -73,3 +73,12 @@
     margin-left: -7em;
   }
 }
+
+@media screen and (max-width: $viewport-small) {
+  #book-cover {
+    img {
+      max-width: 100px;
+    }
+  }
+}
+
