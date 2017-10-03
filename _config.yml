@@ -3,8 +3,8 @@ title:       Effortless Serverless
 email:       your_email@example.com
 author:      Aleksandar Simović and Slobodan Stojanović
 description: "Effortless Serverless"
-baseurl:     "https://effortless-serverless.com"
-url:         "https://effortless-serverless.com"
+baseurl:     ""
+url:         "effortless-serverless.com"
 date_format: "%b %-d, %Y"
 header_pages:
  - about.md
@@ -13,7 +13,7 @@ header_pages:
  - projects.md
 
 # Google services
-google_verification:
+google_verification: "Wm_B41Fjq5RPten2R24t7vffMFKohk59QjKBr9HW1lY"
 # Use either direct GA implementation or set up GTM account
 # - using both will skew your data (leave blank to not use at all)
 google_analytics:
