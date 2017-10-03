@@ -10,8 +10,8 @@
     "gh-pages": "^1.0.0"
   },
   "scripts": {
-    "start": "bundle exec jekyll serve", 
-    "deploy": "gh-pages -d _site"
+    "start": "bundle exec jekyll serve",
+    "deploy": "JEKYLL_ENV=production gh-pages -d _site"
   },
   "repository": {
     "type": "git",
