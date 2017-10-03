@@ -3,7 +3,7 @@ title:       Effortless Serverless
 email:       your_email@example.com
 author:      Aleksandar Simović and Slobodan Stojanović
 description: "Effortless Serverless"
-baseurl:     ""
+baseurl:     "https://effortless-serverless.com"
 url:         "https://effortless-serverless.com"
 date_format: "%b %-d, %Y"
 header_pages:

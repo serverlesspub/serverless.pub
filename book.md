@@ -4,7 +4,7 @@ title: Book
 permalink: /book/
 ---
 
-![Serverless Apps with Node and Claudia.js]({{ "/images/serverless-apps-node-claudia-book-cover.png" | absolute_url }})
+![Serverless Apps with Node and Claudia.js](/images/serverless-apps-node-claudia-book-cover.png)
 {: .book-page-image }
 
 Serverless Apps with Node and Claudia.js walks you through building serverless apps on AWS using JavaScript. Inside, you'll create a full project designed to help you understand and apply general serverless design principles and concepts.
