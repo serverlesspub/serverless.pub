@@ -12,7 +12,7 @@ If none of these suit you or you're interested in having an on-site workshop, fe
 
 - _Oct 20, 2017_ - [Hackference](https://2017.hackference.co.uk), Birmingham, 🇬🇧 -- _How to build a website that will (eventually) work on Mars?_
 - _Oct 29 & 30, 2017_ - [KharkivJS](http://kharkivjs.org), Kharkiv, 🇺🇦 -- _Effortless Serverless_
-- _Nov 25, 2017_ - [NoSlidesConf](http://www.noslidesconf.net), Bologna, 🇺🇦 -- _Effortless Serverless_ & _Alexa, start the presentation_
+- _Nov 25, 2017_ - [NoSlidesConf](http://www.noslidesconf.net), Bologna,🇮🇹  -- _Effortless Serverless_ & _Alexa, start the presentation_
 - _Dec 10 & 11, 2017_ - [HolyJS](https://holyjs-moscow.ru/talks/5hfhepewii0iesi46gmgou/), Moscow, 🇷🇺 -- _Testing serverless applications_
 
 ### Previous events
