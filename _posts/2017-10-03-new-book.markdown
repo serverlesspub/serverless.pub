@@ -7,7 +7,7 @@ categories: claudia book
 
 Our book "Serverless apps with Node and Claudia.js" is now available as a MEAP release on Manning Publication website.
 
-![](/images/effortless-serverless-social.png)
+<a class="no-style-link" href="/book"><img src="/images/effortless-serverless-social.png" alt="Serverless apps with Node and Claudia.js"></a>
 
 The book walks you through building serverless apps on AWS using JavaScript. Inside, you’ll create a full project designed to help you understand and apply general serverless design principles and concepts.
 
