@@ -10,7 +10,7 @@
         
             <item>
                 <title>Serverless Ice Cream or &quot;Create your serverless Node.js micro service with a database&quot;</title>
-                <link>https://effortless-serverless.com/claudia/node/micro/service/database/lambda/2017/10/19/serverless-icecream-database/</link>
+                <link>https://effortless-serverless.com/serverless/lambda/dynamodb/2017/10/19/serverless-icecream-database/</link>
                 <content:encoded>
                     <![CDATA[
                     <p>There are many articles about serverless with lots of selling points, promises that “solve your life” and so on. Serverless is great, but articles sometimes sound more like a TV commercial.</p>
@@ -218,7 +218,7 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 
                     ]]>
                 </content:encoded>
-                <guid isPermaLink="false">/claudia/node/micro/service/database/lambda/2017/10/19/serverless-icecream-database/</guid>
+                <guid isPermaLink="false">/serverless/lambda/dynamodb/2017/10/19/serverless-icecream-database/</guid>
                 <description>
                     
                 </description>
