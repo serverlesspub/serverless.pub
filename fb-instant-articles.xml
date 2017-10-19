@@ -9,6 +9,226 @@
     
         
             <item>
+                <title>Serverless Ice Cream or &quot;Create your serverless Node.js micro service with a database&quot;</title>
+                <link>https://effortless-serverless.com/claudia/node/micro/service/database/lambda/2017/10/19/serverless-icecream-database/</link>
+                <content:encoded>
+                    <![CDATA[
+                    <p>There are many articles about serverless with lots of selling points, promises that “solve your life” and so on. Serverless is great, but articles sometimes sound more like a TV commercial.</p>
+
+<p>The developer in you wants to try, start and create a working example. It’s like ice cream. It’s nice to talk about it, but much better to try it out.</p>
+
+<p><img src="/images/serverless-icecream.jpg" alt="" /></p>
+
+<p>Of course, you want the details too. <em>But first, ice cream!</em></p>
+
+<p>The goal is to show how to create a serverless Node.js service that saves data to a database and retrieves everything saved.
+Since ice creams are already mentioned, this service will be for a fictional ice cream shop.</p>
+
+<h3 id="how-to-create-a-serverless-nodejs-service-to-save-an-ice-cream-to-a-database-and-get-ice-creamssaved">How to create a serverless Node.js service to save an ice cream to a database and get ice creams saved?</h3>
+
+<p>Let’s see what do you need:</p>
+
+<ul>
+  <li>
+    <p><strong>“serverless host”</strong> — where you’re going to deploy and execute your code and connect to a database. We’re going with AWS, as the most mature platform at the moment.
+ AWS has a serverless container service called Lambda. Because Lambda is just a compute service without “outside access”, we also need an “access point” or a “front door” service — AWS API Gateway.</p>
+  </li>
+  <li>
+    <p><strong>“development and deployment tool / library”</strong> — helps with code setup and deployment. Because serverless is still new and these tools make your life easier. Choosing a library influences the way you build your services. We’re going to use Claudia.js - a development and deployment tool with helpful examples and a good community. It will deploy your service to your AWS serverless container (Lambda) and create an API Gateway for it.</p>
+  </li>
+  <li>
+    <p><strong>“service”</strong> — your service that receives a request,  saves an ice cream to a database or shows all ice creams you saved.</p>
+  </li>
+  <li>
+    <p><strong>“database”</strong> — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.</p>
+  </li>
+</ul>
+
+<p><img src="/images/serverless-icecream-overview.png" alt="The overview of your service infrastructure" /></p>
+
+<h3 id="1-serverless-host-setupaws">1. Serverless host setup — AWS</h3>
+
+<p>You need to have an AWS account and a locally set AWS credentials file.</p>
+
+<p><em>If you already have both setup, scroll to section 2.</em></p>
+
+<p>If not, open your browser and go to — <a href="https://console.aws.amazon.com">https://console.aws.amazon.com</a>.</p>
+
+<p>If you don’t have an AWS account, click on the button <em>“Create a new AWS account”</em> and follow the process. </p>
+
+<p>If you do, you only need to set your AWS credentials. To do it:</p>
+
+<ol>
+  <li>
+    <p>Open AWS Console, click on <em>“Services”</em> in the top navigation bar. Write IAM in the search box and click on the resulted IAM.</p>
+  </li>
+  <li>
+    <p>Click on “Users” on the left side menu, then “Add User”. You will see the following picture.</p>
+
+    <p><img src="/images/serverless-icecream-user.png" alt="" />
+ There you need to type in the user name and check the programmatic access. Then click the button “Next: Permissions”.</p>
+  </li>
+  <li>
+    <p>You will be on the 2nd step. Now click the “Attach existing policies directly” and then check “Administrator Full Access”. Proceed to the 3rd step “Review”, and then click the “Create user” for the 4th step. 
+At the last (4th) step, you will see a table with your user name and columns with your user’s “Access Key Id” and “Secret Access Key Id”. Copy those values.</p>
+  </li>
+  <li>
+    <p>Add those keys  to your .aws/credentials file.</p>
+
+    <p>a) On OSX/*nix in — <code class="highlighter-rouge">~/.aws</code></p>
+
+    <p>b) On Win its  — <code class="highlighter-rouge">C:/Users/&lt;your-user&gt;/.aws</code></p>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code> <span class="o">[</span>default]
+ aws_access_key_id <span class="o">=</span> YOUR_ACCESS_KEY
+ aws_secret_access_key <span class="o">=</span> YOUR_ACCESS_SECRET
+</code></pre>
+    </div>
+    <p>Set the AWS_PROFILE environment variable to default.</p>
+  </li>
+</ol>
+
+<h3 id="2-setup-your-development-and-deployment-toolclaudiajs">2. Setup your development and deployment tool — Claudia.js</h3>
+
+<p><em>If you have Claudia.js installed already scroll to section 3.</em></p>
+
+<p>Open your terminal and run:</p>
+
+<p><code class="highlighter-rouge">npm install -g claudia</code></p>
+
+<p>Claudia.js is now installed globally, available for all projects.</p>
+
+<h3 id="3-write-your-serviceice-creamshop">3. Write your service — Ice Cream Shop</h3>
+
+<p>Create your project folder (you can name it <code class="highlighter-rouge">ice-cream-shop</code>) and open it in your terminal. </p>
+
+<p>Initialize your Node project.</p>
+
+<p><em>You can do it quickly by running</em> <code class="highlighter-rouge">npm init -f</code></p>
+
+<p>Then run</p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code> npm install aws-sdk claudia-api-builder -S 
+</code></pre>
+</div>
+
+<p>This installs AWS SDK and Claudia API Builder. You need AWS SDK for accessing DynamoDB. Claudia API Builder is a helper tool with an Express-like syntax for your endpoints.</p>
+
+<p>Your service needs to have two endpoints:</p>
+
+<ol>
+  <li>
+    <p>to save an icecream — needs a POST request</p>
+  </li>
+  <li>
+    <p>to get all saved ice creams — needs a GET request</p>
+  </li>
+</ol>
+
+<p>Now create an empty index.js file. Open it and type:</p>
+
+<script src="https://gist.github.com/simalexan/528f4842f4f3be3804af9512c27550a6.js"></script>
+
+<p>This finishes your service.</p>
+
+<h3 id="4-databasesetupdynamodb">4. Database — setup DynamoDB</h3>
+
+<p>You need to create a database on AWS, but instead of using AWS Console, you can just execute one command:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>aws dynamodb create-table --table-name icecreams <span class="se">\</span>
+  --attribute-definitions <span class="nv">AttributeName</span><span class="o">=</span>icecreamid,AttributeType<span class="o">=</span>S <span class="se">\</span>
+  --key-schema <span class="nv">AttributeName</span><span class="o">=</span>icecreamid,KeyType<span class="o">=</span>HASH <span class="se">\</span>
+  --provisioned-throughput <span class="nv">ReadCapacityUnits</span><span class="o">=</span>1,WriteCapacityUnits<span class="o">=</span>1 <span class="se">\</span>
+  --region us-east-1 <span class="se">\</span>
+  --query TableDescription.TableArn --output text
+</code></pre>
+</div>
+
+<p>This command creates a DynamoDB table named <code class="highlighter-rouge">icecreams</code> in the same region as our Lambda, with an key attribute <code class="highlighter-rouge">icecreamid</code> of String type. The command returns the table’s Amazon Resource Name (ARN) to confirm that everything is set up correctly.</p>
+
+<h4 id="giving-your-service-permission-for-thedatabase">Giving your service permission for the database</h4>
+
+<p>The last step is allowing your service access to your DynamoDb database. To do that your service requires a permission policy. Instead of doing it via AWS Console, you can create a policy file in your project and apply it with Claudia.</p>
+
+<p>Inside your ice-cream-shop project folder create a folder named <code class="highlighter-rouge">policy</code> and in it a file called <code class="highlighter-rouge">dynamodb-policy.json</code> with the following contents:</p>
+
+<script src="https://gist.github.com/simalexan/5e7bff9eb50cd392c715407ad1682b10.js"></script>
+
+<p><em>If copying from here, be sure the code stays with the same spacing. JSON must keep a proper structure.</em></p>
+
+<p>This policy allows your Lambda service to access your DynamoDb database. When invoking Claudia to deploy your code, this policy file location needs to be passed as the command option, to let Claudia know to assign the policy to your Lambda.</p>
+
+<p>It’s time for your first deployment. In the first, Claudia.js creates a Lambda for your service. So, go back to your project folder <code class="highlighter-rouge">ice-cream-shop</code> and run:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>claudia create --region us-east-1 --api-module index --policies policy
+</code></pre>
+</div>
+
+<p>This command creates your serverless container (AWS Lambda) in the <code class="highlighter-rouge">us-east-1</code> region, sets the <code class="highlighter-rouge">index</code> file as the main, and assigns the policy from the <code class="highlighter-rouge">policy</code> folder to your Lambda. If successful, it returns the created service URL endpoint in the command final output similar to this:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="o">{</span>
+  <span class="s2">"lambda"</span>: <span class="o">{</span>
+    <span class="s2">"role"</span>: <span class="s2">"ice-cream-shop-executor"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"ice-cream-shop"</span>,
+    <span class="s2">"region"</span>: <span class="s2">"us-east-1"</span>
+  <span class="o">}</span>,
+  <span class="s2">"api"</span>: <span class="o">{</span>
+    <span class="s2">"id"</span>: <span class="s2">"your-service-id"</span>,
+    <span class="s2">"module"</span>: <span class="s2">"index"</span>,
+    <span class="s2">"url"</span>: <span class="s2">"https://your-service-url.execute-api.us-east-1.amazonaws.com/latest"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>That’s it! </p>
+
+<h4 id="errors">Errors?</h4>
+<p>In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="s1">'Role with name ice-cream-shop-executor already exists.'</span>
+</code></pre>
+</div>
+
+<p>In that case, go to your AWS Console IAM , in the left bar- click “Roles” and find a role with that name (or the name error specified) and delete it. Then try again with the previous claudia create command.</p>
+
+<h4 id="test-yourservice">Test your service</h4>
+
+<p>Use cURL for testing. Get all ice creams:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>curl https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
+</code></pre>
+</div>
+
+<p>Save an ice cream:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>curl -H <span class="s2">"Content-Type: application/json"</span> -X POST <span class="se">\</span>
+-d <span class="s1">'{"icecreamId":"123", "name":"chocolate"}'</span> <span class="se">\</span>
+https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
+</code></pre>
+</div>
+
+<h4 id="updating-yourservice">Updating your service</h4>
+<p>If you want to redeploy to your Lambda with Claudia.js, now you need to do a claudia update instead of create . The full command would look like this:</p>
+
+<p><code class="highlighter-rouge">claudia update</code></p>
+
+<p>It doesn’t need all those configuration options like <code class="highlighter-rouge">create</code>, because it stores them locally for you. If its successful, it also returns the URL of your deployed service.</p>
+
+<p>Now go, you deserve some ice cream!</p>
+
+                    ]]>
+                </content:encoded>
+                <guid isPermaLink="false">/claudia/node/micro/service/database/lambda/2017/10/19/serverless-icecream-database/</guid>
+                <description>
+                    
+                </description>
+                <pubDate>Thu, 19 Oct 2017 12:00:00 +0200</pubDate>
+                <author>Aleksandar Simović and Slobodan Stojanović</author>
+            </item>
+        
+    
+        
+            <item>
                 <title>Checkout our book - Serverless apps with Node and Claudia.js</title>
                 <link>https://effortless-serverless.com/claudia/book/2017/10/03/new-book/</link>
                 <content:encoded>
