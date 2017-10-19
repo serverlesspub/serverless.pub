@@ -9,38 +9,38 @@
     
         
             <item>
-                <title>Serverless Ice Cream or &quot;Create your serverless Node.js micro service with a database&quot;</title>
+                <title>How To Create a Serverless Node.js App with DynamoDB For The First Time</title>
                 <link>https://effortless-serverless.com/serverless/lambda/dynamodb/2017/10/19/serverless-icecream-database/</link>
                 <content:encoded>
                     <![CDATA[
-                    <p>There are many articles about serverless with lots of selling points, promises that “solve your life” and so on. Serverless is great, but articles sometimes sound more like a TV commercial.</p>
+                    <p>There are many articles on serverless with explained ideas, benefits and so on. Serverless is great, but articles sometimes sound more like a TV commercial.</p>
 
-<p>The developer in you wants to try, start and create a working example. It’s like ice cream. It’s nice to talk about it, but much better to try it out.</p>
+<p>Sometimes you just want to try and create a working example.</p>
+
+<blockquote>
+  <p>Serverless is like ice cream. It’s nice to talk about it, but much better to try out.</p>
+</blockquote>
 
 <p><img src="/images/serverless-icecream.jpg" alt="" /></p>
 
-<p>Of course, you want the details too. <em>But first, ice cream!</em></p>
+<p>The goal is to show how to create a serverless Node.js app with DynamoDB that stores and retrieves data.
+Since ice creams are already mentioned, this service will be for an ice cream shop. You will save and show ice creams.</p>
 
-<p>The goal is to show how to create a serverless Node.js service that saves data to a database and retrieves everything saved.
-Since ice creams are already mentioned, this service will be for a fictional ice cream shop.</p>
-
-<h3 id="how-to-create-a-serverless-nodejs-service-to-save-an-ice-cream-to-a-database-and-get-ice-creamssaved">How to create a serverless Node.js service to save an ice cream to a database and get ice creams saved?</h3>
-
-<p>Let’s see what do you need:</p>
+<p>Let’s first see what do you need:</p>
 
 <ul>
   <li>
-    <p><strong>“serverless host”</strong> — where you’re going to deploy and execute your code and connect to a database. We’re going with AWS, as the most mature platform at the moment.
+    <p><strong>a serverless host</strong> — where you’re going to deploy and execute your code and connect to a database. We’re going with AWS, as the most mature platform at the moment.
  AWS has a serverless container service called Lambda. Because Lambda is just a compute service without “outside access”, we also need an “access point” or a “front door” service — AWS API Gateway.</p>
   </li>
   <li>
-    <p><strong>“development and deployment tool / library”</strong> — helps with code setup and deployment. Because serverless is still new and these tools make your life easier. Choosing a library influences the way you build your services. We’re going to use Claudia.js - a development and deployment tool with helpful examples and a good community. It will deploy your service to your AWS serverless container (Lambda) and create an API Gateway for it.</p>
+    <p><strong>a development and deployment tool / library</strong> — helps with code setup and deployment. Because serverless is still new and these tools make your life easier. Choosing a library influences the way you build your services. We’re going to use Claudia.js - a development and deployment tool with helpful examples and a good community. It will deploy your service to your AWS serverless container (Lambda) and create an API Gateway for it.</p>
   </li>
   <li>
-    <p><strong>“service”</strong> — your service that receives a request,  saves an ice cream to a database or shows all ice creams you saved.</p>
+    <p><strong>a service</strong> — your service that receives a request,  saves an ice cream to a database or shows all ice creams you saved.</p>
   </li>
   <li>
-    <p><strong>“database”</strong> — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.</p>
+    <p><strong>a database</strong> — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.</p>
   </li>
 </ul>
 
@@ -182,16 +182,7 @@ At the last (4th) step, you will see a table with your user name and columns wit
 
 <p>That’s it! </p>
 
-<h4 id="errors">Errors?</h4>
-<p>In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show</p>
-
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="s1">'Role with name ice-cream-shop-executor already exists.'</span>
-</code></pre>
-</div>
-
-<p>In that case, go to your AWS Console IAM , in the left bar- click “Roles” and find a role with that name (or the name error specified) and delete it. Then try again with the previous claudia create command.</p>
-
-<h4 id="test-yourservice">Test your service</h4>
+<h4 id="trying-out-yourservice">Trying out your service</h4>
 
 <p>Use cURL for testing. Get all ice creams:</p>
 
@@ -207,6 +198,19 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 </code></pre>
 </div>
 
+<p>By running these commands you’ll see your service working!</p>
+
+<p>That’s it!</p>
+
+<h4 id="errors">Errors?</h4>
+<p>In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="s1">'Role with name ice-cream-shop-executor already exists.'</span>
+</code></pre>
+</div>
+
+<p>In that case, go to your <a href="https://console.aws.amazon.com/iam">AWS Console IAM</a>, in the left bar- click “Roles” and find a role with the name error specified and delete it. Then try the previous claudia create command again.</p>
+
 <h4 id="updating-yourservice">Updating your service</h4>
 <p>If you want to redeploy to your Lambda with Claudia.js, now you need to do a claudia update instead of create . The full command would look like this:</p>
 
@@ -215,6 +219,8 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 <p>It doesn’t need all those configuration options like <code class="highlighter-rouge">create</code>, because it stores them locally for you. If its successful, it also returns the URL of your deployed service.</p>
 
 <p>Now go, you deserve some ice cream!</p>
+
+<p>The full code example is available on <a href="https://github.com/simalexan/ice-cream-shop">this repository</a>.</p>
 
                     ]]>
                 </content:encoded>

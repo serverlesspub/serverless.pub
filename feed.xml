@@ -7,35 +7,35 @@
     <atom:link href="https://effortless-serverless.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
-        <title>Serverless Ice Cream or &quot;Create your serverless Node.js micro service with a database&quot;</title>
-        <description>&lt;p&gt;There are many articles about serverless with lots of selling points, promises that “solve your life” and so on. Serverless is great, but articles sometimes sound more like a TV commercial.&lt;/p&gt;
+        <title>How To Create a Serverless Node.js App with DynamoDB For The First Time</title>
+        <description>&lt;p&gt;There are many articles on serverless with explained ideas, benefits and so on. Serverless is great, but articles sometimes sound more like a TV commercial.&lt;/p&gt;
 
-&lt;p&gt;The developer in you wants to try, start and create a working example. It’s like ice cream. It’s nice to talk about it, but much better to try it out.&lt;/p&gt;
+&lt;p&gt;Sometimes you just want to try and create a working example.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Serverless is like ice cream. It’s nice to talk about it, but much better to try out.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/serverless-icecream.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Of course, you want the details too. &lt;em&gt;But first, ice cream!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The goal is to show how to create a serverless Node.js app with DynamoDB that stores and retrieves data.
+Since ice creams are already mentioned, this service will be for an ice cream shop. You will save and show ice creams.&lt;/p&gt;
 
-&lt;p&gt;The goal is to show how to create a serverless Node.js service that saves data to a database and retrieves everything saved.
-Since ice creams are already mentioned, this service will be for a fictional ice cream shop.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-create-a-serverless-nodejs-service-to-save-an-ice-cream-to-a-database-and-get-ice-creamssaved&quot;&gt;How to create a serverless Node.js service to save an ice cream to a database and get ice creams saved?&lt;/h3&gt;
-
-&lt;p&gt;Let’s see what do you need:&lt;/p&gt;
+&lt;p&gt;Let’s first see what do you need:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;“serverless host”&lt;/strong&gt; — where you’re going to deploy and execute your code and connect to a database. We’re going with AWS, as the most mature platform at the moment.
+    &lt;p&gt;&lt;strong&gt;a serverless host&lt;/strong&gt; — where you’re going to deploy and execute your code and connect to a database. We’re going with AWS, as the most mature platform at the moment.
  AWS has a serverless container service called Lambda. Because Lambda is just a compute service without “outside access”, we also need an “access point” or a “front door” service — AWS API Gateway.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;“development and deployment tool / library”&lt;/strong&gt; — helps with code setup and deployment. Because serverless is still new and these tools make your life easier. Choosing a library influences the way you build your services. We’re going to use Claudia.js - a development and deployment tool with helpful examples and a good community. It will deploy your service to your AWS serverless container (Lambda) and create an API Gateway for it.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;a development and deployment tool / library&lt;/strong&gt; — helps with code setup and deployment. Because serverless is still new and these tools make your life easier. Choosing a library influences the way you build your services. We’re going to use Claudia.js - a development and deployment tool with helpful examples and a good community. It will deploy your service to your AWS serverless container (Lambda) and create an API Gateway for it.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;“service”&lt;/strong&gt; — your service that receives a request,  saves an ice cream to a database or shows all ice creams you saved.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;a service&lt;/strong&gt; — your service that receives a request,  saves an ice cream to a database or shows all ice creams you saved.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;“database”&lt;/strong&gt; — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;a database&lt;/strong&gt; — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
@@ -177,16 +177,7 @@ At the last (4th) step, you will see a table with your user name and columns wit
 
 &lt;p&gt;That’s it! &lt;/p&gt;
 
-&lt;h4 id=&quot;errors&quot;&gt;Errors?&lt;/h4&gt;
-&lt;p&gt;In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show&lt;/p&gt;
-
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s1&quot;&gt;'Role with name ice-cream-shop-executor already exists.'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;In that case, go to your AWS Console IAM , in the left bar- click “Roles” and find a role with that name (or the name error specified) and delete it. Then try again with the previous claudia create command.&lt;/p&gt;
-
-&lt;h4 id=&quot;test-yourservice&quot;&gt;Test your service&lt;/h4&gt;
+&lt;h4 id=&quot;trying-out-yourservice&quot;&gt;Trying out your service&lt;/h4&gt;
 
 &lt;p&gt;Use cURL for testing. Get all ice creams:&lt;/p&gt;
 
@@ -202,6 +193,19 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;By running these commands you’ll see your service working!&lt;/p&gt;
+
+&lt;p&gt;That’s it!&lt;/p&gt;
+
+&lt;h4 id=&quot;errors&quot;&gt;Errors?&lt;/h4&gt;
+&lt;p&gt;In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s1&quot;&gt;'Role with name ice-cream-shop-executor already exists.'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In that case, go to your &lt;a href=&quot;https://console.aws.amazon.com/iam&quot;&gt;AWS Console IAM&lt;/a&gt;, in the left bar- click “Roles” and find a role with the name error specified and delete it. Then try the previous claudia create command again.&lt;/p&gt;
+
 &lt;h4 id=&quot;updating-yourservice&quot;&gt;Updating your service&lt;/h4&gt;
 &lt;p&gt;If you want to redeploy to your Lambda with Claudia.js, now you need to do a claudia update instead of create . The full command would look like this:&lt;/p&gt;
 
@@ -210,6 +214,8 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 &lt;p&gt;It doesn’t need all those configuration options like &lt;code class=&quot;highlighter-rouge&quot;&gt;create&lt;/code&gt;, because it stores them locally for you. If its successful, it also returns the URL of your deployed service.&lt;/p&gt;
 
 &lt;p&gt;Now go, you deserve some ice cream!&lt;/p&gt;
+
+&lt;p&gt;The full code example is available on &lt;a href=&quot;https://github.com/simalexan/ice-cream-shop&quot;&gt;this repository&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 19 Oct 2017 12:00:00 +0200</pubDate>
         <link>https://effortless-serverless.com/serverless/lambda/dynamodb/2017/10/19/serverless-icecream-database/</link>
