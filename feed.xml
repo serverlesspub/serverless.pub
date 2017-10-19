@@ -215,7 +215,7 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 
 &lt;p&gt;Now go, you deserve some ice cream!&lt;/p&gt;
 
-&lt;p&gt;The full code example is available on &lt;a href=&quot;https://github.com/simalexan/ice-cream-shop&quot;&gt;this repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The full code example is available on &lt;a href=&quot;https://github.com/effortless-serverless/ice-cream-shop&quot;&gt;this repository&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 19 Oct 2017 12:00:00 +0200</pubDate>
         <link>https://effortless-serverless.com/serverless/lambda/dynamodb/2017/10/19/serverless-icecream-database/</link>
