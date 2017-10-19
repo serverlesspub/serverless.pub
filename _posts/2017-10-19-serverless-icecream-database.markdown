@@ -198,4 +198,4 @@ It doesn't need all those configuration options like `create`, because it stores
 Now go, you deserve some ice cream!
 
 
-The full code example is available on [this repository](https://github.com/simalexan/ice-cream-shop).
+The full code example is available on [this repository](https://github.com/effortless-serverless/ice-cream-shop).
