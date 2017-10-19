@@ -1,33 +1,31 @@
 ---
 layout: post
-title:  "Serverless Ice Cream or \"Create your serverless Node.js micro service with a database\""
+title:  "How To Create a Serverless Node.js App with DynamoDB For The First Time"
 date:   2017-10-19 12:00:00 +0200
 categories: serverless lambda dynamodb
 ---
 
-There are many articles about serverless with lots of selling points, promises that “solve your life” and so on. Serverless is great, but articles sometimes sound more like a TV commercial.
+There are many articles on serverless with explained ideas, benefits and so on. Serverless is great, but articles sometimes sound more like a TV commercial.
 
-The developer in you wants to try, start and create a working example. It’s like ice cream. It’s nice to talk about it, but much better to try it out.
+Sometimes you just want to try and create a working example.
+
+> Serverless is like ice cream. It’s nice to talk about it, but much better to try out.
 
 ![](/images/serverless-icecream.jpg)
 
-Of course, you want the details too. *But first, ice cream!*
+The goal is to show how to create a serverless Node.js app with DynamoDB that stores and retrieves data.
+Since ice creams are already mentioned, this service will be for an ice cream shop. You will save and show ice creams.
 
-The goal is to show how to create a serverless Node.js service that saves data to a database and retrieves everything saved.
-Since ice creams are already mentioned, this service will be for a fictional ice cream shop.
+Let’s first see what do you need:
 
-### How to create a serverless Node.js service to save an ice cream to a database and get ice creams saved?
-
-Let’s see what do you need:
-
- - **"serverless host"** — where you’re going to deploy and execute your code and connect to a database. We’re going with AWS, as the most mature platform at the moment.
+ - **a serverless host** — where you’re going to deploy and execute your code and connect to a database. We’re going with AWS, as the most mature platform at the moment.
  AWS has a serverless container service called Lambda. Because Lambda is just a compute service without “outside access”, we also need an “access point” or a “front door” service — AWS API Gateway.
 
- - **"development and deployment tool / library"** — helps with code setup and deployment. Because serverless is still new and these tools make your life easier. Choosing a library influences the way you build your services. We’re going to use Claudia.js - a development and deployment tool with helpful examples and a good community. It will deploy your service to your AWS serverless container (Lambda) and create an API Gateway for it.
+ - **a development and deployment tool / library** — helps with code setup and deployment. Because serverless is still new and these tools make your life easier. Choosing a library influences the way you build your services. We’re going to use Claudia.js - a development and deployment tool with helpful examples and a good community. It will deploy your service to your AWS serverless container (Lambda) and create an API Gateway for it.
 
- - **"service"** — your service that receives a request,  saves an ice cream to a database or shows all ice creams you saved.
+ - **a service** — your service that receives a request,  saves an ice cream to a database or shows all ice creams you saved.
 
- - **"database"** — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.
+ - **a database** — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.
 
 
 ![The overview of your service infrastructure](/images/serverless-icecream-overview.png)
@@ -159,17 +157,7 @@ This command creates your serverless container (AWS Lambda) in the `us-east-1` r
 
 That’s it! 
 
-#### Errors?
-In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show
-
-```shell
-'Role with name ice-cream-shop-executor already exists.'
-```
-
-In that case, go to your AWS Console IAM , in the left bar- click “Roles” and find a role with that name (or the name error specified) and delete it. Then try again with the previous claudia create command.
-
-
-#### Test your service
+#### Trying out your service
 
 Use cURL for testing. Get all ice creams:
 
@@ -185,6 +173,21 @@ curl -H "Content-Type: application/json" -X POST \
 https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 ```
 
+By running these commands you’ll see your service working!
+
+That’s it!
+
+
+#### Errors?
+In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show
+
+```shell
+'Role with name ice-cream-shop-executor already exists.'
+```
+
+In that case, go to your [AWS Console IAM](https://console.aws.amazon.com/iam), in the left bar- click “Roles” and find a role with the name error specified and delete it. Then try the previous claudia create command again.
+
+
 #### Updating your service
 If you want to redeploy to your Lambda with Claudia.js, now you need to do a claudia update instead of create . The full command would look like this:
 
@@ -193,3 +196,6 @@ If you want to redeploy to your Lambda with Claudia.js, now you need to do a cla
 It doesn't need all those configuration options like `create`, because it stores them locally for you. If its successful, it also returns the URL of your deployed service.
 
 Now go, you deserve some ice cream!
+
+
+The full code example is available on [this repository](https://github.com/simalexan/ice-cream-shop).
