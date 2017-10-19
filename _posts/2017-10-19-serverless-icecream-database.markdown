@@ -2,7 +2,7 @@
 layout: post
 title:  "Serverless Ice Cream or \"Create your serverless Node.js micro service with a database\""
 date:   2017-10-19 12:00:00 +0200
-categories: claudia node micro service database lambda
+categories: serverless lambda dynamodb
 ---
 
 There are many articles about serverless with lots of selling points, promises that “solve your life” and so on. Serverless is great, but articles sometimes sound more like a TV commercial.
