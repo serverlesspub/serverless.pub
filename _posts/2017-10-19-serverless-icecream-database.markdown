@@ -185,7 +185,7 @@ In case of an error, please check your code if you haven’t missed anything. Af
 'Role with name ice-cream-shop-executor already exists.'
 ```
 
-In that case, go to your [AWS Console IAM](https://console.aws.amazon.com/iam), in the left bar- click “Roles” and find a role with the name error specified and delete it. Then try the previous claudia create command again.
+In that case, go to your [AWS Console IAM](https://console.aws.amazon.com/iam), in the left bar- click *“Roles”* and find a role with the name error specified and delete it. Then try the previous claudia create command again.
 
 
 #### Updating your service
