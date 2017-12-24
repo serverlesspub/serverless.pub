@@ -209,7 +209,7 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 </code></pre>
 </div>
 
-<p>In that case, go to your <a href="https://console.aws.amazon.com/iam">AWS Console IAM</a>, in the left bar- click “Roles” and find a role with the name error specified and delete it. Then try the previous claudia create command again.</p>
+<p>In that case, go to your <a href="https://console.aws.amazon.com/iam">AWS Console IAM</a>, in the left bar- click <em>“Roles”</em> and find a role with the name error specified and delete it. Then try the previous claudia create command again.</p>
 
 <h4 id="updating-yourservice">Updating your service</h4>
 <p>If you want to redeploy to your Lambda with Claudia.js, now you need to do a claudia update instead of create . The full command would look like this:</p>
