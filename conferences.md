@@ -11,6 +11,8 @@ If none of these suit you or you're interested in having an on-site workshop, fe
 ### Upcoming
 
 - _Aug 30 & 31, 2018_ - TBA, 🇨🇭 -- _TBA_
+- _May 25 - 27, 2018_ - PHP Serbia Conference, Belgrade 🇷🇸 -- [The last infrastructure talk for developers, or why your future apps will be serverless](https://conf2018.phpsrbija.rs/sessions)
+- _Feb 14, 2018_ - JeffConf, Hamburg 🇩🇪 -- [Serverless Chatbot Development workshop](https://hamburg.jeffconf.com/workshops)
 
 ### Previous events
 
@@ -25,7 +27,7 @@ If none of these suit you or you're interested in having an on-site workshop, fe
 - _May 25, 2017_ - CodeEurope, Warsaw 🇵🇱 ([slides](https://speakerdeck.com/slobodan/the-hitchhikers-guide-to-the-serverless-galaxy-codeeurope-2017-wroclaw-and-warsaw))
 - _May 23, 2017_ - CodeEurope, Wroclaw 🇵🇱 ([slides](https://speakerdeck.com/slobodan/the-hitchhikers-guide-to-the-serverless-galaxy-codeeurope-2017-wroclaw-and-warsaw))
 - _Mar 02, 2017_ - Voxxed Days, Bristol 🇬🇧 ([video](https://youtu.be/vh6oq4v715s))
-- _Dec 11, 2017_ - HolyJS, Moscow 🇷🇺 ([slides](https://speakerdeck.com/slobodan/dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-serverless-chatbots-holyjs-2016), [video](https://youtu.be/hRkK3xCYJ1g))
-- _Oct 28 & 29, 2017_ - Web Camp, Zagreb 🇭🇷 ([slides](https://speakerdeck.com/slobodan/how-to-build-a-website-that-will-eventually-work-on-mars-v1-dot-1-0-webcamp-zagreb-2016), [video](https://youtu.be/9xxmV4q6JEQ))
-- _Sep 05-09, 2017_ - Full Stack Fest, Barcelona 🇪🇸 ([slides](https://speakerdeck.com/slobodan/how-to-build-a-website-that-will-eventually-work-on-mars), [video](https://youtu.be/7rlEidtXlZg))
+- _Dec 11, 2016_ - HolyJS, Moscow 🇷🇺 ([slides](https://speakerdeck.com/slobodan/dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-serverless-chatbots-holyjs-2016), [video](https://youtu.be/hRkK3xCYJ1g))
+- _Oct 28 & 29, 2016_ - Web Camp, Zagreb 🇭🇷 ([slides](https://speakerdeck.com/slobodan/how-to-build-a-website-that-will-eventually-work-on-mars-v1-dot-1-0-webcamp-zagreb-2016), [video](https://youtu.be/9xxmV4q6JEQ))
+- _Sep 05-09, 2016_ - Full Stack Fest, Barcelona 🇪🇸 ([slides](https://speakerdeck.com/slobodan/how-to-build-a-website-that-will-eventually-work-on-mars), [video](https://youtu.be/7rlEidtXlZg))
 - _Mar 12, 2016_ - Web Camp, Ljubljana 🇸🇮 ([slides](https://speakerdeck.com/slobodan/offline-web-apps), [video](http://video.webcamp.si/wc2016_stojanovic_offline_web_apps/))
