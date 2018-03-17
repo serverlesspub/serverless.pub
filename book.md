@@ -21,7 +21,7 @@ Plus, you'll learn how to migrate your existing Express apps to serverless!
 {: .book-page-description }
 
 
-You can get your own copy with a 50% discount with promo code `claudia40`.
+You can get your own copy with a 40% discount with promo code `claudia40`.
 <a id="book-buy-btn" href="https://www.manning.com/books/serverless-apps-with-node-and-claudiajs">Get your own copy!</a>
 {: .book-page-discount }
 
