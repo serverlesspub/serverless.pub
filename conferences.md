@@ -10,12 +10,14 @@ If none of these suit you or you're interested in having an on-site workshop, fe
 
 ### Upcoming
 
+- _Sep 6, 2018_ - Agile (Test) Automation meetup, Vienna 🇦🇹 -- Testing serverless applications
 - _Aug 30 & 31, 2018_ - TBA, 🇨🇭 -- _TBA_
 - _May 25 - 27, 2018_ - PHP Serbia Conference, Belgrade 🇷🇸 -- [The last infrastructure talk for developers, or why your future apps will be serverless](https://conf2018.phpsrbija.rs/sessions)
-- _Feb 14, 2018_ - JeffConf, Hamburg 🇩🇪 -- [Serverless Chatbot Development workshop](https://hamburg.jeffconf.com/workshops)
+- _May 8, 2018_ - Code Europe, Cracow po🇵🇱 -- [Dr. Strangelove or: How I Learned to Stop Worrying and Love the Serverless Chatbots](https://www.codeeurope.pl/en/speakers/slobodan-stojanovic)
 
 ### Previous events
 
+- _Feb 14, 2018_ - JeffConf, Hamburg 🇩🇪 ([workshop](https://github.com/effortless-serverless/serverless-chatbots-workshop))
 - _Dec 10 & 11, 2017_ - HolyJS, Moscow, 🇷🇺 ([slides](https://speakerdeck.com/slobodan/testing-serverless-apps))
 - _Nov 25, 2017_ - NoSlidesConf, Bologna,🇮🇹 ([serverless video](https://youtu.be/zAqjgjGjkR0), [alexa video](https://youtu.be/D-eUnlaqUTw))
 - _Oct 28 & 29, 2017_ - KharkivJS, Kharkiv, 🇺🇦 ([slides](https://speakerdeck.com/simalexan/effortless-serverless-kharkivjs), [video](https://youtu.be/eoNPvQeqMZw))
