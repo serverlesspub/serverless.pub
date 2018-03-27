@@ -11,9 +11,9 @@ If none of these suit you or you're interested in having an on-site workshop, fe
 ### Upcoming
 
 - _Sep 6, 2018_ - Agile (Test) Automation meetup, Vienna 🇦🇹 -- Testing serverless applications
-- _Aug 30 & 31, 2018_ - TBA, 🇨🇭 -- _TBA_
+- _Aug 30 & 31, 2018_ - TBA, Zürich 🇨🇭 -- _TBA_
 - _May 25 - 27, 2018_ - PHP Serbia Conference, Belgrade 🇷🇸 -- [The last infrastructure talk for developers, or why your future apps will be serverless](https://conf2018.phpsrbija.rs/sessions)
-- _May 8, 2018_ - Code Europe, Cracow po🇵🇱 -- [Dr. Strangelove or: How I Learned to Stop Worrying and Love the Serverless Chatbots](https://www.codeeurope.pl/en/speakers/slobodan-stojanovic)
+- _May 8, 2018_ - Code Europe, Cracow 🇵🇱 -- [Dr. Strangelove or: How I Learned to Stop Worrying and Love the Serverless Chatbots](https://www.codeeurope.pl/en/speakers/slobodan-stojanovic)
 
 ### Previous events
 
