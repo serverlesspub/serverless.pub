@@ -4,7 +4,7 @@ title:  "From Express.js to AWS Lambda: Migrating existing Node.js applications 
 date:   2018-03-29 12:00:00 +0200
 categories: serverless claudia migration
 author: slobodan
-image: https://effortless-serverless.com/images/serverless-migration/figure-2.jpg
+image: "https://effortless-serverless.com/images/serverless-migration/figure-2.jpg"
 ---
 
 Serverless architecture makes some of the good practices for architecturing apps obsolete. Building a serverless application from scratch requires a mind shift, but once you start thinking in a serverless way, all the dots connect quickly. With the help of tools such as Claudia.js, development and deployment cycles are short and easy.
