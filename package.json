@@ -11,8 +11,8 @@
   },
   "scripts": {
     "start": "bundle exec jekyll serve",
-    "deploy": "cp ./CNAME ./_site && JEKYLL_ENV=production gh-pages -d dist",
-    "build": "JEKYLL_ENV=production jekyll build --destination dist"
+    "deploy": "cp ./CNAME ./_site && JEKYLL_ENV=production gh-pages -d _site",
+    "build": "JEKYLL_ENV=production jekyll build"
   },
   "repository": {
     "type": "git",
