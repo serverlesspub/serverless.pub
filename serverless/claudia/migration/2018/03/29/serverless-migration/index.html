@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>From Express.js to AWS Lambda: Migrating existing Node.js applications to serverless &#8211; Effortless Serverless</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Effortless Serverless. Checkout our new book: Serverless apps with Node.js and Claudia">
+    <meta name="robots" content="all">
+    <meta name="author" content="Aleksandar Simović and Slobodan Stojanović">
+    <meta property="fb:pages" content="ServerlessAppsWithNodeAndClaudiajs" />
+    <meta name="keywords" content="serverless, claudia, migration">
+    <link rel="canonical" href="https://effortless-serverless.com/serverless/claudia/migration/2018/03/29/serverless-migration/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Effortless Serverless" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201803291551" type="text/css">
+
+    <!-- Fonts -->
+    
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&amp;subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300&amp;subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    
+    
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Verifications -->
+    
+      <meta name="google-site-verification" content="Wm_B41Fjq5RPten2R24t7vffMFKohk59QjKBr9HW1lY" />
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Effortless Serverless">
+    <meta property="og:description" content="Effortless Serverless. Checkout our new book: Serverless apps with Node.js and Claudia">
+    <meta property="og:url" content="https://effortless-serverless.com/serverless/claudia/migration/2018/03/29/serverless-migration/">
+    <meta property="og:site_name" content="Effortless Serverless">
+    
+    <meta property="og:image" content="https://effortless-serverless.com/images/effortless-serverless-social.png">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Effortless Serverless" />
+    <meta name="twitter:description" content="Effortless Serverless. Checkout our new book: Serverless apps with Node.js and Claudia" />
+    <meta name="twitter:url" content="https://effortless-serverless.com/serverless/claudia/migration/2018/03/29/serverless-migration/" />
+    <meta name="twitter:image" content="https://effortless-serverless.com/images/effortless-serverless-social.png" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+
+    <link rel="manifest" href="/manifest.json">
+
+    <meta name="theme-color" content="#3399FF" />
+
+    
+    <script type="text/javascript">
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       ga('create', 'UA-107409591-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    
+</head>
+
+<body class="site">
+  
+	
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="/" class="site-title">Effortless Serverless</a>
+      <nav class="site-nav">
+        
+
+
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/book/">Book</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/conferences/">Conferences</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/projects/">Projects</a>
+    
+
+    
+
+
+      </nav>
+      <div class="clearfix"></div>
+      
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>From Express.js to AWS Lambda: Migrating existing Node.js applications to serverless</h1>
+  <span class="post-meta">Mar 29, 2018</span><br>
+  
+  <span class="post-meta small">
+  
+    6 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Serverless architecture makes some of the good practices for architecturing apps obsolete. Building a serverless application from scratch requires a mind shift, but once you start thinking in a serverless way, all the dots connect quickly. With the help of tools such as Claudia.js, development and deployment cycles are short and easy.</p>
+
+<p>But most of the time you can’t just start from scratch. Instead, you have an app with a few thousand lines of code and a couple of thousand daily active users, with a history of questionable decisions caused by business requests or other issues that shaped your code in a specific way.</p>
+
+<p>Can you and should you migrate such an application to serverless? The answer is not a simple one, because it depends on the specifics of your application, the structure of your team, and many other things. But in most cases, serverless can be beneficial for legacy applications.</p>
+
+<p>Let’s say you are working on a nice and simple Node.js application. For example, an app similar to <a href="http://vacationtrackerbot.com">Vacation Tracker bot</a>, a simple Slack tool for managing team vacations.</p>
+
+<p><img src="/images/serverless-migration/figure-0.jpg" alt="Vacation tracker flow" /></p>
+
+<p>The app itself is simple. Most of the communication goes through Slack, but there’s also a nice web dashboard. As you are building MVP, you don’t want to spend too much resources on it, so you spin up a new Digital Ocean instance and bundle everything inside it. At that point, as shown in the figure below, your app consists of the following:</p>
+
+<ul>
+  <li>Ubuntu droplet with nginx</li>
+  <li>Express.js app that serves static pages (SPA dashboard) and an API</li>
+  <li>MongoDB database</li>
+  <li>Cronjob that sends scheduled messages</li>
+</ul>
+
+<p><img src="/images/serverless-migration/figure-1.jpg" alt="Simple Express.js and MongoDB app" /></p>
+
+<p>But sometimes your app has a big spikes in usage, and you need to think about scaling. Not to mention that you need many other things such as monitoring, SSL, development and production environments, etc.</p>
+
+<p>With first users, your fun side project quickly became another thing you need to maintain and configure for hours. An it costs more and more, even though users are still not paying for it. Not fun at all.</p>
+
+<p>You heard about serverless and decided to give it a try. But how can you transform your traditional Node.js app to serverless? Should you just fit everything into AWS Lambda?</p>
+
+<blockquote>
+  <p>In case you are not familiar with serverless, or you still think it’s some magic that runs web apps by hamster wheels instead of servers, see <a href="https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-1">this explanation</a>.</p>
+</blockquote>
+
+<h2 id="divide-and-conquer">Divide and conquer</h2>
+
+<p>Although fitting everything into AWS Lambda would technically make your app serverless and it might be a good first step, to gain full benefits of serverless you’ll need to put a bit more effort and embrace the serverless platform by dividing your app into small services.</p>
+
+<p>Before we see how, what are the benefits you could gain?</p>
+
+<p>Some of the most important benefits are:</p>
+
+<ul>
+  <li>Your app will autoscale. And it’ll do that fast, from 0 to 1000 parallel users in less than a few seconds.</li>
+  <li>You’ll pay only if someone is using your app. Zero users cost you $0. As amount of users increases,  the cost increases a bit too. For example, MindMup pays $100 a month for 400,000 monthly active users, impressive, isn’t it? Read more about it <a href="https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-15">here</a>.</li>
+  <li>Having as many environments similar to production doesn’t cost you anything if no-one is using them. Running experiments and tests is easier and cheaper than ever before.</li>
+  <li>Faster development and deployment cycles, because your app is divided into smaller units and even a frontend developer that has almost non backend experience can deploy a production-ready app.</li>
+</ul>
+
+<p>How do you do that? Simple (but sometimes not easy).</p>
+
+<p>You can start by moving your single page app and static content to AWS S3. Yes, the same S3 you are using for storing files. If you combine it with AWS CloudFront, you’ll get a powerful serverless static web site hosting with SSL and cache. You can configure your static website <a href="https://www.josephecombs.com/2018/03/05/how-to-make-an-AWS-S3-static-website-with-ssl">manually</a> or by using a tool such as <a href="https://github.com/stojanovic/scottyjs">Scotty.js</a>.</p>
+
+<p>Next step is to move database outside of your Digital Ocean droplet. If you want to keep MongoDB as a database, you can move it to MongoDB Atlas, a cloud-hosted MongoDB service engineered and run by the same team that builds the MongoDB database. Other, probably better option would be to migrate your content to AWS DynamoDB database, which is a serverless noSQL database offered by Amazon Web Services.</p>
+
+<p>Now that your static files and database are out of the game, you can start by pulling other services out of your Express.js app. For example, scheduled messages (weekly team vacation notifications) are a good first candidate. As you can’t run a cronjob in AWS Lambda, you’ll need a help from another service: CloudWatch Events can trigger your Lambda function at the scheduled time, as described <a href="https://medium.freecodecamp.org/scheduling-slack-messages-using-aws-lambda-e56a8eb22818">here</a>.</p>
+
+<p>Finally, you’ll have to migrate your API. To do so, you can split your logic into multiple AWS Lambda functions and put the API Gateway in front of them, because Lambda functions can’t be triggered by HTTP request directly. How should you split your API? That depends on your use case, but the easiest way is to split it by into business logic units. For example, one Lambda funciton witll work with Slack slash commands, another one will handle Slack Events webhooks, some other function or functions will serve the dashboard API. As you have some Node.js experience, you can easily create, deploy and manage web APIs using <a href="https://claudiajs.com">Claudia.js</a>.</p>
+
+<p>As some of your API endpoints will require auth (either direct or via social login), you can replace a tool such as passport.js with AWS serverless auth service Cognito. With Cognito, requests without valid authorization will never trigger your Lambda function, so you’ll pay less.</p>
+
+<p>After migration, your app could look like this:</p>
+
+<p><img src="/images/serverless-migration/figure-2.jpg" alt="Serverless app" /></p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>Many teams are already using serverless it in production and, according to  <a href="http://www.zdnet.com/article/serverless-computing-containers-see-triple-digit-quarterly-growth-among-cloud-users/">recent survey of AWS customers published by Cloudability</a> serverless adoption grew almost 700% in a year.</p>
+
+<p>If you want to learn more each about building and migrating serverless applications, and each of the services mentioned above, <a href="https://twitter.com/simalexan">Aleksandar Simović</a> and I wrote a whole book about these topics for Manning Publications. You can get the book and read the free chapters here:</p>
+
+<p><a href="https://www.manning.com/books/serverless-apps-with-node-and-claudiajs">https://www.manning.com/books/serverless-apps-with-node-and-claudiajs</a></p>
+
+<p>Book will also tell you more about how other teams are using serverless in production. For example, to read more about how MindMup serves 400,000 monthly active users with two-person team and $100 AWS bill, or how a small team of CodePen frontend developers serves 200,000 requests per hour using AWS Lambda, jump to the case studies chapter directly <a href="https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-15">here</a>.</p>
+
+</article>
+
+
+  <div class="share-page">
+  Share this post!
+
+  <div class="share-links">
+    
+      <a class="fa fa-facebook" href="https://facebook.com/sharer.php?u=https%3A%2F%2Feffortless-serverless.com%2Fserverless%2Fclaudia%2Fmigration%2F2018%2F03%2F29%2Fserverless-migration%2F" rel="nofollow" target="_blank" title="Share on Facebook"></a>
+    
+
+    
+      <a class="fa fa-twitter" href="https://twitter.com/intent/tweet?text=From+Express.js+to+AWS+Lambda%3A+Migrating+existing+Node.js+applications+to+serverless&amp;url=https%3A%2F%2Feffortless-serverless.com%2Fserverless%2Fclaudia%2Fmigration%2F2018%2F03%2F29%2Fserverless-migration%2F" rel="nofollow" target="_blank" title="Share on Twitter"></a>
+    
+
+    
+
+    
+      <a class="fa fa-linkedin" href="http://www.linkedin.com/shareArticle?url=https%3A%2F%2Feffortless-serverless.com%2Fserverless%2Fclaudia%2Fmigration%2F2018%2F03%2F29%2Fserverless-migration%2F&amp;title=From+Express.js+to+AWS+Lambda%3A+Migrating+existing+Node.js+applications+to+serverless" rel="nofollow" target="_blank" title="Share on LinkedIn"></a>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <!-- Begin MailChimp Signup Form -->
+    <div id="mc_embed_signup">
+      <form action="//effortless-serverless.us16.list-manage.com/subscribe/post?u=02e5d97fcf3744f4c4be84f32&amp;id=cba378b8a9" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+        <div id="mc_embed_signup_scroll">
+      	  <h2 id="subscribe-title">To get updates for upcoming content, sign up</h2>
+          <div id="mce-responses" class="clear">
+        		<div class="response" id="mce-error-response" style="display:none"></div>
+        		<div class="response" id="mce-success-response" style="display:none"></div>
+        	</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_02e5d97fcf3744f4c4be84f32_cba378b8a9" tabindex="-1" value=""></div>
+          <div class="mail-box">
+            <div id="subscribe-group" class="mc-field-group">
+            	<input type="email" value="" name="EMAIL" class="required email" placeholder="Email Address" id="mce-EMAIL">
+              <input type="submit" value="Get Updates" name="subscribe" id="mc-embedded-subscribe" class="book-action-button"/>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!--End mc_embed_signup-->
+    <small>
+      © Effortless Serverless, 2017<br>
+      &lt;/&gt; follow us at <a href="https://github.com/effortless-serverless">GitHub</a>
+    </small>
+  </div>
+</footer>
+
+
+</body>
+</html>
