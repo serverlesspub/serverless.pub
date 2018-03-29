@@ -3,6 +3,7 @@ layout: post
 title:  "Single command deployment for single page apps"
 date:   2017-08-25 12:00:00 +0200
 categories: aws s3 cloudfront
+author: slobodan
 ---
 Developing a single page app is hard. From the very beginning, you’ll need to make many decisions — decisions like picking a framework, setting the folder structure, configuring linter, and many others.
 

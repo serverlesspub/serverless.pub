@@ -3,6 +3,7 @@ layout: post
 title:  "How To Develop A Chat Bot With Node.js"
 date:   2016-10-17 12:00:00 +0200
 categories: claudia bot
+author: slobodan
 ---
 In the past few months, chat bots have become very popular, thanks to Slack, Telegram and Facebook Messenger. But the chat bot idea is not new at all.
 

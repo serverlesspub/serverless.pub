@@ -3,6 +3,7 @@ layout: post
 title:  "How To Create a Serverless Node.js App with DynamoDB For The First Time"
 date:   2017-10-19 12:00:00 +0200
 categories: serverless lambda dynamodb
+author: simalexan
 ---
 
 There are many articles on serverless with explained ideas, benefits and so on. Serverless is great, but articles sometimes sound more like a TV commercial.
