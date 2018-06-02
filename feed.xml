@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Effortless Serverless</title>
-    <description>Effortless Serverless. Checkout our new book: Serverless apps with Node.js and Claudia</description>
+    <description>Effortless Serverless. Checkout our new book: Serverless Applications with Node.js</description>
     <link>https://effortless-serverless.com/</link>
     <atom:link href="https://effortless-serverless.com/feed.xml" rel="self" type="application/rss+xml" />
     
@@ -36,7 +36,7 @@
 &lt;p&gt;You heard about serverless and decided to give it a try. But how can you transform your traditional Node.js app to serverless? Should you just fit everything into AWS Lambda?&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;In case you are not familiar with serverless, or you still think it’s some magic that runs web apps by hamster wheels instead of servers, see &lt;a href=&quot;https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-1&quot;&gt;this explanation&lt;/a&gt;.&lt;/p&gt;
+  &lt;p&gt;In case you are not familiar with serverless, or you still think it’s some magic that runs web apps by hamster wheels instead of servers, see &lt;a href=&quot;https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-1&quot;&gt;this explanation&lt;/a&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h2 id=&quot;divide-and-conquer&quot;&gt;Divide and conquer&lt;/h2&gt;
@@ -49,7 +49,7 @@
 
 &lt;ul&gt;
   &lt;li&gt;Your app will autoscale. And it’ll do that fast, from 0 to 1000 parallel users in less than a few seconds.&lt;/li&gt;
-  &lt;li&gt;You’ll pay only if someone is using your app. Zero users cost you $0. As amount of users increases,  the cost increases a bit too. For example, MindMup pays $100 a month for 400,000 monthly active users, impressive, isn’t it? Read more about it &lt;a href=&quot;https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-15&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;You’ll pay only if someone is using your app. Zero users cost you $0. As amount of users increases,  the cost increases a bit too. For example, MindMup pays $100 a month for 400,000 monthly active users, impressive, isn’t it? Read more about it &lt;a href=&quot;https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-15&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
   &lt;li&gt;Having as many environments similar to production doesn’t cost you anything if no-one is using them. Running experiments and tests is easier and cheaper than ever before.&lt;/li&gt;
   &lt;li&gt;Faster development and deployment cycles, because your app is divided into smaller units and even a frontend developer that has almost non backend experience can deploy a production-ready app.&lt;/li&gt;
 &lt;/ul&gt;
@@ -76,9 +76,9 @@
 
 &lt;p&gt;If you want to learn more each about building and migrating serverless applications, and each of the services mentioned above, &lt;a href=&quot;https://twitter.com/simalexan&quot;&gt;Aleksandar Simović&lt;/a&gt; and I wrote a whole book about these topics for Manning Publications. You can get the book and read the free chapters here:&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://www.manning.com/books/serverless-apps-with-node-and-claudiajs&quot;&gt;https://www.manning.com/books/serverless-apps-with-node-and-claudiajs&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.manning.com/books/serverless-applications-with-nodejs&quot;&gt;https://www.manning.com/books/serverless-applications-with-nodejs&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Book will also tell you more about how other teams are using serverless in production. For example, to read more about how MindMup serves 400,000 monthly active users with two-person team and $100 AWS bill, or how a small team of CodePen frontend developers serves 200,000 requests per hour using AWS Lambda, jump to the case studies chapter directly &lt;a href=&quot;https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-15&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Book will also tell you more about how other teams are using serverless in production. For example, to read more about how MindMup serves 400,000 monthly active users with two-person team and $100 AWS bill, or how a small team of CodePen frontend developers serves 200,000 requests per hour using AWS Lambda, jump to the case studies chapter directly &lt;a href=&quot;https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-15&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 29 Mar 2018 12:00:00 +0200</pubDate>
         <link>https://effortless-serverless.com/serverless/claudia/migration/2018/03/29/serverless-migration/</link>
@@ -302,10 +302,10 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
       </item>
     
       <item>
-        <title>Checkout our book - Serverless apps with Node and Claudia.js</title>
-        <description>&lt;p&gt;Our book “Serverless apps with Node and Claudia.js” is now available as a MEAP release on Manning Publication website.&lt;/p&gt;
+        <title>Checkout our book - Serverless Applications with Node.js</title>
+        <description>&lt;p&gt;Our book “Serverless Applications with Node.js” is now available as a MEAP release on Manning Publication website.&lt;/p&gt;
 
-&lt;p&gt;&lt;a class=&quot;no-style-link&quot; href=&quot;/book&quot;&gt;&lt;img src=&quot;/images/effortless-serverless-social.png&quot; alt=&quot;Serverless apps with Node and Claudia.js&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;no-style-link&quot; href=&quot;/book&quot;&gt;&lt;img src=&quot;/images/effortless-serverless-social.png&quot; alt=&quot;Serverless Applications with Node.js&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;The book walks you through building serverless apps on AWS using JavaScript. Inside, you’ll create a full project designed to help you understand and apply general serverless design principles and concepts.&lt;/p&gt;
 
