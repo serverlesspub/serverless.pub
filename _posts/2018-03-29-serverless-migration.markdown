@@ -32,7 +32,7 @@ With first users, your fun side project quickly became another thing you need to
 
 You heard about serverless and decided to give it a try. But how can you transform your traditional Node.js app to serverless? Should you just fit everything into AWS Lambda?
 
-> In case you are not familiar with serverless, or you still think it's some magic that runs web apps by hamster wheels instead of servers, see [this explanation](https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-1).
+> In case you are not familiar with serverless, or you still think it's some magic that runs web apps by hamster wheels instead of servers, see [this explanation](https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-1).
 
 ## Divide and conquer
 
@@ -43,7 +43,7 @@ Before we see how, what are the benefits you could gain?
 Some of the most important benefits are:
 
 - Your app will autoscale. And it'll do that fast, from 0 to 1000 parallel users in less than a few seconds.
-- You'll pay only if someone is using your app. Zero users cost you $0. As amount of users increases,  the cost increases a bit too. For example, MindMup pays $100 a month for 400,000 monthly active users, impressive, isn't it? Read more about it [here](https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-15). 
+- You'll pay only if someone is using your app. Zero users cost you $0. As amount of users increases,  the cost increases a bit too. For example, MindMup pays $100 a month for 400,000 monthly active users, impressive, isn't it? Read more about it [here](https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-15). 
 - Having as many environments similar to production doesn't cost you anything if no-one is using them. Running experiments and tests is easier and cheaper than ever before.
 - Faster development and deployment cycles, because your app is divided into smaller units and even a frontend developer that has almost non backend experience can deploy a production-ready app.
 
@@ -69,6 +69,6 @@ Many teams are already using serverless it in production and, according to  [rec
 
 If you want to learn more each about building and migrating serverless applications, and each of the services mentioned above, [Aleksandar Simović](https://twitter.com/simalexan) and I wrote a whole book about these topics for Manning Publications. You can get the book and read the free chapters here:
 
-[https://www.manning.com/books/serverless-apps-with-node-and-claudiajs](https://www.manning.com/books/serverless-apps-with-node-and-claudiajs)
+[https://www.manning.com/books/serverless-applications-with-nodejs](https://www.manning.com/books/serverless-applications-with-nodejs)
 
-Book will also tell you more about how other teams are using serverless in production. For example, to read more about how MindMup serves 400,000 monthly active users with two-person team and $100 AWS bill, or how a small team of CodePen frontend developers serves 200,000 requests per hour using AWS Lambda, jump to the case studies chapter directly [here](https://livebook.manning.com/#!/book/serverless-apps-with-node-and-claudiajs/chapter-15).
+Book will also tell you more about how other teams are using serverless in production. For example, to read more about how MindMup serves 400,000 monthly active users with two-person team and $100 AWS bill, or how a small team of CodePen frontend developers serves 200,000 requests per hour using AWS Lambda, jump to the case studies chapter directly [here](https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-15).

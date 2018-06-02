@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-Slobodan Stojanović and Aleksandar Simović are core contributors to the Claudia.js project and are the lead developers and maintainers of Claudia Bot Builder. They are also co-authors of [_Serverless apps with Node and Claudia.js_](/book) and conference speakers.
+Slobodan Stojanović and Aleksandar Simović are core contributors to the Claudia.js project and are the lead developers and maintainers of Claudia Bot Builder. They are also co-authors of [_Serverless Applications with Node.js_](/book) and conference speakers.
 
 **Aleksandar** has been a senior software consultant and engineer for over 7 years, mostly but not only, in JavaScript. He also dabbles in Swift, Python, Rust. Aleksandar is based in Belgrade and is co-organizer of the JS Belgrade meetups.
 
