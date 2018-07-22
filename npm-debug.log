@@ -1,0 +1,48 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/slobodan/.nvm/versions/node/v6.11.2/bin/node',
+1 verbose cli   '/Users/slobodan/.nvm/versions/node/v6.11.2/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'deploy' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.2
+4 verbose run-script [ 'predeploy', 'deploy', 'postdeploy' ]
+5 info lifecycle effortlessserverless.com@1.0.0~predeploy: effortlessserverless.com@1.0.0
+6 silly lifecycle effortlessserverless.com@1.0.0~predeploy: no script for predeploy, continuing
+7 info lifecycle effortlessserverless.com@1.0.0~deploy: effortlessserverless.com@1.0.0
+8 verbose lifecycle effortlessserverless.com@1.0.0~deploy: unsafe-perm in lifecycle true
+9 verbose lifecycle effortlessserverless.com@1.0.0~deploy: PATH: /Users/slobodan/.nvm/versions/node/v6.11.2/lib/node_modules/npm/bin/node-gyp-bin:/Users/slobodan/Github/effortlessserverless.com/dist/node_modules/.bin:/Users/slobodan/.local/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Users/slobodan/.rvm/gems/ruby-2.4.0/bin:/Users/slobodan/.rvm/gems/ruby-2.4.0@global/bin:/Users/slobodan/.rvm/rubies/ruby-2.4.0/bin:/Users/slobodan/.nvm/versions/node/v6.11.2/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/slobodan/Library/Android/sdk/platform-tools:/usr/local/go/bin:/Users/slobodan/.rvm/bin:/Users/slobodan/.rvm/bin
+10 verbose lifecycle effortlessserverless.com@1.0.0~deploy: CWD: /Users/slobodan/Github/effortlessserverless.com/dist
+11 silly lifecycle effortlessserverless.com@1.0.0~deploy: Args: [ '-c',
+11 silly lifecycle   'cp ./CNAME ./_site && JEKYLL_ENV=production gh-pages -d dist' ]
+12 info lifecycle effortlessserverless.com@1.0.0~deploy: Failed to exec deploy script
+13 verbose stack Error: effortlessserverless.com@1.0.0 deploy: `cp ./CNAME ./_site && JEKYLL_ENV=production gh-pages -d dist`
+13 verbose stack spawn ENOENT
+13 verbose stack     at ChildProcess.<anonymous> (/Users/slobodan/.nvm/versions/node/v6.11.2/lib/node_modules/npm/lib/utils/spawn.js:33:16)
+13 verbose stack     at emitTwo (events.js:106:13)
+13 verbose stack     at ChildProcess.emit (events.js:191:7)
+13 verbose stack     at maybeClose (internal/child_process.js:891:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+14 verbose pkgid effortlessserverless.com@1.0.0
+15 verbose cwd /Users/slobodan/Github/effortlessserverless.com/dist
+16 error Darwin 17.6.0
+17 error argv "/Users/slobodan/.nvm/versions/node/v6.11.2/bin/node" "/Users/slobodan/.nvm/versions/node/v6.11.2/bin/npm" "run" "deploy"
+18 error node v6.11.2
+19 error npm  v3.10.10
+20 error file sh
+21 error code ELIFECYCLE
+22 error errno ENOENT
+23 error syscall spawn
+24 error effortlessserverless.com@1.0.0 deploy: `cp ./CNAME ./_site && JEKYLL_ENV=production gh-pages -d dist`
+24 error spawn ENOENT
+25 error Failed at the effortlessserverless.com@1.0.0 deploy script 'cp ./CNAME ./_site && JEKYLL_ENV=production gh-pages -d dist'.
+25 error Make sure you have the latest version of node.js and npm installed.
+25 error If you do, this is most likely a problem with the effortlessserverless.com package,
+25 error not with npm itself.
+25 error Tell the author that this fails on your system:
+25 error     cp ./CNAME ./_site && JEKYLL_ENV=production gh-pages -d dist
+25 error You can get information on how to open an issue for this project with:
+25 error     npm bugs effortlessserverless.com
+25 error Or if that isn't available, you can get their info via:
+25 error     npm owner ls effortlessserverless.com
+25 error There is likely additional logging output above.
+26 verbose exit [ 1, true ]
