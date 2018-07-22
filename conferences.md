@@ -12,14 +12,16 @@ If none of these suit you or you're interested in having an on-site workshop, fe
 
 - _Sep 6, 2018_ - Agile (Test) Automation meetup, Vienna 🇦🇹 -- Testing serverless applications
 - _Aug 30 & 31, 2018_ Frontend Conference, Zürich 🇨🇭 -- [Serverless: backend thing that gives superpowers to frontend developers](https://www.frontendconf.ch/speakers/slobodan-stojanovic)  
-- _May 25 - 27, 2018_ - PHP Serbia Conference, Belgrade 🇷🇸 -- [The last infrastructure talk for developers, or why your future apps will be serverless](https://conf2018.phpsrbija.rs/sessions)
-- _May 16, 2018_ - Serverless CPH, Copenhagen 🇩🇰 -- [Testing serverless applications](https://serverlesscph.dk)
-- _May 8, 2018_ - Code Europe, Cracow 🇵🇱 -- [Dr. Strangelove or: How I Learned to Stop Worrying and Love the Serverless Chatbots](https://www.codeeurope.pl/en/speakers/slobodan-stojanovic)
-- _April 27 - 28, 2018_ - CODEstantine, Niš 🇷🇸 -- [TBA](http://codestantine.nolimithub.com)
-- _April 12, 2018_ - CloudConf, Turin 🇮🇹 -- [A Jedi's Guide to migrating to Serverless](https://2018.cloudconf.it)
 
 ### Previous events
 
+- _June 23, 2018_ - ChernivtsiJS, Chernivtsi 🇺🇦 -- ([slides](https://speakerdeck.com/simalexan/serverless-for-frontend-developers))
+- _June 21, 2018_ - Serverless Meetup Milano, Italy 🇮🇹 -- ([slides](https://speakerdeck.com/simalexan/a-jedis-guide-to-migrating-to-serverless-1))
+- _May 25 - 27, 2018_ - PHP Serbia Conference, Belgrade 🇷🇸 -- ([slides](https://speakerdeck.com/slobodan/the-last-infrastructure-talk-for-web-developers-at-php-serbia-conference-2018), [video](https://youtu.be/mSiRekbLyyQ))
+- _May 16, 2018_ - Serverless CPH, Copenhagen 🇩🇰 -- ([slides](https://speakerdeck.com/slobodan/testing-serverless-apps-at-serverless-cph-2018))
+- _May 8, 2018_ - Code Europe, Cracow 🇵🇱 -- ([slides](https://speakerdeck.com/slobodan/dr-strangelove-or-how-i-learned-to-stop-worrying-and-love-the-serverless-chatbots-v2))
+- _April 27 - 28, 2018_ - CODEstantine, Niš 🇷🇸 -- ([slides](https://speakerdeck.com/simalexan/a-jedis-guide-to-migrating-to-serverless))
+- _April 12, 2018_ - CloudConf, Turin 🇮🇹 -- ([slides](https://speakerdeck.com/simalexan/a-jedis-guide-to-migrating-to-serverless))
 - _Feb 14, 2018_ - JeffConf, Hamburg 🇩🇪 ([workshop](https://github.com/effortless-serverless/serverless-chatbots-workshop))
 - _Dec 10 & 11, 2017_ - HolyJS, Moscow, 🇷🇺 ([slides](https://speakerdeck.com/slobodan/testing-serverless-apps))
 - _Nov 25, 2017_ - NoSlidesConf, Bologna,🇮🇹 ([serverless video](https://youtu.be/zAqjgjGjkR0), [alexa video](https://youtu.be/D-eUnlaqUTw))
