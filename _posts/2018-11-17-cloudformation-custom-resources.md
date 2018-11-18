@@ -1,21 +1,21 @@
 ---
 layout: post
-title:  "Plug gaps in Cloudformation with Custom Resources"
+title:  "Plug gaps in CloudFormation with Custom Resources"
 date:   2018-11-17
 categories: cloudformation
 author: gojko
 image: "https://effortless-serverless.com/images/serverless-migration/figure-2.jpg"
 ---
 
-CloudFormation is the key deployment technology in the AWS world, and the underlying magic behind many higher level deployment tools such as AWS SAM or the Serverless Framework.Unfortunately, due to the break-neck speed of AWS service updates, CloudFormation often lacks support for newer options. For example, at the time when I wrote this in November 2018, AWS Pinpoint was not supported at all. Some services, such as Cognito User Pools, are partially supported. You can presently create User Pools with CloudFormation, but you can't set up the [built-in UI](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-ux.html) or configure an authentication domain.
+CloudFormation is the key deployment technology in the AWS world, and the underlying magic behind many higher level deployment tools such as AWS SAM or the Serverless Framework.Unfortunately, due to the break-neck speed of AWS service updates, CloudFormation often lacks support for newer options. For example, at the time when I wrote this in November 2018, creating AWS Pinpoint applications was not supported at all. Some services, such as Cognito User Pools, are partially supported. You can presently create User Pools with CloudFormation, but you can't set up the [built-in UI](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-ux.html) or configure an authentication domain.
 
-To fully use the latest AWS features, teams often need to mix automated deployments with manual manual work or some other scripting. This is where Custom Resources come in: they help you fill the gaps in CloudFormation. This means that you don't have to choose between version controlled infrastructure and brand new features. And because most other tools build on top of CloudFormation, you can patch up and extend most other deployment utilities to support your specific needs as well. 
+To fully use the latest AWS features, teams often need to mix automated deployments with manual manual work or some other scripting. This is where CloudFormation Custom Resources come in: they help you fill the gaps in CloudFormation. This means that you don't have to choose between version controlled infrastructure and brand new features. And because most other tools build on top of CloudFormation, you can patch up and extend most other deployment utilities to support your specific needs as well. 
 
-In this tutorial, I'll show you how to create a custom CloudFormation resource to fully automate the deployment of a currently unsupported service. We'll use AWS Pinpoint for the example. 
+In this tutorial, I'll show you how to create a custom CloudFormation resource to fully automate the deployment of a currently unsupported service. We'll use AWS Pinpoint as an example. 
 
 ## Custom Resources under the hood
 
-A Custom Resource is a way to delegate a deployment step to somewhere outside the internal AWS CloudFormation system. You can declare a custom resource similarly to any other deployment entity, with all the usual parameters and references, and CloudFormation will track the status as it would for any internal AWS Resource. Instead of internally processing the requested changes, it will just send a request to you. You then have to handle the work somehow, and upload the status of the task back to CloudFormation. 
+A Custom Resource is a way to delegate a deployment step to somewhere outside the internal AWS CloudFormation system. You can declare a custom resource similarly to any other deployment entity, with all the usual parameters and references, and CloudFormation will track the status as it would for any internal AWS Resource. Instead of internally processing the requested changes, CloudFormation will just send a request to you. You then have to handle the work somehow, and upload the status of the task back to CloudFormation. 
 
 Similarly to most other types of callbacks and triggers in AWS, the integration point for Custom Resources in CloudFormation is a Lambda function. This means that you can use a Lambda function to set up or configure additional resources. From the Lambda function, you can use the AWS SDK which fully tracks public feature releases, and support new resource types of features while the CloudFormation platform developers catch up.
 
@@ -56,68 +56,6 @@ PinpointApp:
 
 The nice thing about CloudFormation templates is that you can actually create the Lambda function to process the custom resource in the same template as the resource itself. That's our next step.
 
-## Wiring up custom resources
-
-We'll need to add two more resources to the Cloudformation template. The first is the IAM policy allowing the custom Lambda function to create resources in your account. As custom resources can be a bit fiddly to set up, I strongly suggest letting the Lambda function log to Cloudwatch, and potentially setting up [AWS CloudTrail](https://aws.amazon.com/cloudtrail/getting-started/) or a dead-letter queue to send you notifications about potential failures. That way, you'll be able to capture task requests and manually handle them if your Lambda explodes during development.
-
-Here is a basic IAM role that will do for now. It lets the function log to CloudWatch, create and delete Pinpoint applications.
-
-```yml
-PinpointConfigurationLambdaRole:
-  Type: 'AWS::IAM::Role'
-  Properties:
-    AssumeRolePolicyDocument:
-      Version: '2012-10-17'
-      Statement:
-        - Effect: Allow
-          Action: 'sts:AssumeRole'
-          Principal:
-            Service: lambda.amazonaws.com
-    Policies:
-      - PolicyName: WriteCloudWatchLogs
-        PolicyDocument: 
-          Version: '2012-10-17'
-          Statement: 
-            - Effect: Allow
-              Action:
-                - 'logs:CreateLogGroup'
-                - 'logs:CreateLogStream'
-                - 'logs:PutLogEvents'
-              Resource: 'arn:aws:logs:*:*:*'
-      - PolicyName: UpdatePinpoint
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action: 
-                - 'mobiletargeting:CreateApp'
-                - 'mobiletargeting:DeleteApp'
-              Resource: '*'
-```
-
-The function itself also needs a CloudFormation resource. This is just a standard [AWS::Lambda::Function](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) resource. I suggest increasing the default timeout so your function has time to act on resources properly. This is where you could set up a dead-letter queue if you're not using CloudTrail.
-
-```yml
-PinpointConfigurationLambdaFunction:
-  Type: 'AWS::Lambda::Function'
-  Properties:
-    Role: !GetAtt PinpointConfigurationLambdaRole.Arn
-    Timeout: 300
-    Runtime: <LAMBDA RUNTIME>
-    Code: <LAMBDA CODE DIR>
-    Handler: <LAMBDA ENTRY POINT>
-```
-
-We can wire this function into the custom resource using the CloudFormation `GetAtt` function to extract the ARN:
-
-```yml
-PinpointApp:
-  Type: 'Custom::PinpointApp'
-  Properties:
-    Name: !Ref AppName
-    ServiceToken: !GetAtt PinpointConfigurationLambdaFunction.Arn
-```
-
 ## Custom Resource requests
 
 We can now create the Lambda function to handle the custom task. The function will get an event with all the configured properties in the `ResourceProperties` field. So, for example, the result of the parameter mapping above will end in `event.ResourceProperties.Name`. 
@@ -129,7 +67,8 @@ After the creation, we'll need to give CloudFormation the unique identifier for 
 I will use a Node function as that's easy to set up, but you can use any supported Lambda runtime. The start of the function will use the AWS SDK for Pinpoint to manage the resource, and just return back the response from the API. 
 
 ```js
-// pinpoint.js
+//pinpoint-event.js
+
 const aws = require('aws-sdk'),
  pinpoint = new aws.Pinpoint(),
  createApp = function (name) {
@@ -144,27 +83,23 @@ const aws = require('aws-sdk'),
  deleteApp = function (id) {
   return pinpoint.deleteApp({ApplicationId: id}).promise()
    .then(result => result.ApplicationResponse);
- },
- extractResourceId = (event, result) => result.Id || event.PhysicalResourceId,
- handleEvent = function (event) {
-  const requestType = event.RequestType;
-  if (requestType === 'Create') {
-   return createApp(event.ResourceProperties.Name);
-  } else if (requestType === 'Update') {
-   return pinpoint.deleteApp(event.PhysicalResourceId)
-    .then(() => createApp(event.ResourceProperties.Name));
-  } else if (requestType === 'Delete') {
-   return deleteApp(event.PhysicalResourceId);
-  }
  };
-
-module.exports = {
-  handleEvent: handleEvent,
-  extractResourceId: extractResourceId
-}
+module.exports = function handleEvent(event/*, context*/) {
+ const requestType = event.RequestType;
+ if (requestType === 'Create') {
+  return createApp(event.ResourceProperties.Name);
+ } else if (requestType === 'Update') {
+  return pinpoint.deleteApp(event.PhysicalResourceId)
+   .then(() => createApp(event.ResourceProperties.Name));
+ } else if (requestType === 'Delete') {
+  return deleteApp(event.PhysicalResourceId);
+ } else {
+  return Promise.reject(`Unexpected: ${JSON.stringify(event)}`);
+ }
+};
 ```
 
-## Custom resource responses
+## Custom Resource responses
 
 CloudFormation expects the response in a specific JSON structure. 
 
@@ -174,20 +109,29 @@ The `PhysicalResourceId` needs to be the unique identifier of the resource we cr
 
 It's very important to send this ID back consistently after all operations. For example, if you send a different physical ID after an update, CloudFormation will also send a delete message request for the previous resource ID. This is a good way of handling resources which can't be updated, but need to be created again. So make sure to reuse the old resource ID in case of updating a resource.
 
-CloudFormation uses three fields for validation: `StackId`, `RequestId` and `LogicalResourceId`. You need to just copy these directly from the originating event.
+The Pinpoint AWS SDK returns an Id property inside the `ApplicationResponse` object, so we'll use that to pull the physical resource ID out.
 
-Finally, you can put any output values into the `Data` field in case of a successful result, or a message in the `Reason` field in case of errors.
+```js
+// result-to-app-id.js
+module.exports = function resultToAppId(event, result) {
+ return result.Id || event.PhysicalResourceId;
+};
+```
 
-Unfortunately, CloudFormation won't just take the result of a Lambda function. Instead, it will wait for the response to be uploaded to a specific S3 location, provided in the incoming event `ResponseURL` parameter. The value of that field will be a pre-signed S3 resource URL that will only accept a HTTPS `PUT` request.
+CloudFormation also uses three fields for validation: `StackId`, `RequestId` and `LogicalResourceId`. You need to just copy these directly from the originating event.
+
+Finally, you can put any output values into the `Data` field in case of a successful result, or a message in the `Reason` field in case of errors. This allows linking the results of the custom step with other resources, for example using the Application ID in IAM policies.
+
+Unfortunately, CloudFormation won't just take the result of a Lambda function. Yes, that is a pain, but at the moment it is as it is. Instead, CloudFormation will wait for the response to be uploaded to a specific S3 location, provided in the incoming event `ResponseURL` parameter. The value of that field will be a pre-signed S3 resource URL that will only accept a HTTPS `PUT` request.
 
 Here is a utility class to capture the generic flow. It expects a resource-specific function to process the actual event (this will be the `handleEvent` function defined above), and a function to extract the physical resource ID from the results.
 
 ```js
-// processor.js
-const httpsPut = require('./https-put'),
- errorSerializer = require('./error-serializer');
-
-module.exports = function Processor(eventAction, extractResourceId) {
+//cloudformation-resource.js
+const errorToString = require('./error-to-string'),
+ httpsPut = require('./https-put'),
+ timeout = require('./timeout');
+module.exports = function (eventAction, extractResourceId) {
  const sendResult = function (event, result) {
    const responseBody = JSON.stringify({
     Status: 'SUCCESS',
@@ -201,10 +145,10 @@ module.exports = function Processor(eventAction, extractResourceId) {
   },
   sendError = function (event, error) {
    console.error(error);
-   const resourceId = event.PhysicalResourceId || `fail:${Date.now()}`;
+   const resourceId = event.PhysicalResourceId || `f:${Date.now()}`;
    const responseBody = JSON.stringify({
     Status: 'FAILED',
-    Reason: errorSerializer(error),
+    Reason: errorToString(error),
     PhysicalResourceId: resourceId,
     StackId: event.StackId,
     RequestId: event.RequestId,
@@ -213,28 +157,32 @@ module.exports = function Processor(eventAction, extractResourceId) {
    return httpsPut(event.ResponseURL, responseBody);
   };
  this.processEvent = function (event, context) {
-  console.log('received', JSON.stringify(event)); 
+  console.log('received', JSON.stringify(event));
+  const allowedTime = context.getRemainingTimeInMillis() - 2000;
   return Promise.resolve()
-   .then(() => eventAction(event, context))
+   .then(() => Promise.race([
+    timeout(allowedTime), 
+    eventAction(event, context)
+   ]))
    .then(result => sendResult(event, result))
    .catch(e => sendError(event, e))
    .catch(e => {
-    console.error(e);
-    return Promise.reject(errorSerializer(e));
+    console.error('error sending status', e);
+    return Promise.reject(errorToString(e));
    });
  };
 };
 ```
 
-The gotcha here is that CloudFormation won't automatically fail if there is an exception during the custom resource Lambda task, or if it times out. We need to handle all those types of errors internally and then report back. That's why the `processEvent` function first starts a `Promise` chain, so we can handle exceptions, asynchronous and synchronous errors easily. 
+The gotcha here is that CloudFormation won't automatically fail if there is an exception during the custom resource Lambda task, or if it times out. We need to handle all those types of errors internally and then report back. That's why the `processEvent` function first starts a `Promise` chain, so we can handle exceptions, asynchronous and synchronous errors easily. We also protect against the event action timing out, and leave the generic resource about two seconds to send the timeout response if needed.
 
 ## Utility functions
 
-The final pieces are the two utility functions, one to perform a `PUT` request, and one to convert from an error into a string. 
+The final pieces are the three utility functions. 
 
-For the first one, we could use some third-party module for network requests, such as `axios` or `got`, to provide network retries and content processing, but Node has all the features for a minimal implementation built in, and that does the trick for now. 
+The first one, `https-put.js`, will perform a `PUT` request with the headers expected by the pre-signed URL that CloudFormation provides. We could use some third-party module for network requests, such as `axios` or `got`, to provide network retries and content processing, but Node has all the features for a minimal implementation built in, and that does the trick for now. 
 
-The key trick here for the CloudFormation flow (S3 in fact), is to include the 'content-length' header for the upload. If you don't do that, the upload will fail and Cloudformation gets indefinitely stuck.
+The key trick here for the CloudFormation flow, is to include the `content-length` and `content-type` headers for the upload. Leave the content type blank, and put the size of the payload into content length. If you don't do that, the pre-signed request upload will fail, and CloudFormation gets indefinitely stuck.
 
 ```js
 // https-put.js
@@ -289,48 +237,213 @@ module.exports = function httpsPut(url, body) {
 };
 ```
 
-For error conversion to string, we need to consider synchronous exceptions, asynchronous promise rejections, plus strings or JavaScript error objects in both cases.
+The second helper function provides error descriptions to CloudFormation. As CloudFormation expects a string, we need to consider synchronous exceptions, asynchronous promise rejections, plus strings or JavaScript error objects in all those cases. Here is a generic function that handles all those cases:
 
 ```js
-// error-serializer.js
-module.exports = function errorSerializer(error) {
-	if (!error) {
-		return 'Undefined error';
-	}
-	if (typeof error === 'string') {
-		return error;
-	}
-	return error.stack || error.message || JSON.stringify(error);
+// error-to-string.js
+module.exports = function errorToString(error) {
+ if (!error) {
+  return 'Undefined error';
+ }
+ if (typeof error === 'string') {
+  return error;
+ }
+ return error.stack || error.message || JSON.stringify(error);
 };
 ```
 
+The third function helps us act on a timeout as a Promise rejection, so we can notify CloudFormation in case of the task getting stuck easily.
 
-## Wrapping everything up
+```js
+//timeout.js
+module.exports = function timeout(duration) {
+ return new Promise((resolve, reject) => {
+  setTimeout(() => reject('timeout'), duration);
+ });
+};
+```
+
+## Wrapping up the configuration
 
 With all those parts in place, we can now simply wire everything into a Lambda function:
 
 ```js 
 // lambda.js
+const pinpointEvent = require('./pinpoint-event'),
+ resultToAppId = require('./result-to-app-id'),
+ CloudFormationResource = require('./cloudformation-resource'),
+ customResource = new CloudFormationResource(
+  pinpointEvent, 
+  resultToAppId
+ );
 
-const pinpoint = require('./pinpoint'),
- Processor = require('./processor'),
- processor = new Processor(pinpoint.handleEvent, pinpoint.extractResourceId)
-
-exports.handler = processor.processEvent;
+exports.handler = customResource.processEvent;
 ```
 
-Save all those files in a directory relative to the template, say `code`, and update the lambda configuration:
+Everything apart from the `pinpointEvent` and `resultToAppId` is generic, so you can reuse it for other types of CloudFormation custom resources.
+
+Save all those files in a directory relative to the template, for example `code`, so we can use it in the template later.
+
+## Recovering from development errors
+
+Before we start deploying, there is one more trick, very useful when you're starting with new custom resources. Because CloudFormation templates can be very fiddly, it's useful to record calls to the custom resource lambda in case of unexpected errors. The generic flow in `cloudformation-resource.js` will protect you from timeouts and errors inside your task, but it won't be able to protect you against Lambda initialisation errors. 
+
+CloudFormation uses the event-based Lambda invocation, which means that Lambda will re-try three times in case of unrecoverable errors, then give up. In such cases, CloudFormation never receives a response, so it will get stuck on your custom resource. Rolling back won't help as well, because it will just explode again. To recover, you'll need to know the pre-signed URL for responses and manually upload the result.
+
+There are several good ways of logging Lambda invocations. One is to use [CloudTrail](https://aws.amazon.com/cloudtrail/). Another is to set up a SNS topic that sends you an e-mail in case of errors. In either case, once you know the pre-signed URL that CloudFormation expects, you can cook up a response in a JSON file, such as this:
+
+```json
+{
+  "Status":"FAILED",
+  "Reason":"Aborted"
+  "StackId":"<COPY FROM THE REQUEST>",
+  "RequestId":"<COPY FROM THE REQUEST>",
+  "LogicalResourceId":"<COPY FROM THE REQUEST>",
+  "PhysicalResourceId":"<COPY FROM THE REQUEST>",
+}
+```
+
+Assuming you saved this to `body.json`, you can send it to CloudFormation using a PUT request from `curl`. Remember that the content type must be blank, otherwise the signature won't match.
+
+```bash
+curl -H "content-type: " -X PUT --data-binary @body.json <URL>
+```
+
+
+
+## Wiring everything up
+
+I use SNS for dead letter queues as it is easy to turn on and off in the template itself. For this option, you'll need to set up a SNS topic and subscribe to it yourself -- check out the guide on [Receiving Email with Amazon SES](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email.html) if you need help about that. We can now add another parameter `DLQSNSTopicARN` to the main pinpoint template, and a condition to check if it is defined:
+
+```yml
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Set up a Pinpoint application using CloudFormation 
+Parameters:
+  AppName: 
+    Type: String
+    Description: Pinpoint application name
+  DLQSNSTopicARN: 
+    Type: String
+    Description: Dead-letter SNS topic for Lambda
+    Default: ''
+
+Conditions:
+  IsDLQDefined: !Not [ !Equals ['', !Ref DLQSNSTopicARN]]
+
+Resources: 
+```
+
+In the Lambda configuration, we can to load the JavaScript files and to delegate unrecoverable errors to the Dead Letter queue if defined:
 
 ```yml
 PinpointConfigurationLambdaFunction:
   Type: 'AWS::Lambda::Function'
   Properties:
+    Runtime: nodejs8.10
+    Code: ./code 
+    Handler: lambda.handler
     Role: !GetAtt PinpointConfigurationLambdaRole.Arn
     Timeout: 300
-    Runtime: nodejs8.10
-    Code: ./code
-    Handler: lambda.handler
+    DeadLetterConfig:
+      !If
+        - IsDLQDefined
+        - TargetArn: !Ref DLQSNSTopicARN
+        - !Ref AWS::NoValue
 ```
+
+We can wire this function into the custom resource using the CloudFormation `GetAtt` function to extract the ARN:
+
+```yml
+PinpointApp:
+  Type: 'Custom::PinpointApp'
+  Properties:
+    Name: !Ref AppName
+    ServiceToken: !GetAtt PinpointConfigurationLambdaFunction.Arn
+```
+
+We also need an IAM role for the configuration function, that will allow it to log to CloudWatch, manage Pinpoint functions and optionally publish to the dead letter queue if it is set:
+
+```yml
+PinpointConfigurationLambdaRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: 'sts:AssumeRole'
+            Principal:
+              Service: lambda.amazonaws.com
+      Policies:
+        - PolicyName: WriteCloudWatchLogs
+          PolicyDocument: 
+            Version: '2012-10-17'
+            Statement: 
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: 'arn:aws:logs:*:*:*'
+        - PolicyName: UpdatePinpoint
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - 'mobiletargeting:CreateApp'
+                  - 'mobiletargeting:DeleteApp'
+                Resource: '*'
+        - !If
+          - IsDLQDefined
+          - PolicyName: WriteDLQTopic
+            PolicyDocument: 
+              Version: '2012-10-17'
+              Statement: 
+                - Effect: Allow
+                  Action: 'sns:Publish'
+                  Resource: !Ref DLQSNSTopicARN
+          - !Ref AWS::NoValue
+```
+
+Lastly, we can read the pinpoint application ID from the custom resource results, so we can use it in other CloudFormation resources:
+
+```yml
+Outputs:
+  AppId:
+    Value: !GetAtt PinpointApp.Id
+```
+
+## Trying it out
+
+Instead of typing up individual parts of the files, get the complete code for this example from the [gojko/cloudformation-pinpoint](https://github.com/gojko/cloudformation-pinpoint) repository on Github. Then just package it as any other CloudFormation template (of course, replace the `<DEPLOYMENT_BUCKET_NAME>` with your deployment bucket):
+
+```bash
+aws cloudformation package 
+  --template-file pinpoint-configuration.yml 
+  --output-template-file output.yml 
+  --s3-bucket <DEPLOYMENT_BUCKET_NAME>
+```
+
+This will create a deployable output template in `output.yml`. Deploy it from the CloudFormation web console, or from the command line, but make sure to include `CAPABILITIES_IAM` so CloudFormation can create the custom resource IAM role:
+
+```bash
+aws cloudformation deploy 
+  --capabilities CAPABILITY_IAM 
+  --template-file output.yml 
+  --stack-name <STACK_NAME> 
+  --parameter-overrides AppName=<NAME> DLQSNSTopicARN=<SNS_TOPIC_ARN>
+```
+
+If you do not want to use a SNS topic for dead letters, then just omit the last parameter section.
+
+## Key things to remember
+
+* Custom resources allow you to invoke your own lambda function as part of the CloudFormation deployment process
+* Log the Lambda requests using CloudTrail or SNS so you can recover from initialisation errors while developing
+* Return the physical resource ID consistently -- either use the ID of the actual resource if you create something, or create something reasonably unique for transient requests and then reuse the same value for updates and deletes
+* Make sure to send an empty content type header and the actual payload size in the content length header when uploading results to CloudFormation, otherwise the pre-signed upload will fail
+* Give the Lambda function enough time to handle creation errors and timeouts from your task, and upload the result in those cases. Even though CloudFormation invokes your Lambda function, it won't immediately recognise unrecoverable errors.
 
 
 
