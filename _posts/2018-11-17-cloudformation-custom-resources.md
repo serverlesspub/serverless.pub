@@ -26,7 +26,7 @@ PinpointApplication:
   Type: 'Custom::PinpointApp'
 ```
 
-You can then add any parameters needed for the application, as usual in the `Properties` key-value map. CloudFormation will just pass these parameters to your task. You can still use all the usual CloudFormation references, functions and variables. For example, in order to create a Pinpoint application, we need to give it a name. This could be a usual CloudFormation parameter:
+You can then add any parameters needed for the application in the `Properties` key-value map, as you would for built-in resources. CloudFormation will just pass these parameters to your task. You can still use all the usual CloudFormation references, functions and variables. For example, in order to create a Pinpoint application, we need to give it a name. This could be a usual CloudFormation parameter:
 
 ```yml
 AWSTemplateFormatVersion: '2010-09-09'
@@ -252,7 +252,7 @@ module.exports = function errorToString(error) {
 };
 ```
 
-The third function helps us act on a timeout as a Promise rejection, so we can notify CloudFormation in case of the task getting stuck easily.
+The third function helps us act on a timeout as a Promise rejection, so we can notify CloudFormation in case of the task getting stuck.
 
 ```js
 //timeout.js
@@ -365,45 +365,45 @@ We also need an IAM role for the configuration function, that will allow it to l
 
 ```yml
 PinpointConfigurationLambdaRole:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Action: 'sts:AssumeRole'
-            Principal:
-              Service: lambda.amazonaws.com
-      Policies:
-        - PolicyName: WriteCloudWatchLogs
+  Type: 'AWS::IAM::Role'
+  Properties:
+    AssumeRolePolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+        - Effect: Allow
+          Action: 'sts:AssumeRole'
+          Principal:
+            Service: lambda.amazonaws.com
+    Policies:
+      - PolicyName: WriteCloudWatchLogs
+        PolicyDocument: 
+          Version: '2012-10-17'
+          Statement: 
+            - Effect: Allow
+              Action:
+                - 'logs:CreateLogGroup'
+                - 'logs:CreateLogStream'
+                - 'logs:PutLogEvents'
+              Resource: 'arn:aws:logs:*:*:*'
+      - PolicyName: UpdatePinpoint
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: 
+                - 'mobiletargeting:CreateApp'
+                - 'mobiletargeting:DeleteApp'
+              Resource: '*'
+      - !If
+        - IsDLQDefined
+        - PolicyName: WriteDLQTopic
           PolicyDocument: 
             Version: '2012-10-17'
             Statement: 
               - Effect: Allow
-                Action:
-                  - 'logs:CreateLogGroup'
-                  - 'logs:CreateLogStream'
-                  - 'logs:PutLogEvents'
-                Resource: 'arn:aws:logs:*:*:*'
-        - PolicyName: UpdatePinpoint
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: 
-                  - 'mobiletargeting:CreateApp'
-                  - 'mobiletargeting:DeleteApp'
-                Resource: '*'
-        - !If
-          - IsDLQDefined
-          - PolicyName: WriteDLQTopic
-            PolicyDocument: 
-              Version: '2012-10-17'
-              Statement: 
-                - Effect: Allow
-                  Action: 'sns:Publish'
-                  Resource: !Ref DLQSNSTopicARN
-          - !Ref AWS::NoValue
+                Action: 'sns:Publish'
+                Resource: !Ref DLQSNSTopicARN
+        - !Ref AWS::NoValue
 ```
 
 Lastly, we can read the pinpoint application ID from the custom resource results, so we can use it in other CloudFormation resources:
