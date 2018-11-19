@@ -124,6 +124,8 @@ Finally, you can put any output values into the `Data` field in case of a succes
 
 Unfortunately, CloudFormation won't just take the result of a Lambda function. Yes, that is a pain, but at the moment it is as it is. Instead, CloudFormation will wait for the response to be uploaded to a specific S3 location, provided in the incoming event `ResponseURL` parameter. The value of that field will be a pre-signed S3 resource URL that will only accept a HTTPS `PUT` request.
 
+![](/images/custom-resource-4.png)
+
 Here is a utility class to capture the generic flow. It expects a resource-specific function to process the actual event (this will be the `handleEvent` function defined above), and a function to extract the physical resource ID from the results.
 
 ```js
