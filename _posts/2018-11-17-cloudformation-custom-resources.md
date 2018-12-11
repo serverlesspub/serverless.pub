@@ -1,10 +1,15 @@
 ---
 layout: post
 title:  "Plug gaps in CloudFormation with Custom Resources"
-date:   2018-11-17
-categories: cloudformation
-author: gojko
-image: "https://effortless-serverless.com/images/serverless-migration/figure-2.jpg"
+date: 2018-11-17 08:50:28
+categories: CloudFormation
+author_name : Gojko Adzic
+author_url : /author/gojko
+author_avatar: gojko
+show_avatar: true
+feature_image: custom-resource-4.png
+show_related_posts: false
+square_related: recommend-gojko
 ---
 
 CloudFormation is the key deployment technology in the AWS world, and the underlying magic behind many higher level deployment tools such as AWS SAM or the Serverless Framework. Unfortunately, due to the break-neck speed of AWS service updates, CloudFormation often lacks support for newer options. For example, at the time when I wrote this in November 2018, creating AWS Pinpoint applications was not supported at all. Some services are only partially supported, such as Cognito User Pools. You can presently create User Pools with CloudFormation, but you can't set up the [built-in UI](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-ux.html) or configure an authentication domain.
@@ -124,7 +129,7 @@ Finally, you can put any output values into the `Data` field in case of a succes
 
 Unfortunately, CloudFormation won't just take the result of a Lambda function. Yes, that is a pain, but at the moment it is as it is. Instead, CloudFormation will wait for the response to be uploaded to a specific S3 location, provided in the incoming event `ResponseURL` parameter. The value of that field will be a pre-signed S3 resource URL that will only accept a HTTPS `PUT` request.
 
-![](/images/custom-resource-4.png)
+![](/img/custom-resource-4.png)
 
 Here is a utility class to capture the generic flow. It expects a resource-specific function to process the actual event (this will be the `handleEvent` function defined above), and a function to extract the physical resource ID from the results.
 

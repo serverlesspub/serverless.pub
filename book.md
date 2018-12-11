@@ -1,31 +1,23 @@
 ---
 layout: page
 title: Book
-socialtitle: Serverless Applications with Node.js
 permalink: /book/
+feature_image: feature-spiderman
 ---
 
-![Serverless Applications with Node.js](/images/serverless-apps-node-claudia-book-cover.png)
-{: .book-page-image }
+Serverless Applications with Node.js walks you through building serverless apps on AWS using JavaScript. Inside, you’ll create a full project designed to help you understand and apply general serverless design principles and concepts.
 
-Serverless Applications with Node.js walks you through building serverless apps on AWS using JavaScript. Inside, you'll create a full project designed to help you understand and apply general serverless design principles and concepts.
-{: .book-page-description}
+Along the way, you’ll also discover what Claudia brings to the table as you build and deploy a scalable event-based serverless application that is fully integrated with AWS services including Lambda and API Gateway.
 
-Along the way, you'll also discover what Claudia brings to the table as you build and deploy a scalable event-based serverless application that is fully integrated with AWS services including Lambda and API Gateway.
-{: .book-page-description }
+You’ll learn to simplify the design and development process so you can focus on getting your application deployed as fast as possible without sacrificing quality.
 
-You'll learn to simplify the design and development process so you can focus on getting your application deployed as fast as possible without sacrificing quality.
-{: .book-page-description }
-
-Plus, you'll learn how to migrate your existing Express apps to serverless!
-{: .book-page-description }
-
+Plus, you’ll learn how to migrate your existing Express apps to serverless!
 
 You can get your own copy with a 40% discount with promo code `claudia40`.
 <a id="book-buy-btn" href="https://www.manning.com/books/serverless-applications-with-nodejs">Get your own copy!</a>
 {: .book-page-discount }
 
-### What's inside
+## What’s inside
 
 - Creating a serverless API using AWS Lambda and Claudia.js
 - Doing authentication and database storage in a serverless way
@@ -33,11 +25,11 @@ You can get your own copy with a 40% discount with promo code `claudia40`.
 - Building a voice assistant with Amazon Alexa
 - Developing microservices with Node.js, AWS Lambda, S3, and more
 
-### About the reader
+## About the reader
 
 Written for beginner and intermediate web developers comfortable with JavaScript and Node.js. Some prior experience with AWS is required.
 
-### Table of contents
+## Table of contents
 
 <div id="toc" class="toc">
   <h1 id="part_id_1" class="sect0">Part 1: Serverless Pizzeria</h1>
@@ -180,15 +172,15 @@ Written for beginner and intermediate web developers comfortable with JavaScript
   </div>
   <h1 id="part" class="sect0">Appendixes</h1>
   <div class="sect1 available">
-    <h2 id="_a_installation_and_configuration">Appendix A: A Installation and configuration</h2>
+    <h2 id="_a_installation_and_configuration">Appendix A: Installation and configuration</h2>
   </div>
   <div class="sect1 available">
-    <h2 id="_b_facebook_messenger_twilio_and_alexa_configuration">Appendix B: B Facebook Messenger, Twilio, and Alexa configuration</h2>
+    <h2 id="_b_facebook_messenger_twilio_and_alexa_configuration">Appendix B: Facebook Messenger, Twilio, and Alexa configuration</h2>
   </div>
   <div class="sect1 available">
-    <h2 id="_c_stripe_and_mongodb_setup">Appendix C: C Stripe and MongoDB setup</h2>
+    <h2 id="_c_stripe_and_mongodb_setup">Appendix C: Stripe and MongoDB setup</h2>
   </div>
   <div class="sect1 available">
-    <h2 id="_d_the_pizza_recipe">Appendix D: D The pizza recipe</h2>
+    <h2 id="_d_the_pizza_recipe">Appendix D: The pizza recipe</h2>
   </div>
 </div>

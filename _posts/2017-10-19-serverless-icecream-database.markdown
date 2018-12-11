@@ -1,9 +1,16 @@
 ---
 layout: post
 title:  "How To Create a Serverless Node.js App with DynamoDB For The First Time"
-date:   2017-10-19 12:00:00 +0200
-categories: serverless lambda dynamodb
-author: simalexan
+date: 2017-10-19 12:00:00 +0200
+categories: Serverless DynamoDB
+author_name : Aleksandar Simovic
+author_url : /author/simalexan
+author_avatar: simalexan
+show_avatar: true
+read_time: 7
+feature_image: serverless-migration/figure-2.jpg
+show_related_posts: false
+square_related: recommend-simalexan
 ---
 
 There are many articles on serverless with explained ideas, benefits and so on. Serverless is great, but articles sometimes sound more like a TV commercial.
@@ -12,7 +19,7 @@ Sometimes you just want to try and create a working example.
 
 > Serverless is like ice cream. It’s nice to talk about it, but much better to try out.
 
-![](/images/serverless-icecream.jpg)
+![](/img/serverless-icecream.jpg)
 
 The goal is to show how to create a serverless Node.js app with DynamoDB that stores and retrieves data.
 Since ice creams are already mentioned, this service will be for an ice cream shop. You will save and show ice creams.
@@ -29,11 +36,11 @@ Let’s first see what do you need:
  - **a database** — a storage to which you connect your service to store ice creams. We’re going with DynamoDB — AWS noSQL database.
 
 
-![The overview of your service infrastructure](/images/serverless-icecream-overview.png)
+![The overview of your service infrastructure](/img/serverless-icecream-overview.png)
 
 
 
-### 1. Serverless host setup — AWS
+## 1. Serverless host setup — AWS
 
 You need to have an AWS account and a locally set AWS credentials file.
 
@@ -49,7 +56,7 @@ If you do, you only need to set your AWS credentials. To do it:
 
 2. Click on “Users” on the left side menu, then “Add User”. You will see the following picture.
 
-    ![](/images/serverless-icecream-user.png)
+    ![](/img/serverless-icecream-user.png)
     There you need to type in the user name and check the programmatic access. Then click the button “Next: Permissions”.
 
 3. You will be on the 2nd step. Now click the “Attach existing policies directly” and then check “Administrator Full Access”. Proceed to the 3rd step “Review”, and then click the “Create user” for the 4th step. 
@@ -69,7 +76,7 @@ At the last (4th) step, you will see a table with your user name and columns wit
     Set the AWS_PROFILE environment variable to default.
 
 
-### 2. Setup your development and deployment tool — Claudia.js
+## 2. Setup your development and deployment tool — Claudia.js
 
 *If you have Claudia.js installed already scroll to section 3.*
 
@@ -79,7 +86,7 @@ Open your terminal and run:
 
 Claudia.js is now installed globally, available for all projects.
 
-### 3. Write your service — Ice Cream Shop
+## 3. Write your service — Ice Cream Shop
 
 Create your project folder (you can name it `ice-cream-shop`) and open it in your terminal. 
 
@@ -106,7 +113,7 @@ Now create an empty index.js file. Open it and type:
 
 This finishes your service.
 
-### 4. Database — setup DynamoDB
+## 4. Database — setup DynamoDB
 
 You need to create a database on AWS, but instead of using AWS Console, you can just execute one command:
 
@@ -121,7 +128,7 @@ aws dynamodb create-table --table-name icecreams \
 
 This command creates a DynamoDB table named `icecreams` in the same region as our Lambda, with an key attribute `icecreamid` of String type. The command returns the table’s Amazon Resource Name (ARN) to confirm that everything is set up correctly.
 
-#### Giving your service permission for the database
+### Giving your service permission for the database
 
 The last step is allowing your service access to your DynamoDb database. To do that your service requires a permission policy. Instead of doing it via AWS Console, you can create a policy file in your project and apply it with Claudia.
 
@@ -158,7 +165,7 @@ This command creates your serverless container (AWS Lambda) in the `us-east-1` r
 
 That’s it! 
 
-#### Trying out your service
+### Trying out your service
 
 Use cURL for testing. Get all ice creams:
 
@@ -179,7 +186,7 @@ By running these commands you’ll see your service working!
 That’s it!
 
 
-#### Errors?
+### Errors?
 In case of an error, please check your code if you haven’t missed anything. After an error, invoking the command again may show
 
 ```shell
@@ -189,7 +196,7 @@ In case of an error, please check your code if you haven’t missed anything. Af
 In that case, go to your [AWS Console IAM](https://console.aws.amazon.com/iam), in the left bar- click *“Roles”* and find a role with the name error specified and delete it. Then try the previous claudia create command again.
 
 
-#### Updating your service
+### Updating your service
 If you want to redeploy to your Lambda with Claudia.js, now you need to do a claudia update instead of create . The full command would look like this:
 
 `claudia update`

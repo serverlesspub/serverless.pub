@@ -1,13 +1,21 @@
 ---
 layout: post
-title:  "Checkout our book - Serverless Applications with Node.js"
-date:   2017-10-03 12:00:00 +0200
-categories: claudia book
+title:  "Check out our book - Serverless Applications with Node.js"
+date: 2017-10-03 12:00:00 +0200
+categories: Claudiajs Book
+author_name : Aleksandar Simovic
+author_url : /author/simalexan
+author_avatar: simalexan
+show_avatar: true
+read_time: 7
+feature_image: "https://effortless-serverless.com/images/serverless-migration/figure-2.jpg"
+show_related_posts: false
+square_related: recommend-simalexan
 ---
 
 Our book "Serverless Applications with Node.js" is now available as a MEAP release on Manning Publication website.
 
-<a class="no-style-link" href="/book"><img src="/images/effortless-serverless-social.png" alt="Serverless Applications with Node.js"></a>
+<a class="no-style-link" href="/book"><img src="/img/effortless-serverless-social.png" alt="Serverless Applications with Node.js"></a>
 
 The book walks you through building serverless apps on AWS using JavaScript. Inside, you’ll create a full project designed to help you understand and apply general serverless design principles and concepts.
 

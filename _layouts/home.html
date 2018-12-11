@@ -1,52 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-{% include head.html %}
-<body class="site{% if site.animated %} animated fade-in-down{% endif %}">
-  {% if site.google_tag_manager %}
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ site.google_tag_manager }}"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  {% endif %}
-	{% if site.facebook_comments %}
-		<div id="fb-root"></div>
-		<script>(function(d, s, id) {
-		  var js, fjs = d.getElementsByTagName(s)[0];
-		  if (d.getElementById(id)) return;
-		  js = d.createElement(s); js.id = id;
-		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId={{ site.facebook_appid }}";
-		  fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));</script>
-	{% endif %}
+---
+layout: with-sidebar
+---
 
-  <div class="site-wrap">
-    {% include header.html %}
+<div class="sub-nav">
+    <a href="#" class="select-posts active">Posts</a>
+    <a href="#" class="select-categories">Categories</a>
+</div>
 
-    <div class="callout">
-      <div class="p2 p-responsive wrap">
-        <div class="measure book-header">
-          <div id="book-cover">
-            <a class="no-style-link" href="/book">
-              <img src="/images/serverless-apps-node-claudia-book-cover-thumb.png" />
-            </a>
-          </div>
-          <div id="book-description">
-            <div class="call-to-action">Check out our new book!</div>
-            <div id="book-title">Serverless Applications with Node.js</div>
-            <div id="book-title-description">All chapters are now available in MEAP!</div>
-            <div id="book-actions">
-              <a class="book-action-button" href="/book">Learn more</a>
-            </div>
-          </div>
+<div class="home-page-posts animated fadeIn ">
+    {% for post in site.posts %}
+
+    <article class="post">
+        <div class="post-preview col-xs-10  no-gutter">
+            <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+
+            {{ post.excerpt | truncatewords: 28 }}
+
+            <p class="meta">
+                <a href="{{ post.author_url | prepend: site.baseurl }}">{{ post.author_name }}</a> in <a href='{{ "/category/" | append: post.categories.first | prepend: site.baseurl }}'>{{ post.categories.first }}</a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> {% assign words = post | strip_html | number_of_words %} {% if words < 360 %} 1 minutes {% else %} {{ words | divided_by:180 }} minutes {% endif %}
+            </p>
         </div>
-      </div>
-    </div>
 
-    <div class="post p2 p-responsive wrap" role="main">
-      <div class="measure">
-        {{ content }}
-      </div>
-    </div>
-  </div>
 
-  {% include footer.html %}
-</body>
-</html>
+        {% if post.show_avatar == true %}
+        <div class=" col-xs-2  no-gutter">
+            <img src="{{ site.baseurl}}/img/{{ post.author_avatar }}.jpg" class="user-icon user-1" alt="user-image">
+        </div>
+        {% endif %}
+    </article>
+    {% endfor %}
+
+</div><!-- Home page posts -->
+
+<div class="home-page-categories hide animated fadeIn ">
+    <div class="category row">
+        <section>
+            {% for category in site.categories %}
+
+                <div class="category-preview col-xs-6 col-sm-4 ">
+                    <h2>{{ category | first | capitalize }}</h2>
+                    <a href='{{ "/category/" | append: category.first | prepend: site.baseurl }}'><img src='{{ "/img/" | append: category.first | prepend: site.baseurl }}-thumbnail.jpg' alt="category-image"></a>
+                </div>
+            {% endfor %}
+        </section>
+    </div>
+</div>

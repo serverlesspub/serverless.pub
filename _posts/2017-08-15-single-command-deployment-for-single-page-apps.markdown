@@ -1,15 +1,23 @@
 ---
 layout: post
 title:  "Single command deployment for single page apps"
-date:   2017-08-25 12:00:00 +0200
-categories: aws s3 cloudfront
-author: slobodan
+date: 2017-08-25 12:00:00 +0200
+categories: FrontEnd S3 CloudFront
+author_name : Slobodan Stojanović
+author_url : /author/slobodan
+author_avatar: slobodan
+show_avatar: true
+read_time: 7
+feature_image: "https://effortless-serverless.com/img/serverless-migration/figure-2.jpg"
+show_related_posts: false
+square_related: recommend-slobodan
 ---
+
 Developing a single page app is hard. From the very beginning, you’ll need to make many decisions — decisions like picking a framework, setting the folder structure, configuring linter, and many others.
 
 Some of those tasks are easier because of the ecosystem of the tools surrounding your favorite framework and web development in general. For example, tools like [Create React App](https://github.com/facebookincubator/create-react-app), [Angular CLI](https://cli.angular.io/) and [Create Choo App](https://github.com/choojs/create-choo-app) will help you to setup your favorite framework in a few seconds.
 
-![Photo by Jonatan Pie on Unsplash](/images/scotty-post-cover.jpeg)
+![Photo by Jonatan Pie on Unsplash](/img/scotty-post-cover.jpeg)
 
 Often, you don’t have enough time to even think about the deployment when you start your new project. And at some point, you need your app to be publicly accessible because you want to show it to your client, friends, or to add it to your portfolio while you are looking for your first job.
 
@@ -27,7 +35,7 @@ It will deploy your static website, set up CDN with HTTPS, and even copy the web
 
 For single page applications, it will also configure redirections, so pushState can work out of the box.
 
-![Beam me up, Scotty](/images/beam-me-up-scotty.gif)
+![Beam me up, Scotty](/img/beam-me-up-scotty.gif)
 
 Let’s see it in action with a simple React application.
 
@@ -148,7 +156,7 @@ export default BasicExample
 
 Now, if you start your app using `npm start` it should work and look similar to the one from this screenshot:
 
-![Basic React app with React Router on localhost](/images/welcome-to-react.png)
+![Basic React app with React Router on localhost](/img/welcome-to-react.png)
 
 It’s time to build your app using `npm run build` node script. This will create a folder called “build” in root of your project.
 
@@ -178,7 +186,7 @@ This command tells Scotty that your app is single page app (SPA) and that the so
 
 Running this command from your terminal will deploy the app and give you 2 URLs as shown here:
 
-![](/images/scotty.gif)
+![](/img/scotty.gif)
 
 First one, which is also added to your clipboard, is an HTTP link to AWS S3. The second one is a CloudFront URL that also supports HTTPS.
 
@@ -191,7 +199,7 @@ It will also set up HTTPS for free, so your app will be ready to use with servic
 
 ## How does it work
 
-![](/images/scotty-aws-infrastructure.png)
+![](/img/scotty-aws-infrastructure.png)
 
 There’s no magic behind Scotty. It uses AWS SDK for Node.js behind the scene.
 

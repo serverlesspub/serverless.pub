@@ -1,13 +1,21 @@
 ---
 layout: post
 title:  "How To Develop A Chat Bot With Node.js"
-date:   2016-10-17 12:00:00 +0200
-categories: claudia bot
-author: slobodan
+date: 2016-10-17 12:00:00 +0200
+categories: Claudiajs Chatbots
+author_name : Slobodan Stojanović
+author_url : /author/slobodan
+author_avatar: slobodan
+show_avatar: true
+read_time: 7
+feature_image: "https://effortless-serverless.com/img/serverless-migration/figure-2.jpg"
+show_related_posts: false
+square_related: recommend-slobodan
 ---
+
 In the past few months, chat bots have become very popular, thanks to Slack, Telegram and Facebook Messenger. But the chat bot idea is not new at all.
 
-![](/images/chatbot-post-cover.png)
+![](/img/chatbot-post-cover.png)
 
 A chat bot interface is mentioned in the famous Turing test in 1950. Then there was Eliza in 1966, a simulation of a Rogerian psychotherapist and an early example of primitive natural language processing. After that came Parry in 1972, a simulation of a person with paranoid schizophrenia (and, yes, of course, [Parry met Eliza](http://www.theatlantic.com/technology/archive/2014/06/when-parry-met-eliza-a-ridiculous-chatbot-conversation-from-1972/372428/)).
 
@@ -64,8 +72,6 @@ module.exports = botBuilder(request => `Thanks for sending ${request.text}`);
 The Claudia Bot Builder helps developers create chat bots for Facebook Messenger, Telegram, Skype and Slack, and deploy them to Amazon Web Services’ (AWS) Lambda and API Gateway in minutes.
 
 The key idea behind the project is to remove all of the boilerplate code and common infrastructure tasks, so that you can focus on writing the really important part of the bot — your business workflow. Everything else is handled by the Claudia Bot Builder.
-
-![Claudia Bot Builder](claudia-bot-builder.png)
 
 Why AWS Lambda? It’s a perfect match for chat bots: Creating a simple API is easy; it responds much faster to the first request than a free Heroku instance; and it’s really cheap. The first million requests each month are free, and the next million requests are just $0.20!
 
@@ -166,7 +172,7 @@ module.exports = botBuilder((request, originalApiRequest) => {
 
 Now our bot has a nice welcome answer:
 
-![](/images/initial-chatbot.png)
+![](/img/initial-chatbot.png)
 
 Much better!
 
@@ -307,7 +313,7 @@ And here’s how our bot works:
 
 You can try it live on your page or on the [Space Explorer bot](https://m.me/space-explorer-bot) page on Facebook Messenger.
 
-![Space Explorer Bot Messenger code](/images/messenger-code.png)
+![Space Explorer Bot Messenger code](/img/messenger-code.png)
 
 That’s it!
 

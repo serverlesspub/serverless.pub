@@ -1,10 +1,16 @@
 ---
 layout: post
 title:  "From Express.js to AWS Lambda: Migrating existing Node.js applications to serverless"
-date:   2018-03-29 12:00:00 +0200
-categories: serverless claudia migration
-author: slobodan
-image: "https://effortless-serverless.com/images/serverless-migration/figure-2.jpg"
+date: 2018-03-29 12:00:00 +0200
+categories: Serverless Claudiajs
+author_name : Slobodan Stojanović
+author_url : /author/slobodan
+author_avatar: slobodan
+show_avatar: true
+read_time: 7
+feature_image: serverless-migration/figure-2.jpg
+show_related_posts: false
+square_related: recommend-slobodan
 ---
 
 Serverless architecture makes some of the good practices for architecturing apps obsolete. Building a serverless application from scratch requires a mind shift, but once you start thinking in a serverless way, all the dots connect quickly. With the help of tools such as Claudia.js, development and deployment cycles are short and easy.
@@ -15,7 +21,7 @@ Can you and should you migrate such an application to serverless? The answer is 
 
 Let's say you are working on a nice and simple Node.js application. For example, an app similar to [Vacation Tracker bot](http://vacationtrackerbot.com), a simple Slack tool for managing team vacations.
 
-![Vacation tracker flow](/images/serverless-migration/figure-0.jpg)
+![Vacation tracker flow](/img/serverless-migration/figure-0.jpg)
 
 The app itself is simple. Most of the communication goes through Slack, but there's also a nice web dashboard. As you are building MVP, you don't want to spend too much resources on it, so you spin up a new Digital Ocean instance and bundle everything inside it. At that point, as shown in the figure below, your app consists of the following:
 
@@ -24,7 +30,7 @@ The app itself is simple. Most of the communication goes through Slack, but ther
 - MongoDB database
 - Cronjob that sends scheduled messages
 
-![Simple Express.js and MongoDB app](/images/serverless-migration/figure-1.jpg)
+![Simple Express.js and MongoDB app](/img/serverless-migration/figure-1.jpg)
 
 But sometimes your app has a big spikes in usage, and you need to think about scaling. Not to mention that you need many other things such as monitoring, SSL, development and production environments, etc.
 
@@ -61,7 +67,7 @@ As some of your API endpoints will require auth (either direct or via social log
 
 After migration, your app could look like this:
 
-![Serverless app](/images/serverless-migration/figure-2.jpg)
+![Serverless app](/img/serverless-migration/figure-2.jpg)
 
 ## Next steps
 
