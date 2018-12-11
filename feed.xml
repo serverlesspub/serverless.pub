@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Writer Theme</title>
-    <description>focussed on typography, minimal design and
- quality photography built using the Jekyll platform.
+    <title>Effortless Serverless</title>
+    <description>Serverless stories
 </description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Dec 2018 12:21:10 +0100</pubDate>
-    <lastBuildDate>Tue, 11 Dec 2018 12:21:10 +0100</lastBuildDate>
+    <link>https://effortless-serverless.com/</link>
+    <atom:link href="https://effortless-serverless.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 11 Dec 2018 12:25:20 +0100</pubDate>
+    <lastBuildDate>Tue, 11 Dec 2018 12:25:20 +0100</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
     
       <item>
@@ -456,8 +455,8 @@ For many teams, using new features in production requires CloudFormation support
 
 </description>
         <pubDate>Sat, 17 Nov 2018 09:50:28 +0100</pubDate>
-        <link>/cloudformation-custom-resources</link>
-        <guid isPermaLink="true">/cloudformation-custom-resources</guid>
+        <link>https://effortless-serverless.com/cloudformation-custom-resources</link>
+        <guid isPermaLink="true">https://effortless-serverless.com/cloudformation-custom-resources</guid>
         
         
         <category>CloudFormation</category>
@@ -539,8 +538,8 @@ For many teams, using new features in production requires CloudFormation support
 &lt;p&gt;Book will also tell you more about how other teams are using serverless in production. For example, to read more about how MindMup serves 400,000 monthly active users with two-person team and $100 AWS bill, or how a small team of CodePen frontend developers serves 200,000 requests per hour using AWS Lambda, jump to the case studies chapter directly &lt;a href=&quot;https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-15&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 29 Mar 2018 12:00:00 +0200</pubDate>
-        <link>/serverless-migration</link>
-        <guid isPermaLink="true">/serverless-migration</guid>
+        <link>https://effortless-serverless.com/serverless-migration</link>
+        <guid isPermaLink="true">https://effortless-serverless.com/serverless-migration</guid>
         
         
         <category>Serverless</category>
@@ -761,8 +760,8 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 &lt;p&gt;The full code example is available on &lt;a href=&quot;https://github.com/effortless-serverless/ice-cream-shop&quot;&gt;this repository&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 19 Oct 2017 12:00:00 +0200</pubDate>
-        <link>/serverless-icecream-database</link>
-        <guid isPermaLink="true">/serverless-icecream-database</guid>
+        <link>https://effortless-serverless.com/serverless-icecream-database</link>
+        <guid isPermaLink="true">https://effortless-serverless.com/serverless-icecream-database</guid>
         
         
         <category>Serverless</category>
@@ -788,8 +787,8 @@ https://your-service-url.execute-api.us-east-1.amazonaws.com/latest/icecreams
 &lt;p&gt;Learn more about the book &lt;a href=&quot;/book&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Tue, 03 Oct 2017 12:00:00 +0200</pubDate>
-        <link>/new-book</link>
-        <guid isPermaLink="true">/new-book</guid>
+        <link>https://effortless-serverless.com/new-book</link>
+        <guid isPermaLink="true">https://effortless-serverless.com/new-book</guid>
         
         
         <category>Claudiajs</category>
@@ -1024,8 +1023,8 @@ As the last step, if your project is a website or a single page app, Scotty will
 &lt;p&gt;Originally published on &lt;a href=&quot;https://hackernoon.com/single-command-deployment-for-single-page-apps-29941d62ef97&quot;&gt;Hackernoon&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Fri, 25 Aug 2017 12:00:00 +0200</pubDate>
-        <link>/single-command-deployment-for-single-page-apps</link>
-        <guid isPermaLink="true">/single-command-deployment-for-single-page-apps</guid>
+        <link>https://effortless-serverless.com/single-command-deployment-for-single-page-apps</link>
+        <guid isPermaLink="true">https://effortless-serverless.com/single-command-deployment-for-single-page-apps</guid>
         
         
         <category>FrontEnd</category>
@@ -1351,8 +1350,8 @@ As the last step, if your project is a website or a single page app, Scotty will
 &lt;p&gt;Originally published on: &lt;a href=&quot;https://www.smashingmagazine.com/2016/10/how-to-develop-a-chat-bot-with-node-js/&quot;&gt;Smashing magazine&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Mon, 17 Oct 2016 12:00:00 +0200</pubDate>
-        <link>/how-to-develop-a-chat-bot-with-nodejs</link>
-        <guid isPermaLink="true">/how-to-develop-a-chat-bot-with-nodejs</guid>
+        <link>https://effortless-serverless.com/how-to-develop-a-chat-bot-with-nodejs</link>
+        <guid isPermaLink="true">https://effortless-serverless.com/how-to-develop-a-chat-bot-with-nodejs</guid>
         
         
         <category>Claudiajs</category>
