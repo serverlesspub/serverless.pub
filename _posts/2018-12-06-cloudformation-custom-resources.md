@@ -10,7 +10,7 @@ show_avatar: true
 feature_image: custom-resource-4.png
 show_related_posts: false
 square_related: recommend-gojko
-=======
+---
 
 For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. 
 For many teams, using new features in production requires CloudFormation support, which comes at a much slower pace. In this tutorial, I'll show you how to patch up CloudFormation with custom resources so you do not have to choose between version controlled infrastructure and brand new features. 

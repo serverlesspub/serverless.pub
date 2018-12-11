@@ -1,11 +1,10 @@
 # Site settings
-title: Writer Theme
-email: help@writer-theme.com
+title: Effortless Serverless
+email: contact@effortless-serverless.com
 description: > # Writer Theme is a responsive template
- focussed on typography, minimal design and
-  quality photography built using the Jekyll platform.
+ Serverless stories
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site
+url: "https://effortless-serverless.com" # the base hostname & protocol for your site
 enable_retina: false
 permalink: :title
 nav_list:
