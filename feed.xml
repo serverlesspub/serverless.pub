@@ -7,27 +7,13 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Dec 2018 12:20:16 +0100</pubDate>
-    <lastBuildDate>Tue, 11 Dec 2018 12:20:16 +0100</lastBuildDate>
+    <pubDate>Tue, 11 Dec 2018 12:21:10 +0100</pubDate>
+    <lastBuildDate>Tue, 11 Dec 2018 12:21:10 +0100</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
     
       <item>
-        <title>Cloudformation Custom Resources</title>
-        <description>&lt;hr /&gt;
-&lt;p&gt;layout: post
-title:  “Plug gaps in CloudFormation with Custom Resources”
-date: 2018-11-17 08:50:28
-categories: CloudFormation
-author_name : Gojko Adzic
-author_url : /author/gojko
-author_avatar: gojko
-show_avatar: true
-feature_image: custom-resource-4.png
-show_related_posts: false
-square_related: recommend-gojko
-=======&lt;/p&gt;
-
-&lt;p&gt;For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. 
+        <title>Plug gaps in CloudFormation with Custom Resources</title>
+        <description>&lt;p&gt;For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. 
 For many teams, using new features in production requires CloudFormation support, which comes at a much slower pace. In this tutorial, I’ll show you how to patch up CloudFormation with custom resources so you do not have to choose between version controlled infrastructure and brand new features.&lt;/p&gt;
 
 &lt;p&gt;The AWS SDK is built by individual product teams, so it usually keeps pace with new product features.  With Custom Resources you can use the AWS SDK to fill the gaps in CloudFormation. And because most other deployment tools work based on CloudFormation, you can patch up and extend most other deployment utilities to support your specific needs as well.&lt;/p&gt;
@@ -469,10 +455,12 @@ For many teams, using new features in production requires CloudFormation support
 &lt;/ul&gt;
 
 </description>
-        <pubDate>Thu, 06 Dec 2018 00:00:00 +0100</pubDate>
+        <pubDate>Sat, 17 Nov 2018 09:50:28 +0100</pubDate>
         <link>/cloudformation-custom-resources</link>
         <guid isPermaLink="true">/cloudformation-custom-resources</guid>
         
+        
+        <category>CloudFormation</category>
         
       </item>
     

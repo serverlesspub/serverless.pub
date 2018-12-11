@@ -1,18 +1,76 @@
-<hr />
-<p>layout: post
-title:  “Plug gaps in CloudFormation with Custom Resources”
-date: 2018-11-17 08:50:28
-categories: CloudFormation
-author_name : Gojko Adzic
-author_url : /author/gojko
-author_avatar: gojko
-show_avatar: true
-feature_image: custom-resource-4.png
-show_related_posts: false
-square_related: recommend-gojko
-=======</p>
+<!DOCTYPE html>
+<html class="no-js">
 
-<p>For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. 
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Writer Theme | Plug gaps in CloudFormation with Custom Resources</title>
+    <meta name="description" content="For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. For many teams, using new features in produ...">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="/cloudformation-custom-resources">
+    <link rel="alternate" type="application/rss+xml" title="Writer Theme" href="/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu clearfix">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+            
+                <li><i class="fa fa-book"></i><a href="/book">Book</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <header>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+        
+            <li><i class="fa fa-book"></i><a href="/book">Book</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 single-content">
+            <h1>Plug gaps in CloudFormation with Custom Resources</h1>
+
+            <p class="meta">
+                <a href="/author/gojko">Gojko Adzic</a> in <a href='/category/CloudFormation'>CloudFormation</a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> 
+
+  15 minutes
+
+            </p>
+
+            <p>For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. 
 For many teams, using new features in production requires CloudFormation support, which comes at a much slower pace. In this tutorial, I’ll show you how to patch up CloudFormation with custom resources so you do not have to choose between version controlled infrastructure and brand new features.</p>
 
 <p>The AWS SDK is built by individual product teams, so it usually keeps pace with new product features.  With Custom Resources you can use the AWS SDK to fill the gaps in CloudFormation. And because most other deployment tools work based on CloudFormation, you can patch up and extend most other deployment utilities to support your specific needs as well.</p>
@@ -453,3 +511,64 @@ For many teams, using new features in production requires CloudFormation support
   <li>Give the Lambda function enough time to handle creation errors and timeouts from your task, and upload the result in those cases. Even though CloudFormation invokes your Lambda function, it won’t immediately recognise unrecoverable errors.</li>
 </ul>
 
+
+
+        </div><!-- main-content/col -->
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/gojko.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Nov 17, 2018</span></p>
+                <p><a href="/author/gojko">Gojko Adzic</a> in <a href='/category/CloudFormation'>CloudFormation</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/CloudFormation'>Cloudformation</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="/cloudformation-custom-resources"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="/cloudformation-custom-resources"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:help@writer-theme.com?body=/cloudformation-custom-resources"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+
+    
+</footer>
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  </body>
+
+</html>
