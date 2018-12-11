@@ -1,0 +1,455 @@
+<hr />
+<p>layout: post
+title:  “Plug gaps in CloudFormation with Custom Resources”
+date: 2018-11-17 08:50:28
+categories: CloudFormation
+author_name : Gojko Adzic
+author_url : /author/gojko
+author_avatar: gojko
+show_avatar: true
+feature_image: custom-resource-4.png
+show_related_posts: false
+square_related: recommend-gojko
+=======</p>
+
+<p>For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. 
+For many teams, using new features in production requires CloudFormation support, which comes at a much slower pace. In this tutorial, I’ll show you how to patch up CloudFormation with custom resources so you do not have to choose between version controlled infrastructure and brand new features.</p>
+
+<p>The AWS SDK is built by individual product teams, so it usually keeps pace with new product features.  With Custom Resources you can use the AWS SDK to fill the gaps in CloudFormation. And because most other deployment tools work based on CloudFormation, you can patch up and extend most other deployment utilities to support your specific needs as well.</p>
+
+<p>We’ll use AWS Pinpoint as an example. At the time when I wrote this, Pinpoint was still not supported in CloudFormation, but it’s quite a useful service to plug into an ecosystem, especially if you are using Cognito to authenticate users.  So instead of mixing CloudFormation templates for Cognito and manually deploying Pinpoint, we’ll add a custom resource to automate everything reliably.</p>
+
+<h2 id="custom-resources-under-the-hood">Custom Resources under the hood</h2>
+
+<p>A Custom Resource is a way to delegate a deployment step to somewhere outside the internal AWS CloudFormation system. You can declare a custom resource similarly to any other deployment entity, with all the usual parameters and references, and CloudFormation will track the status as it would for any internal AWS Resource. Instead of internally processing the requested changes, CloudFormation will just send a request to you. You then have to handle the work somehow, and upload the status of the task back to CloudFormation.</p>
+
+<p>Similarly to most other types of callbacks and triggers in AWS, the integration point for Custom Resources in CloudFormation is a Lambda function. This means that you can use a Lambda function to set up or configure additional resources. From the Lambda function, you can use the AWS SDK which fully tracks public feature releases, and support new resource types of features while the CloudFormation platform developers catch up.</p>
+
+<p>To tell CloudFormation that you want to handle the resource yourself, start the resource type with <code class="highlighter-rouge">Custom::</code>. Here’s how our Pinpoint will start:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">PinpointApplication</span><span class="pi">:</span>
+  <span class="s">Type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Custom::PinpointApp'</span>
+</code></pre>
+</div>
+
+<p>You can then add any parameters needed for the application in the <code class="highlighter-rouge">Properties</code> key-value map, as you would for built-in resources. CloudFormation will just pass these parameters to your task. You can still use all the usual CloudFormation references, functions and variables. For example, in order to create a Pinpoint application, we need to give it a name. This could be a usual CloudFormation parameter:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">AWSTemplateFormatVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2010-09-09'</span>
+
+<span class="s">Parameters</span><span class="pi">:</span>
+
+  <span class="s">AppName</span><span class="pi">:</span> 
+    <span class="s">Type</span><span class="pi">:</span> <span class="s">String</span>
+
+<span class="s">Resources</span><span class="pi">:</span>
+
+  <span class="s">PinpointApp</span><span class="pi">:</span>
+    <span class="s">Type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Custom::PinpointApp'</span>
+    <span class="s">Properties</span><span class="pi">:</span>
+      <span class="s">Name</span><span class="pi">:</span> <span class="kt">!Ref</span> <span class="s">AppName</span>
+</code></pre>
+</div>
+
+<p>The final piece of the puzzle is to tell CloudFormation where to send the custom task request. To do that, you’ll need to add a <code class="highlighter-rouge">ServiceToken</code> property for the Lambda function:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">PinpointApp</span><span class="pi">:</span>
+  <span class="s">Type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Custom::PinpointApp'</span>
+  <span class="s">Properties</span><span class="pi">:</span>
+    <span class="s">Name</span><span class="pi">:</span> <span class="kt">!Ref</span> <span class="s">AppName</span>
+    <span class="s">ServiceToken</span><span class="pi">:</span> <span class="s">&lt;SOME LAMBDA FUNCTION ARN&gt;</span>
+</code></pre>
+</div>
+
+<p>The nice thing about CloudFormation templates is that you can actually create the Lambda function to process the custom resource in the same template as the resource itself. That’s our next step.</p>
+
+<h2 id="custom-resource-requests">Custom Resource requests</h2>
+
+<p>We can now create the Lambda function to handle the custom task. The function will get an event with all the configured properties in the <code class="highlighter-rouge">ResourceProperties</code> field. So, for example, the result of the parameter mapping above will end in <code class="highlighter-rouge">event.ResourceProperties.Name</code>.</p>
+
+<p>The <code class="highlighter-rouge">RequestType</code> field tells us what CloudFormation needs to do with the resource. The values can be <code class="highlighter-rouge">Create</code>, <code class="highlighter-rouge">Update</code> and <code class="highlighter-rouge">Delete</code>, which are all self-explanatory.</p>
+
+<p>After the creation, we’ll need to give CloudFormation the unique identifier for the new resource – or a “physical resource ID” in CloudFormation jargon. During updates and deletes, CloudFormation will send this identifier back to us in the <code class="highlighter-rouge">PhysicalResourceId</code> property. In this case, we’re creating an app inside Pinpoint which will give us the ID back, so that’s a logical choice for the physical resource ID. We’ll need to extract this from the AWS SDK API responses.</p>
+
+<p>I will use a Node function as that’s easy to set up, but you can use any supported Lambda runtime. The start of the function will use the AWS SDK for Pinpoint to manage the resource, and just return back the response from the API.</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">//pinpoint-event.js</span>
+
+<span class="kr">const</span> <span class="nx">aws</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'aws-sdk'</span><span class="p">),</span>
+ <span class="nx">pinpoint</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">aws</span><span class="p">.</span><span class="nx">Pinpoint</span><span class="p">(),</span>
+ <span class="nx">createApp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="na">CreateApplicationRequest</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">Name</span><span class="p">:</span> <span class="nx">name</span>
+   <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="k">return</span> <span class="nx">pinpoint</span><span class="p">.</span><span class="nx">createApp</span><span class="p">(</span><span class="nx">params</span><span class="p">).</span><span class="nx">promise</span><span class="p">()</span>
+   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="o">=&gt;</span> <span class="nx">result</span><span class="p">.</span><span class="nx">ApplicationResponse</span><span class="p">);</span>
+ <span class="p">},</span>
+ <span class="nx">deleteApp</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">pinpoint</span><span class="p">.</span><span class="nx">deleteApp</span><span class="p">({</span><span class="na">ApplicationId</span><span class="p">:</span> <span class="nx">id</span><span class="p">}).</span><span class="nx">promise</span><span class="p">()</span>
+   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="o">=&gt;</span> <span class="nx">result</span><span class="p">.</span><span class="nx">ApplicationResponse</span><span class="p">);</span>
+ <span class="p">};</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">handleEvent</span><span class="p">(</span><span class="nx">event</span><span class="cm">/*, context*/</span><span class="p">)</span> <span class="p">{</span>
+ <span class="kr">const</span> <span class="nx">requestType</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">RequestType</span><span class="p">;</span>
+ <span class="k">if</span> <span class="p">(</span><span class="nx">requestType</span> <span class="o">===</span> <span class="s1">'Create'</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">createApp</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">ResourceProperties</span><span class="p">.</span><span class="nx">Name</span><span class="p">);</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">requestType</span> <span class="o">===</span> <span class="s1">'Update'</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">pinpoint</span><span class="p">.</span><span class="nx">deleteApp</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">PhysicalResourceId</span><span class="p">)</span>
+   <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">createApp</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">ResourceProperties</span><span class="p">.</span><span class="nx">Name</span><span class="p">));</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">requestType</span> <span class="o">===</span> <span class="s1">'Delete'</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">deleteApp</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">PhysicalResourceId</span><span class="p">);</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="err">`</span><span class="na">Unexpected</span><span class="p">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">)}</span><span class="err">`</span><span class="p">);</span>
+ <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<h2 id="custom-resource-responses">Custom Resource responses</h2>
+
+<p>CloudFormation expects the response in a specific JSON structure.</p>
+
+<p>The <code class="highlighter-rouge">Status</code> field should be either <code class="highlighter-rouge">SUCCESS</code> or <code class="highlighter-rouge">FAILED</code>, depending on the outcome of the task.</p>
+
+<p>The <code class="highlighter-rouge">PhysicalResourceId</code> needs to be the unique identifier of the resource we created. Even if you’re doing something transient, it’s important to provide some value here, otherwise CloudFormation will fail the task and report an invalid resource ID. This is specifically important in case of errors, because any underlying error will just be masked by CloudFormation complaining about IDs. If you don’t know what to put here, it’s a good bet to use the <code class="highlighter-rouge">awsRequestId</code> from the Lambda execution context. This will be reasonably unique between resource calls, and in case of temporary errors for the same resource, Lambda will actually give you the same request ID.</p>
+
+<p>It’s very important to send this ID back consistently after all operations. For example, if you send a different physical ID after an update, CloudFormation will also send a delete message request for the previous resource ID. This is a good way of handling resources which can’t be updated, but need to be created again. So make sure to reuse the old resource ID in case of updating a resource.</p>
+
+<p>The Pinpoint AWS SDK returns an Id property inside the <code class="highlighter-rouge">ApplicationResponse</code> object, so we’ll use that to pull the physical resource ID out.</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// result-to-app-id.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">resultToAppId</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Id</span> <span class="o">||</span> <span class="nx">event</span><span class="p">.</span><span class="nx">PhysicalResourceId</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>CloudFormation also uses three fields for validation: <code class="highlighter-rouge">StackId</code>, <code class="highlighter-rouge">RequestId</code> and <code class="highlighter-rouge">LogicalResourceId</code>. You need to just copy these directly from the originating event.</p>
+
+<p>Finally, you can put any output values into the <code class="highlighter-rouge">Data</code> field in case of a successful result, or a message in the <code class="highlighter-rouge">Reason</code> field in case of errors. This allows linking the results of the custom step with other resources, for example using the Application ID in IAM policies.</p>
+
+<p>Unfortunately, CloudFormation won’t just take the result of a Lambda function. Yes, that is a pain, but at the moment it is as it is. Instead, CloudFormation will wait for the response to be uploaded to a specific S3 location, provided in the incoming event <code class="highlighter-rouge">ResponseURL</code> parameter. The value of that field will be a pre-signed S3 resource URL that will only accept a HTTPS <code class="highlighter-rouge">PUT</code> request.</p>
+
+<p><img src="/img/custom-resource-4.png" alt="" /></p>
+
+<p>Here is a utility class to capture the generic flow. It expects a resource-specific function to process the actual event (this will be the <code class="highlighter-rouge">handleEvent</code> function defined above), and a function to extract the physical resource ID from the results.</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">//cloudformation-resource.js</span>
+<span class="kr">const</span> <span class="nx">errorToString</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./error-to-string'</span><span class="p">),</span>
+ <span class="nx">httpsPut</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./https-put'</span><span class="p">),</span>
+ <span class="nx">timeout</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./timeout'</span><span class="p">);</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">eventAction</span><span class="p">,</span> <span class="nx">extractResourceId</span><span class="p">)</span> <span class="p">{</span>
+ <span class="kr">const</span> <span class="nx">sendResult</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">responseBody</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+    <span class="na">Status</span><span class="p">:</span> <span class="s1">'SUCCESS'</span><span class="p">,</span>
+    <span class="na">PhysicalResourceId</span><span class="p">:</span> <span class="nx">extractResourceId</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">result</span><span class="p">),</span>
+    <span class="na">StackId</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">StackId</span><span class="p">,</span>
+    <span class="na">RequestId</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">RequestId</span><span class="p">,</span>
+    <span class="na">LogicalResourceId</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">LogicalResourceId</span><span class="p">,</span>
+    <span class="na">Data</span><span class="p">:</span> <span class="nx">result</span>
+   <span class="p">});</span>
+   <span class="k">return</span> <span class="nx">httpsPut</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">ResponseURL</span><span class="p">,</span> <span class="nx">responseBody</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="nx">sendError</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+   <span class="kr">const</span> <span class="nx">resourceId</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">PhysicalResourceId</span> <span class="o">||</span> <span class="err">`</span><span class="nx">f</span><span class="err">:</span><span class="nx">$</span><span class="p">{</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()}</span><span class="err">`</span><span class="p">;</span>
+   <span class="kr">const</span> <span class="nx">responseBody</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+    <span class="na">Status</span><span class="p">:</span> <span class="s1">'FAILED'</span><span class="p">,</span>
+    <span class="na">Reason</span><span class="p">:</span> <span class="nx">errorToString</span><span class="p">(</span><span class="nx">error</span><span class="p">),</span>
+    <span class="na">PhysicalResourceId</span><span class="p">:</span> <span class="nx">resourceId</span><span class="p">,</span>
+    <span class="na">StackId</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">StackId</span><span class="p">,</span>
+    <span class="na">RequestId</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">RequestId</span><span class="p">,</span>
+    <span class="na">LogicalResourceId</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">LogicalResourceId</span>
+   <span class="p">});</span>
+   <span class="k">return</span> <span class="nx">httpsPut</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">ResponseURL</span><span class="p">,</span> <span class="nx">responseBody</span><span class="p">);</span>
+  <span class="p">};</span>
+ <span class="k">this</span><span class="p">.</span><span class="nx">processEvent</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'received'</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">event</span><span class="p">));</span>
+  <span class="kr">const</span> <span class="nx">allowedTime</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getRemainingTimeInMillis</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2000</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()</span>
+   <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">race</span><span class="p">([</span>
+    <span class="nx">timeout</span><span class="p">(</span><span class="nx">allowedTime</span><span class="p">),</span> 
+    <span class="nx">eventAction</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span>
+   <span class="p">]))</span>
+   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">result</span> <span class="o">=&gt;</span> <span class="nx">sendResult</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">result</span><span class="p">))</span>
+   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">sendError</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">e</span><span class="p">))</span>
+   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'error sending status'</span><span class="p">,</span> <span class="nx">e</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="nx">errorToString</span><span class="p">(</span><span class="nx">e</span><span class="p">));</span>
+   <span class="p">});</span>
+ <span class="p">};</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>The gotcha here is that CloudFormation won’t automatically fail if there is an exception during the custom resource Lambda task, or if it times out. We need to handle all those types of errors internally and then report back. That’s why the <code class="highlighter-rouge">processEvent</code> function first starts a <code class="highlighter-rouge">Promise</code> chain, so we can handle exceptions, asynchronous and synchronous errors easily. We also protect against the event action timing out, and leave the generic resource about two seconds to send the timeout response if needed.</p>
+
+<h2 id="utility-functions">Utility functions</h2>
+
+<p>The final pieces are the three utility functions.</p>
+
+<p>The first one, <code class="highlighter-rouge">https-put.js</code>, will perform a <code class="highlighter-rouge">PUT</code> request with the headers expected by the pre-signed URL that CloudFormation provides. We could use some third-party module for network requests, such as <code class="highlighter-rouge">axios</code> or <code class="highlighter-rouge">got</code>, to provide network retries and content processing, but Node has all the features for a minimal implementation built in, and that does the trick for now.</p>
+
+<p>The key trick here for the CloudFormation flow, is to include the <code class="highlighter-rouge">content-length</code> and <code class="highlighter-rouge">content-type</code> headers for the upload. Leave the content type blank, and put the size of the payload into content length. If you don’t do that, the pre-signed request upload will fail, and CloudFormation gets indefinitely stuck.</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// https-put.js</span>
+<span class="kr">const</span> <span class="nx">https</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'https'</span><span class="p">),</span>
+ <span class="nx">urlParser</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'url'</span><span class="p">);</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">httpsPut</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+ <span class="kr">const</span> <span class="nx">parsedUrl</span> <span class="o">=</span> <span class="nx">urlParser</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">url</span><span class="p">),</span>
+  <span class="nx">callOptions</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="na">host</span><span class="p">:</span> <span class="nx">parsedUrl</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+   <span class="na">port</span><span class="p">:</span> <span class="nx">parsedUrl</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span>
+   <span class="na">method</span><span class="p">:</span> <span class="s1">'PUT'</span><span class="p">,</span>
+   <span class="na">path</span><span class="p">:</span> <span class="nx">parsedUrl</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span>
+   <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'content-type'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+    <span class="s1">'content-length'</span><span class="p">:</span> <span class="nx">body</span><span class="p">.</span><span class="nx">length</span>
+   <span class="p">}</span>
+  <span class="p">};</span>
+ <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'sending'</span><span class="p">,</span> <span class="nx">callOptions</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+ <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">https</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">callOptions</span><span class="p">);</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'ETIMEDOUT'</span><span class="p">);</span>
+   <span class="nx">e</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="s1">'ETIMEDOUT'</span><span class="p">;</span>
+   <span class="nx">e</span><span class="p">.</span><span class="nx">errno</span> <span class="o">=</span> <span class="s1">'ETIMEDOUT'</span><span class="p">;</span>
+   <span class="nx">e</span><span class="p">.</span><span class="nx">syscall</span> <span class="o">=</span> <span class="s1">'connect'</span><span class="p">;</span>
+   <span class="nx">e</span><span class="p">.</span><span class="nx">address</span> <span class="o">=</span> <span class="nx">callOptions</span><span class="p">.</span><span class="nx">hostname</span><span class="p">;</span>
+   <span class="nx">e</span><span class="p">.</span><span class="nx">port</span> <span class="o">=</span> <span class="nx">callOptions</span><span class="p">.</span><span class="nx">port</span><span class="p">;</span>
+   <span class="nx">reject</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nx">reject</span><span class="p">);</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'response'</span><span class="p">,</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kr">const</span> <span class="nx">dataChunks</span> <span class="o">=</span> <span class="p">[];</span>
+   <span class="nx">res</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">(</span><span class="s1">'utf8'</span><span class="p">);</span>
+   <span class="nx">res</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="p">(</span><span class="nx">chunk</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">dataChunks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">chunk</span><span class="p">));</span>
+   <span class="nx">res</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'end'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="na">headers</span><span class="p">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">headers</span><span class="p">,</span>
+     <span class="na">body</span><span class="p">:</span> <span class="nx">dataChunks</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">''</span><span class="p">),</span>
+     <span class="na">statusCode</span><span class="p">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">,</span>
+     <span class="na">statusMessage</span><span class="p">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusMessage</span>
+    <span class="p">};</span>
+    <span class="k">if</span> <span class="p">((</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;</span> <span class="mi">199</span> <span class="o">&amp;&amp;</span> <span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">400</span><span class="p">))</span> <span class="p">{</span>
+     <span class="nx">resolve</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+     <span class="nx">reject</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+    <span class="p">}</span>
+   <span class="p">});</span>
+  <span class="p">});</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">();</span>
+ <span class="p">});</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>The second helper function provides error descriptions to CloudFormation. As CloudFormation expects a string, we need to consider synchronous exceptions, asynchronous promise rejections, plus strings or JavaScript error objects in all those cases. Here is a generic function that handles all those cases:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// error-to-string.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">errorToString</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">'Undefined error'</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">error</span> <span class="o">===</span> <span class="s1">'string'</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">error</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="nx">error</span><span class="p">.</span><span class="nx">stack</span> <span class="o">||</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span> <span class="o">||</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>The third function helps us act on a timeout as a Promise rejection, so we can notify CloudFormation in case of the task getting stuck.</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">//timeout.js</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">timeout</span><span class="p">(</span><span class="nx">duration</span><span class="p">)</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">reject</span><span class="p">(</span><span class="s1">'timeout'</span><span class="p">),</span> <span class="nx">duration</span><span class="p">);</span>
+ <span class="p">});</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<h2 id="wrapping-up-the-configuration">Wrapping up the configuration</h2>
+
+<p>With all those parts in place, we can now simply wire everything into a Lambda function:</p>
+
+<div class="language-js highlighter-rouge"><pre class="highlight"><code><span class="c1">// lambda.js</span>
+<span class="kr">const</span> <span class="nx">pinpointEvent</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./pinpoint-event'</span><span class="p">),</span>
+ <span class="nx">resultToAppId</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./result-to-app-id'</span><span class="p">),</span>
+ <span class="nx">CloudFormationResource</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./cloudformation-resource'</span><span class="p">),</span>
+ <span class="nx">customResource</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CloudFormationResource</span><span class="p">(</span>
+  <span class="nx">pinpointEvent</span><span class="p">,</span> 
+  <span class="nx">resultToAppId</span>
+ <span class="p">);</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="nx">customResource</span><span class="p">.</span><span class="nx">processEvent</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>Everything apart from the <code class="highlighter-rouge">pinpointEvent</code> and <code class="highlighter-rouge">resultToAppId</code> is generic, so you can reuse it for other types of CloudFormation custom resources.</p>
+
+<p>Save all those files in a directory relative to the template, for example <code class="highlighter-rouge">code</code>, so we can use it in the template later.</p>
+
+<h2 id="recovering-from-development-errors">Recovering from development errors</h2>
+
+<p>Before we start deploying, there is one more trick, very useful when you’re starting with new custom resources. Because CloudFormation templates can be very fiddly, it’s useful to record calls to the custom resource lambda in case of unexpected errors. The generic flow in <code class="highlighter-rouge">cloudformation-resource.js</code> will protect you from timeouts and errors inside your task, but it won’t be able to protect you against Lambda initialisation errors.</p>
+
+<p>CloudFormation uses the event-based Lambda invocation, which means that Lambda will re-try three times in case of unrecoverable errors, then give up. In such cases, CloudFormation never receives a response, so it will get stuck on your custom resource. Rolling back won’t help as well, because it will just explode again. To recover, you’ll need to know the pre-signed URL for responses and manually upload the result.</p>
+
+<p>There are several good ways of logging Lambda invocations. One is to use <a href="https://aws.amazon.com/cloudtrail/">CloudTrail</a>. Another is to set up a SNS topic that sends you an e-mail in case of errors. In either case, once you know the pre-signed URL that CloudFormation expects, you can cook up a response in a JSON file, such as this:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"Status"</span><span class="p">:</span><span class="s2">"FAILED"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"Reason"</span><span class="p">:</span><span class="s2">"Aborted"</span><span class="w">
+  </span><span class="s2">"StackId"</span><span class="err">:</span><span class="s2">"&lt;COPY FROM THE REQUEST&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"RequestId"</span><span class="p">:</span><span class="s2">"&lt;COPY FROM THE REQUEST&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"LogicalResourceId"</span><span class="p">:</span><span class="s2">"&lt;COPY FROM THE REQUEST&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"PhysicalResourceId"</span><span class="p">:</span><span class="s2">"&lt;COPY FROM THE REQUEST&gt;"</span><span class="p">,</span><span class="w">
+</span><span class="err">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Assuming you saved this to <code class="highlighter-rouge">body.json</code>, you can send it to CloudFormation using a PUT request from <code class="highlighter-rouge">curl</code>. Remember that the content type must be blank, otherwise the signature won’t match.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -H <span class="s2">"content-type: "</span> -X PUT --data-binary @body.json &lt;URL&gt;
+</code></pre>
+</div>
+
+<h2 id="wiring-everything-up">Wiring everything up</h2>
+
+<p>I use SNS for dead letter queues as it is easy to turn on and off in the template itself. For this option, you’ll need to set up a SNS topic and subscribe to it yourself – check out the guide on <a href="https://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email.html">Receiving Email with Amazon SES</a> if you need help about that. We can now add another parameter <code class="highlighter-rouge">DLQSNSTopicARN</code> to the main pinpoint template, and a condition to check if it is defined:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">AWSTemplateFormatVersion</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2010-09-09'</span>
+<span class="s">Description</span><span class="pi">:</span> <span class="s">Set up a Pinpoint application using CloudFormation</span> 
+<span class="s">Parameters</span><span class="pi">:</span>
+  <span class="s">AppName</span><span class="pi">:</span> 
+    <span class="s">Type</span><span class="pi">:</span> <span class="s">String</span>
+    <span class="s">Description</span><span class="pi">:</span> <span class="s">Pinpoint application name</span>
+  <span class="s">DLQSNSTopicARN</span><span class="pi">:</span> 
+    <span class="s">Type</span><span class="pi">:</span> <span class="s">String</span>
+    <span class="s">Description</span><span class="pi">:</span> <span class="s">Dead-letter SNS topic for Lambda</span>
+    <span class="s">Default</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
+
+<span class="s">Conditions</span><span class="pi">:</span>
+  <span class="s">IsDLQDefined</span><span class="pi">:</span> <span class="kt">!Not</span> <span class="pi">[</span> <span class="kt">!Equals</span> <span class="pi">[</span><span class="s1">'</span><span class="s">'</span><span class="pi">,</span> <span class="kt">!Ref</span> <span class="nv">DLQSNSTopicARN</span><span class="pi">]]</span>
+
+<span class="s">Resources</span><span class="pi">:</span> 
+</code></pre>
+</div>
+
+<p>In the Lambda configuration, we can to load the JavaScript files and to delegate unrecoverable errors to the Dead Letter queue if defined:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">PinpointConfigurationLambdaFunction</span><span class="pi">:</span>
+  <span class="s">Type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AWS::Lambda::Function'</span>
+  <span class="s">Properties</span><span class="pi">:</span>
+    <span class="s">Runtime</span><span class="pi">:</span> <span class="s">nodejs8.10</span>
+    <span class="s">Code</span><span class="pi">:</span> <span class="s">./code</span> 
+    <span class="s">Handler</span><span class="pi">:</span> <span class="s">lambda.handler</span>
+    <span class="s">Role</span><span class="pi">:</span> <span class="kt">!GetAtt</span> <span class="s">PinpointConfigurationLambdaRole.Arn</span>
+    <span class="s">Timeout</span><span class="pi">:</span> <span class="s">300</span>
+    <span class="s">DeadLetterConfig</span><span class="pi">:</span>
+      <span class="kt">!If</span>
+        <span class="pi">-</span> <span class="s">IsDLQDefined</span>
+        <span class="pi">-</span> <span class="s">TargetArn</span><span class="pi">:</span> <span class="kt">!Ref</span> <span class="s">DLQSNSTopicARN</span>
+        <span class="pi">-</span> <span class="kt">!Ref</span> <span class="s">AWS::NoValue</span>
+</code></pre>
+</div>
+
+<p>We can wire this function into the custom resource using the CloudFormation <code class="highlighter-rouge">GetAtt</code> function to extract the ARN:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">PinpointApp</span><span class="pi">:</span>
+  <span class="s">Type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Custom::PinpointApp'</span>
+  <span class="s">Properties</span><span class="pi">:</span>
+    <span class="s">Name</span><span class="pi">:</span> <span class="kt">!Ref</span> <span class="s">AppName</span>
+    <span class="s">ServiceToken</span><span class="pi">:</span> <span class="kt">!GetAtt</span> <span class="s">PinpointConfigurationLambdaFunction.Arn</span>
+</code></pre>
+</div>
+
+<p>We also need an IAM role for the configuration function, that will allow it to log to CloudWatch, manage Pinpoint functions and optionally publish to the dead letter queue if it is set:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">PinpointConfigurationLambdaRole</span><span class="pi">:</span>
+  <span class="s">Type</span><span class="pi">:</span> <span class="s1">'</span><span class="s">AWS::IAM::Role'</span>
+  <span class="s">Properties</span><span class="pi">:</span>
+    <span class="s">AssumeRolePolicyDocument</span><span class="pi">:</span>
+      <span class="s">Version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2012-10-17'</span>
+      <span class="s">Statement</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">Effect</span><span class="pi">:</span> <span class="s">Allow</span>
+          <span class="s">Action</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sts:AssumeRole'</span>
+          <span class="s">Principal</span><span class="pi">:</span>
+            <span class="s">Service</span><span class="pi">:</span> <span class="s">lambda.amazonaws.com</span>
+    <span class="s">Policies</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">PolicyName</span><span class="pi">:</span> <span class="s">WriteCloudWatchLogs</span>
+        <span class="s">PolicyDocument</span><span class="pi">:</span> 
+          <span class="s">Version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2012-10-17'</span>
+          <span class="s">Statement</span><span class="pi">:</span> 
+            <span class="pi">-</span> <span class="s">Effect</span><span class="pi">:</span> <span class="s">Allow</span>
+              <span class="s">Action</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">logs:CreateLogGroup'</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">logs:CreateLogStream'</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">logs:PutLogEvents'</span>
+              <span class="s">Resource</span><span class="pi">:</span> <span class="s1">'</span><span class="s">arn:aws:logs:*:*:*'</span>
+      <span class="pi">-</span> <span class="s">PolicyName</span><span class="pi">:</span> <span class="s">UpdatePinpoint</span>
+        <span class="s">PolicyDocument</span><span class="pi">:</span>
+          <span class="s">Version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2012-10-17'</span>
+          <span class="s">Statement</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">Effect</span><span class="pi">:</span> <span class="s">Allow</span>
+              <span class="s">Action</span><span class="pi">:</span> 
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">mobiletargeting:CreateApp'</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">mobiletargeting:DeleteApp'</span>
+              <span class="s">Resource</span><span class="pi">:</span> <span class="s1">'</span><span class="s">*'</span>
+      <span class="pi">-</span> <span class="kt">!If</span>
+        <span class="pi">-</span> <span class="s">IsDLQDefined</span>
+        <span class="pi">-</span> <span class="s">PolicyName</span><span class="pi">:</span> <span class="s">WriteDLQTopic</span>
+          <span class="s">PolicyDocument</span><span class="pi">:</span> 
+            <span class="s">Version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2012-10-17'</span>
+            <span class="s">Statement</span><span class="pi">:</span> 
+              <span class="pi">-</span> <span class="s">Effect</span><span class="pi">:</span> <span class="s">Allow</span>
+                <span class="s">Action</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sns:Publish'</span>
+                <span class="s">Resource</span><span class="pi">:</span> <span class="kt">!Ref</span> <span class="s">DLQSNSTopicARN</span>
+        <span class="pi">-</span> <span class="kt">!Ref</span> <span class="s">AWS::NoValue</span>
+</code></pre>
+</div>
+
+<p>Lastly, we can read the pinpoint application ID from the custom resource results, so we can use it in other CloudFormation resources:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">Outputs</span><span class="pi">:</span>
+  <span class="s">AppId</span><span class="pi">:</span>
+    <span class="s">Value</span><span class="pi">:</span> <span class="kt">!GetAtt</span> <span class="s">PinpointApp.Id</span>
+</code></pre>
+</div>
+
+<h2 id="trying-it-out">Trying it out</h2>
+
+<p>Instead of typing up individual parts of the files, get the complete code for this example from the <a href="https://github.com/gojko/cloudformation-pinpoint">gojko/cloudformation-pinpoint</a> repository on Github. Then just package it as any other CloudFormation template (of course, replace the <code class="highlighter-rouge">&lt;DEPLOYMENT_BUCKET_NAME&gt;</code> with your deployment bucket):</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>aws cloudformation package 
+  --template-file pinpoint-configuration.yml 
+  --output-template-file output.yml 
+  --s3-bucket &lt;DEPLOYMENT_BUCKET_NAME&gt;
+</code></pre>
+</div>
+
+<p>This will create a deployable output template in <code class="highlighter-rouge">output.yml</code>. Deploy it from the CloudFormation web console, or from the command line, but make sure to include <code class="highlighter-rouge">CAPABILITIES_IAM</code> so CloudFormation can create the custom resource IAM role:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>aws cloudformation deploy 
+  --capabilities CAPABILITY_IAM 
+  --template-file output.yml 
+  --stack-name &lt;STACK_NAME&gt; 
+  --parameter-overrides <span class="nv">AppName</span><span class="o">=</span>&lt;NAME&gt; <span class="nv">DLQSNSTopicARN</span><span class="o">=</span>&lt;SNS_TOPIC_ARN&gt;
+</code></pre>
+</div>
+
+<p>If you do not want to use a SNS topic for dead letters, then just omit the last parameter section.</p>
+
+<h2 id="key-things-to-remember">Key things to remember</h2>
+
+<ul>
+  <li>Custom resources allow you to invoke your own lambda function as part of the CloudFormation deployment process</li>
+  <li>Log the Lambda requests using CloudTrail or SNS so you can recover from initialisation errors while developing</li>
+  <li>Return the physical resource ID consistently – either use the ID of the actual resource if you create something, or create something reasonably unique for transient requests and then reuse the same value for updates and deletes</li>
+  <li>Make sure to send an empty content type header and the actual payload size in the content length header when uploading results to CloudFormation, otherwise the pre-signed upload will fail</li>
+  <li>Give the Lambda function enough time to handle creation errors and timeouts from your task, and upload the result in those cases. Even though CloudFormation invokes your Lambda function, it won’t immediately recognise unrecoverable errors.</li>
+</ul>
+

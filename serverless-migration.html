@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Writer Theme | From Express.js to AWS Lambda: Migrating existing Node.js applications to serverless</title>
+    <meta name="description" content="Serverless architecture makes some of the good practices for architecturing apps obsolete. Building a serverless application from scratch requires a mind shi...">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="/serverless-migration">
+    <link rel="alternate" type="application/rss+xml" title="Writer Theme" href="/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu clearfix">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+            
+                <li><i class="fa fa-book"></i><a href="/book">Book</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <header>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+        
+            <li><i class="fa fa-book"></i><a href="/book">Book</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 single-content">
+            <h1>From Express.js to AWS Lambda: Migrating existing Node.js applications to serverless</h1>
+
+            <p class="meta">
+                <a href="/author/slobodan">Slobodan Stojanović</a> in <a href='/category/Serverless'>Serverless</a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> 
+
+  6 minutes
+
+            </p>
+
+            <p>Serverless architecture makes some of the good practices for architecturing apps obsolete. Building a serverless application from scratch requires a mind shift, but once you start thinking in a serverless way, all the dots connect quickly. With the help of tools such as Claudia.js, development and deployment cycles are short and easy.</p>
+
+<p>But most of the time you can’t just start from scratch. Instead, you have an app with a few thousand lines of code and a couple of thousand daily active users, with a history of questionable decisions caused by business requests or other issues that shaped your code in a specific way.</p>
+
+<p>Can you and should you migrate such an application to serverless? The answer is not a simple one, because it depends on the specifics of your application, the structure of your team, and many other things. But in most cases, serverless can be beneficial for legacy applications.</p>
+
+<p>Let’s say you are working on a nice and simple Node.js application. For example, an app similar to <a href="http://vacationtrackerbot.com">Vacation Tracker bot</a>, a simple Slack tool for managing team vacations.</p>
+
+<p><img src="/img/serverless-migration/figure-0.jpg" alt="Vacation tracker flow" /></p>
+
+<p>The app itself is simple. Most of the communication goes through Slack, but there’s also a nice web dashboard. As you are building MVP, you don’t want to spend too much resources on it, so you spin up a new Digital Ocean instance and bundle everything inside it. At that point, as shown in the figure below, your app consists of the following:</p>
+
+<ul>
+  <li>Ubuntu droplet with nginx</li>
+  <li>Express.js app that serves static pages (SPA dashboard) and an API</li>
+  <li>MongoDB database</li>
+  <li>Cronjob that sends scheduled messages</li>
+</ul>
+
+<p><img src="/img/serverless-migration/figure-1.jpg" alt="Simple Express.js and MongoDB app" /></p>
+
+<p>But sometimes your app has a big spikes in usage, and you need to think about scaling. Not to mention that you need many other things such as monitoring, SSL, development and production environments, etc.</p>
+
+<p>With first users, your fun side project quickly became another thing you need to maintain and configure for hours. An it costs more and more, even though users are still not paying for it. Not fun at all.</p>
+
+<p>You heard about serverless and decided to give it a try. But how can you transform your traditional Node.js app to serverless? Should you just fit everything into AWS Lambda?</p>
+
+<blockquote>
+  <p>In case you are not familiar with serverless, or you still think it’s some magic that runs web apps by hamster wheels instead of servers, see <a href="https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-1">this explanation</a>.</p>
+</blockquote>
+
+<h2 id="divide-and-conquer">Divide and conquer</h2>
+
+<p>Although fitting everything into AWS Lambda would technically make your app serverless and it might be a good first step, to gain full benefits of serverless you’ll need to put a bit more effort and embrace the serverless platform by dividing your app into small services.</p>
+
+<p>Before we see how, what are the benefits you could gain?</p>
+
+<p>Some of the most important benefits are:</p>
+
+<ul>
+  <li>Your app will autoscale. And it’ll do that fast, from 0 to 1000 parallel users in less than a few seconds.</li>
+  <li>You’ll pay only if someone is using your app. Zero users cost you $0. As amount of users increases,  the cost increases a bit too. For example, MindMup pays $100 a month for 400,000 monthly active users, impressive, isn’t it? Read more about it <a href="https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-15">here</a>.</li>
+  <li>Having as many environments similar to production doesn’t cost you anything if no-one is using them. Running experiments and tests is easier and cheaper than ever before.</li>
+  <li>Faster development and deployment cycles, because your app is divided into smaller units and even a frontend developer that has almost non backend experience can deploy a production-ready app.</li>
+</ul>
+
+<p>How do you do that? Simple (but sometimes not easy).</p>
+
+<p>You can start by moving your single page app and static content to AWS S3. Yes, the same S3 you are using for storing files. If you combine it with AWS CloudFront, you’ll get a powerful serverless static web site hosting with SSL and cache. You can configure your static website <a href="https://www.josephecombs.com/2018/03/05/how-to-make-an-AWS-S3-static-website-with-ssl">manually</a> or by using a tool such as <a href="https://github.com/stojanovic/scottyjs">Scotty.js</a>.</p>
+
+<p>Next step is to move database outside of your Digital Ocean droplet. If you want to keep MongoDB as a database, you can move it to MongoDB Atlas, a cloud-hosted MongoDB service engineered and run by the same team that builds the MongoDB database. Other, probably better option would be to migrate your content to AWS DynamoDB database, which is a serverless noSQL database offered by Amazon Web Services.</p>
+
+<p>Now that your static files and database are out of the game, you can start by pulling other services out of your Express.js app. For example, scheduled messages (weekly team vacation notifications) are a good first candidate. As you can’t run a cronjob in AWS Lambda, you’ll need a help from another service: CloudWatch Events can trigger your Lambda function at the scheduled time, as described <a href="https://medium.freecodecamp.org/scheduling-slack-messages-using-aws-lambda-e56a8eb22818">here</a>.</p>
+
+<p>Finally, you’ll have to migrate your API. To do so, you can split your logic into multiple AWS Lambda functions and put the API Gateway in front of them, because Lambda functions can’t be triggered by HTTP request directly. How should you split your API? That depends on your use case, but the easiest way is to split it by into business logic units. For example, one Lambda funciton witll work with Slack slash commands, another one will handle Slack Events webhooks, some other function or functions will serve the dashboard API. As you have some Node.js experience, you can easily create, deploy and manage web APIs using <a href="https://claudiajs.com">Claudia.js</a>.</p>
+
+<p>As some of your API endpoints will require auth (either direct or via social login), you can replace a tool such as passport.js with AWS serverless auth service Cognito. With Cognito, requests without valid authorization will never trigger your Lambda function, so you’ll pay less.</p>
+
+<p>After migration, your app could look like this:</p>
+
+<p><img src="/img/serverless-migration/figure-2.jpg" alt="Serverless app" /></p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>Many teams are already using serverless it in production and, according to  <a href="http://www.zdnet.com/article/serverless-computing-containers-see-triple-digit-quarterly-growth-among-cloud-users/">recent survey of AWS customers published by Cloudability</a> serverless adoption grew almost 700% in a year.</p>
+
+<p>If you want to learn more each about building and migrating serverless applications, and each of the services mentioned above, <a href="https://twitter.com/simalexan">Aleksandar Simović</a> and I wrote a whole book about these topics for Manning Publications. You can get the book and read the free chapters here:</p>
+
+<p><a href="https://www.manning.com/books/serverless-applications-with-nodejs">https://www.manning.com/books/serverless-applications-with-nodejs</a></p>
+
+<p>Book will also tell you more about how other teams are using serverless in production. For example, to read more about how MindMup serves 400,000 monthly active users with two-person team and $100 AWS bill, or how a small team of CodePen frontend developers serves 200,000 requests per hour using AWS Lambda, jump to the case studies chapter directly <a href="https://livebook.manning.com/#!/book/serverless-applications-with-nodejs/chapter-15">here</a>.</p>
+
+
+        </div><!-- main-content/col -->
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/slobodan.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Mar 29, 2018</span></p>
+                <p><a href="/author/slobodan">Slobodan Stojanović</a> in <a href='/category/Serverless'>Serverless</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/Serverless'>Serverless</a>
+                            ,
+                        </li>
+                        
+                        <li>
+                            <a href='/category/Serverless'>Claudiajs</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="/serverless-migration"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="/serverless-migration"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:help@writer-theme.com?body=/serverless-migration"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+
+    
+</footer>
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  </body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Writer Theme | Single command deployment for single page apps</title>
+    <meta name="description" content="Developing a single page app is hard. From the very beginning, you’ll need to make many decisions — decisions like picking a framework, setting the folder st...">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="/single-command-deployment-for-single-page-apps">
+    <link rel="alternate" type="application/rss+xml" title="Writer Theme" href="/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu clearfix">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+            
+                <li><i class="fa fa-book"></i><a href="/book">Book</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <header>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+        
+            <li><i class="fa fa-book"></i><a href="/book">Book</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 single-content">
+            <h1>Single command deployment for single page apps</h1>
+
+            <p class="meta">
+                <a href="/author/slobodan">Slobodan Stojanović</a> in <a href='/category/FrontEnd'>FrontEnd</a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> 
+
+  6 minutes
+
+            </p>
+
+            <p>Developing a single page app is hard. From the very beginning, you’ll need to make many decisions — decisions like picking a framework, setting the folder structure, configuring linter, and many others.</p>
+
+<p>Some of those tasks are easier because of the ecosystem of the tools surrounding your favorite framework and web development in general. For example, tools like <a href="https://github.com/facebookincubator/create-react-app">Create React App</a>, <a href="https://cli.angular.io/">Angular CLI</a> and <a href="https://github.com/choojs/create-choo-app">Create Choo App</a> will help you to setup your favorite framework in a few seconds.</p>
+
+<p><img src="/img/scotty-post-cover.jpeg" alt="Photo by Jonatan Pie on Unsplash" /></p>
+
+<p>Often, you don’t have enough time to even think about the deployment when you start your new project. And at some point, you need your app to be publicly accessible because you want to show it to your client, friends, or to add it to your portfolio while you are looking for your first job.</p>
+
+<p>But how can you pick the best place to deploy the app fast? There are many tools for deployment, too. If you go with some new shiny thing, will it scale for production, or will you be forced to make another decision about changing it soon? You can go with Github pages, but what about the HTTPS you need for service workers?</p>
+
+<p>Amazon offers something that can scale, a combination of <a href="https://aws.amazon.com/s3/">Simple Storage Service</a> (S3) for static website hosting and <a href="https://aws.amazon.com/cloudfront/">CloudFront</a> as a CDN is a cheap but scalable way to deliver your single page app. Although it takes some time to prepare both of those too, even more if you are not familiar with Amazon Web Services.</p>
+
+<p>There is an easier way, though — introducing <a href="https://github.com/stojanovic/scottyjs">Scotty.js</a>, a simple CLI tool that helps you deploy your website or single page app to Amazon S3 and CloudFront with a single command.</p>
+
+<h2 id="beam-me-up-scotty">Beam me up, Scotty</h2>
+
+<p>The main idea behind Scotty is to deploy your static website or single page app to Amazon ecosystem with a single command.</p>
+
+<p>It will deploy your static website, set up CDN with HTTPS, and even copy the website URL to your clipboard in a minute or so, depending on your internet speed and the website/app size.</p>
+
+<p>For single page applications, it will also configure redirections, so pushState can work out of the box.</p>
+
+<p><img src="/img/beam-me-up-scotty.gif" alt="Beam me up, Scotty" /></p>
+
+<p>Let’s see it in action with a simple React application.</p>
+
+<h2 id="create-react-app">Create React App</h2>
+
+<p>Before the deployment, we need the app, so let’s create a simple one using Create React App.</p>
+
+<p>First, create a sample app by running <code class="highlighter-rouge">create react app</code> command from your terminal:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>create-react-app scotty-cra-example
+</code></pre>
+</div>
+
+<p>If you do not have the create-react-app command installed, you can get it from NPM here: https://www.npmjs.com/package/create-react-app.</p>
+
+<p>Or if you are using NPM v5, you can run Create React App command without installing it globally with the new <code class="highlighter-rouge">npx</code> command:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>npx create-react-app -- scotty-cra-example
+</code></pre>
+</div>
+
+<p>Learn more about npx here: https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b.</p>
+
+<p>Let’s add React Router to demonstrate how pushState support works. To do so, enter your new project and install React Router as a dependency:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="nb">cd </span>scotty-cra-example
+
+npm install react-router-dom --save
+</code></pre>
+</div>
+
+<p>Now that everything is installed, let’s add React Router to the project — open “src/App.js” file in your favorite editor and update it to look like a basic example of React Router (https://reacttraining.com/react-router/web/example/basic):</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">'react'</span>
+<span class="kr">import</span> <span class="p">{</span>
+  <span class="nx">BrowserRouter</span> <span class="nx">as</span> <span class="nx">Router</span><span class="p">,</span>
+  <span class="nx">Route</span><span class="p">,</span>
+  <span class="nx">Link</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s1">'react-router-dom'</span>
+<span class="kr">import</span> <span class="nx">logo</span> <span class="nx">from</span> <span class="s1">'./logo.svg'</span>
+<span class="kr">import</span> <span class="s1">'./App.css'</span>
+
+<span class="kr">const</span> <span class="nx">BasicExample</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"App"</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"App-header"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="p">{</span><span class="nx">logo</span><span class="p">}</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"App-logo"</span> <span class="nx">alt</span><span class="o">=</span><span class="s2">"logo"</span> <span class="o">/&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Welcome</span> <span class="nx">to</span> <span class="nx">React</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">p</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"App-intro"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Router</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/"</span><span class="o">&gt;</span><span class="nx">Home</span><span class="o">&lt;</span><span class="sr">/Link&gt;&lt;/</span><span class="nx">li</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/about"</span><span class="o">&gt;</span><span class="nx">About</span><span class="o">&lt;</span><span class="sr">/Link&gt;&lt;/</span><span class="nx">li</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/topics"</span><span class="o">&gt;</span><span class="nx">Topics</span><span class="o">&lt;</span><span class="sr">/Link&gt;&lt;/</span><span class="nx">li</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>
+          <span class="o">&lt;</span><span class="nx">hr</span><span class="o">/&gt;</span>
+
+          <span class="o">&lt;</span><span class="nx">Route</span> <span class="nx">exact</span> <span class="nx">path</span><span class="o">=</span><span class="s2">"/"</span> <span class="nx">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Home</span><span class="p">}</span><span class="sr">/</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">Route</span> <span class="nx">path</span><span class="o">=</span><span class="s2">"/about"</span> <span class="nx">component</span><span class="o">=</span><span class="p">{</span><span class="nx">About</span><span class="p">}</span><span class="sr">/</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">Route</span> <span class="nx">path</span><span class="o">=</span><span class="s2">"/topics"</span> <span class="nx">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Topics</span><span class="p">}</span><span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/Router</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="kr">const</span> <span class="nx">Home</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Home</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="kr">const</span> <span class="nx">About</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">About</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="kr">const</span> <span class="nx">Topics</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">match</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Topics</span><span class="o">&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="p">{</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">url</span><span class="p">}</span><span class="sr">/rendering`}</span><span class="err">&gt;
+</span>          <span class="nx">Rendering</span> <span class="kd">with</span> <span class="nx">React</span>
+        <span class="o">&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="p">{</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">url</span><span class="p">}</span><span class="sr">/components`}</span><span class="err">&gt;
+</span>          <span class="nx">Components</span>
+        <span class="o">&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Link</span> <span class="nx">to</span><span class="o">=</span><span class="p">{</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">url</span><span class="p">}</span><span class="sr">/props-v-state`}</span><span class="err">&gt;
+</span>          <span class="nx">Props</span> <span class="nx">v</span><span class="p">.</span> <span class="nx">State</span>
+        <span class="o">&lt;</span><span class="sr">/Link</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>
+    <span class="o">&lt;</span><span class="nx">Route</span> <span class="nx">path</span><span class="o">=</span><span class="p">{</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">url</span><span class="p">}</span><span class="sr">/:topicId`} component={Topic}/</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">Route</span> <span class="nx">exact</span> <span class="nx">path</span><span class="o">=</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">url</span><span class="p">}</span> <span class="nx">render</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Please</span> <span class="nx">select</span> <span class="nx">a</span> <span class="nx">topic</span><span class="p">.</span><span class="o">&lt;</span><span class="sr">/h3</span><span class="err">&gt;
+</span>    <span class="p">)}</span><span class="sr">/</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="kr">const</span> <span class="nx">Topic</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">match</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span>
+  <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">topicId</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h3</span><span class="err">&gt;
+</span>  <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span><span class="p">)</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">BasicExample</span>
+</code></pre>
+</div>
+
+<p>Now, if you start your app using <code class="highlighter-rouge">npm start</code> it should work and look similar to the one from this screenshot:</p>
+
+<p><img src="/img/welcome-to-react.png" alt="Basic React app with React Router on localhost" /></p>
+
+<p>It’s time to build your app using <code class="highlighter-rouge">npm run build</code> node script. This will create a folder called “build” in root of your project.</p>
+
+<h2 id="deploy-the-app">Deploy the app</h2>
+
+<p>First install Scotty.js from NPM as a global package by running:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>npm install scottyjs -g
+</code></pre>
+</div>
+
+<p>Prerequisites for Scotty are:</p>
+
+<ul>
+  <li>Node.js (v4+) with NPM</li>
+  <li>AWS account</li>
+  <li>AWS credentials — setup tutorial: http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html</li>
+</ul>
+
+<p>Then just run following command:</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>scotty --spa --source ./build
+</code></pre>
+</div>
+
+<p>This command tells Scotty that your app is single page app (SPA) and that the source of your project is in “build” folder.</p>
+
+<blockquote>
+  <p>Bucket names are global for all users, which means that you need to come up with a unique name for your app — reusing “scotty-cra-example” will not work.</p>
+</blockquote>
+
+<p>Running this command from your terminal will deploy the app and give you 2 URLs as shown here:</p>
+
+<p><img src="/img/scotty.gif" alt="" /></p>
+
+<p>First one, which is also added to your clipboard, is an HTTP link to AWS S3. The second one is a CloudFront URL that also supports HTTPS.</p>
+
+<h3 id="cdn-and-https">CDN and HTTPS</h3>
+
+<p>Scotty will set up your project on CloudFront CDN, which means it will be cached and distributed to different regions to decrease latency.
+It will also set up HTTPS for free, so your app will be ready to use with service workers or anything else that requires a secure connection.</p>
+
+<blockquote>
+  <p>Live app: https://d1reyqfbyftmjg.cloudfront.net</p>
+</blockquote>
+
+<h2 id="how-does-it-work">How does it work</h2>
+
+<p><img src="/img/scotty-aws-infrastructure.png" alt="" /></p>
+
+<p>There’s no magic behind Scotty. It uses AWS SDK for Node.js behind the scene.</p>
+
+<p>First, it checks if you already have a default region. Unfortunately, AWS doesn’t give us a default region via AWS SDK. Scotty has a small LevelDB database to store that info. If the region doesn’t exist and is not provided, Scotty will ask you to select it.</p>
+
+<p>Next step is to create a bucket if bucket name is not provided, Scotty will use the name of your current folder. Keep in mind that bucket names are global for all users, hence, you need to come up with a unique name for your bucket.</p>
+
+<p>After bucket is created, Scotty will upload your project to AWS S3 using AWS SDK. If a source flag is not provided, the current folder will be used as a source.
+As the last step, if your project is a website or a single page app, Scotty will set up CloudFront CDN with HTTPS support. The difference between SPA and website is that Scotty redirects all of the non-existing pages back to index.html, which allows pushState to work out-of-the-box.</p>
+
+<hr />
+
+<p>What are the next steps?</p>
+
+<p>Try Scotty and let me know if something can be improved. Happy to receive pull requests as new features and improvements are welcome.</p>
+
+<blockquote>
+  <p>Github repository: https://github.com/stojanovic/scottyjs</p>
+</blockquote>
+
+<p>The current idea for Scotty is to stay a small library for AWS only, but that doesn’t mean that it can’t be changed.</p>
+
+<p>However, there are a few missing things, such as setting up custom domain names and config file for easier collaboration.</p>
+
+<p>Hope you’ll enjoy it 👽</p>
+
+<hr />
+
+<p>Originally published on <a href="https://hackernoon.com/single-command-deployment-for-single-page-apps-29941d62ef97">Hackernoon</a>.</p>
+
+
+        </div><!-- main-content/col -->
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/slobodan.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Aug 25, 2017</span></p>
+                <p><a href="/author/slobodan">Slobodan Stojanović</a> in <a href='/category/FrontEnd'>FrontEnd</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/FrontEnd'>Frontend</a>
+                            ,
+                        </li>
+                        
+                        <li>
+                            <a href='/category/FrontEnd'>S3</a>
+                            ,
+                        </li>
+                        
+                        <li>
+                            <a href='/category/FrontEnd'>Cloudfront</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="/single-command-deployment-for-single-page-apps"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="/single-command-deployment-for-single-page-apps"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:help@writer-theme.com?body=/single-command-deployment-for-single-page-apps"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+
+    
+</footer>
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  </body>
+
+</html>
