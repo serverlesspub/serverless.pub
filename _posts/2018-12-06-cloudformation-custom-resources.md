@@ -10,13 +10,14 @@ show_avatar: true
 feature_image: custom-resource-4.png
 show_related_posts: false
 square_related: recommend-gojko
----
+=======
 
-CloudFormation is the key deployment technology in the AWS world, and the underlying magic behind many higher level deployment tools such as AWS SAM or the Serverless Framework. Unfortunately, due to the break-neck speed of AWS service updates, CloudFormation often lacks support for newer options. For example, at the time when I wrote this in November 2018, creating AWS Pinpoint applications was not supported at all. Some services are only partially supported, such as Cognito User Pools. You can presently create User Pools with CloudFormation, but you can't set up the [built-in UI](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-ux.html) or configure an authentication domain.
+For AWS users, especially those that like to play with new technology, last week was like Christmas coming early. 
+For many teams, using new features in production requires CloudFormation support, which comes at a much slower pace. In this tutorial, I'll show you how to patch up CloudFormation with custom resources so you do not have to choose between version controlled infrastructure and brand new features. 
 
-To fully use the latest AWS features, teams often need to mix automated deployments with manual manual work or some other scripting. This is where CloudFormation Custom Resources come in: they help you fill the gaps in CloudFormation. This means that you don't have to choose between version controlled infrastructure and brand new features. And because most other deployment tools work based on CloudFormation, you can patch up and extend most other deployment utilities to support your specific needs as well. 
+The AWS SDK is built by individual product teams, so it usually keeps pace with new product features.  With Custom Resources you can use the AWS SDK to fill the gaps in CloudFormation. And because most other deployment tools work based on CloudFormation, you can patch up and extend most other deployment utilities to support your specific needs as well. 
 
-In this tutorial, I'll show you how to create a custom CloudFormation resource to fully automate the deployment of a currently unsupported service. We'll use AWS Pinpoint as an example. 
+We'll use AWS Pinpoint as an example. At the time when I wrote this, Pinpoint was still not supported in CloudFormation, but it's quite a useful service to plug into an ecosystem, especially if you are using Cognito to authenticate users.  So instead of mixing CloudFormation templates for Cognito and manually deploying Pinpoint, we'll add a custom resource to automate everything reliably.
 
 ## Custom Resources under the hood
 
