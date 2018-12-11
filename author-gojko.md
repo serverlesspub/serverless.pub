@@ -2,8 +2,8 @@
 layout: author
 title: Author
 permalink: author/gojko/
-feature_image: feature-mountain3
-author_avatar: gojko
+feature_image: feature-mountain3.jpg
+author_avatar: gojko.jpg
 author_name: Gojko Adzic
 title: Gojko Adzic
 ---

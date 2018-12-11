@@ -2,8 +2,8 @@
 layout: author
 title: Author
 permalink: author/slobodan/
-feature_image: feature-mountain2
-author_avatar: slobodan
+feature_image: feature-mountain2.jpg
+author_avatar: slobodan.jpg
 author_name: Slobodan Stojanović
 title: Slobodan Stojanović
 ---

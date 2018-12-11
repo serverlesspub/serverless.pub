@@ -2,7 +2,7 @@
 layout: page
 title: About
 permalink: /about/
-feature_image: feature-birds
+feature_image: feature-birds.jpg
 ---
 
 Effortless Serverless is a blog about serverless, written the by following three authors:

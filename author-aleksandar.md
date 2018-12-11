@@ -2,8 +2,8 @@
 layout: author
 title: Author
 permalink: author/simalexan/
-feature_image: feature-mountain
-author_avatar: simalexan
+feature_image: feature-mountain.jpg
+author_avatar: simalexan.jpg
 author_name: Aleksandar Simovic
 title: Aleksandar Simovic
 ---

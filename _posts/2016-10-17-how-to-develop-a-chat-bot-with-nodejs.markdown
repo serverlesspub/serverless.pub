@@ -5,7 +5,8 @@ date: 2016-10-17 12:00:00 +0200
 categories: Claudiajs Chatbots
 author_name : Slobodan Stojanović
 author_url : /author/slobodan
-author_avatar: slobodan
+author_avatar: slobodan.jpg
+twitter_username: slobodan_
 show_avatar: true
 read_time: 7
 feature_image: "https://effortless-serverless.com/img/serverless-migration/figure-2.jpg"

@@ -1,8 +1,7 @@
 # Site settings
 title: Effortless Serverless
 email: contact@effortless-serverless.com
-description: > # Writer Theme is a responsive template
- Serverless stories
+description: Serverless stories
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://effortless-serverless.com" # the base hostname & protocol for your site
 enable_retina: false

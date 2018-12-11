@@ -5,7 +5,8 @@ date: 2017-10-19 12:00:00 +0200
 categories: Serverless DynamoDB
 author_name : Aleksandar Simovic
 author_url : /author/simalexan
-author_avatar: simalexan
+author_avatar: simalexan.jpg
+twitter_username: simalexan
 show_avatar: true
 read_time: 7
 feature_image: serverless-migration/figure-2.jpg

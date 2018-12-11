@@ -5,7 +5,8 @@ date: 2018-11-17 08:50:28
 categories: CloudFormation
 author_name : Gojko Adzic
 author_url : /author/gojko
-author_avatar: gojko
+author_avatar: gojko.jpg
+twitter_username: gojkoadzic
 show_avatar: true
 feature_image: custom-resource-4.png
 show_related_posts: false

@@ -2,7 +2,7 @@
 layout: page
 title: Book
 permalink: /book/
-feature_image: feature-spiderman
+feature_image: feature-spiderman.jpg
 ---
 
 Serverless Applications with Node.js walks you through building serverless apps on AWS using JavaScript. Inside, you’ll create a full project designed to help you understand and apply general serverless design principles and concepts.
