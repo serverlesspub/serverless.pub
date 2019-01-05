@@ -5,7 +5,7 @@ description: Short stories from around the campfire for a fellow serverless expl
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://serverless.pub" # the base hostname & protocol for your site
 enable_retina: false
-permalink: :title
+permalink: :title/
 nav_list:
   Home : ['Home', '/', 'fa-home']
   About : ['About', '/about', 'fa-anchor']
