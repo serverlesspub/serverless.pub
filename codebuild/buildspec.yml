@@ -1,0 +1,18 @@
+version: 0.2
+
+env:
+  variables:
+    JEKYLL_ENV: production
+phases:
+  build:
+    commands:
+      - bundle install
+      - mkdir $CODEBUILD_SRC_DIR/$CODEBUILD_BUILD_ID
+      - bundle exec jekyll build -d $CODEBUILD_BUILD_ID/test.serverless.pub -s src --config _config.yml,_config-test.yml
+      - bundle exec jekyll build -d $CODEBUILD_BUILD_ID/www.serverless.pub -s src --config _config.yml
+      - rm -f $CODEBUILD_BUILD_ID/www.serverless.pub/robots.txt
+      - cp $CODEBUILD_SRC_DIR/codebuild/deploy.yml $CODEBUILD_BUILD_ID/buildspec.yml
+artifacts:
+  files:
+    - '**/*'
+  base-directory: $CODEBUILD_BUILD_ID

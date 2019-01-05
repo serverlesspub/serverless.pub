@@ -1,0 +1,10 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - aws s3api head-bucket --bucket $BUCKET
+  build:
+    commands:
+      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=864000" --exclude "*.html" --exclude "*.js"
+      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=864000" --exclude "*" --include "*.js" --content-type "application/javascript; charset=UTF-8"
+      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=600" --exclude "*" --include "*.html"
