@@ -5,6 +5,6 @@ phases:
       - aws s3api head-bucket --bucket $BUCKET
   build:
     commands:
-      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=864000" --exclude "*.html" --exclude "*.js"
-      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=864000" --exclude "*" --include "*.js" --content-type "application/javascript; charset=UTF-8"
-      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=600" --exclude "*" --include "*.html"
+      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=864000" --exclude "*.html" --exclude "*.js" --acl public-read
+      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=864000" --exclude "*" --include "*.js" --content-type "application/javascript; charset=UTF-8" --acl public-read
+      - aws s3 sync $BUCKET s3://$BUCKET --cache-control="max-age=600" --exclude "*" --include "*.html" --acl public-read
