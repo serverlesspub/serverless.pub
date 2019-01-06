@@ -14,7 +14,7 @@ layout: with-sidebar
         <div class="post-preview col-xs-10  no-gutter">
             <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
 
-            {{ post.excerpt | truncatewords: 28 }}
+            <p>{{ post.excerpt | truncatewords: 28 }}</p>
 
             <p class="meta">
                 <a href="{{ post.author_url | prepend: site.baseurl }}">{{ post.author_name }}</a> in <a href='{{ "/category/" | append: post.categories.first | prepend: site.baseurl }}'>{{ post.categories.first }}</a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> {% assign words = post | strip_html | number_of_words %} {% if words < 360 %} 1 minutes {% else %} {{ words | divided_by:180 }} minutes {% endif %}
@@ -38,7 +38,7 @@ layout: with-sidebar
             {% for category in site.categories %}
 
                 <div class="category-preview col-xs-6 col-sm-4 ">
-                    <h2>{{ category | first | capitalize }}</h2>
+                    <h2>{{ category | first }}</h2>
                     <a href='{{ "/category/" | append: category.first | prepend: site.baseurl }}'><img src='{{ "/img/" | append: category.first | prepend: site.baseurl }}-thumbnail.jpg' alt="category-image"></a>
                 </div>
             {% endfor %}
