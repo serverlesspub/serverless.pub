@@ -5,7 +5,7 @@ excerpt: "Manipulate video, sound files, SVG images and text documents in Lambda
 date: 2019-01-06 08:50:28
 categories: 
   - Serverless
-  - Cloudformation
+  - CloudFormation
   - Claudiajs
 author_name : Gojko Adzic
 author_url : /author/gojko
