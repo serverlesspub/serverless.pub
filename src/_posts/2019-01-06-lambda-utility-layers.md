@@ -3,7 +3,10 @@ layout: post
 title:  "FFmpeg, SOX, Pandoc and RSVG for AWS Lambda"
 excerpt: "Manipulate video, sound files, SVG images and text documents in Lambda functions, with just a few lines of code."
 date: 2019-01-06 08:50:28
-categories: Lambda
+categories: 
+  - Serverless
+  - Cloudformation
+  - Claudiajs
 author_name : Gojko Adzic
 author_url : /author/gojko
 author_avatar: gojko.jpg
