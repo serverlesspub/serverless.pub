@@ -41,6 +41,13 @@ For some nice examples of these layers in action, check out these projects:
 * [Markdown to DOCX converter](https://github.com/claudiajs/example-projects/tree/master/pandoc-s3-converter) using Claudia.js and Pandoc
 * [Markdown to DOCX converter](https://github.com/serverlesspub/s3-lambda-pandoc-s3) using AWS SAM and Pandoc
 
+You can also use some ready-made components in the Serverless Application Repository that convert files using S3 bucket uploads:
+
+* [SVG to PDF](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-svg-to-pdf-s3) 
+* [Markdown to HTML](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-markdown-to-html-s3)
+* [Markdown to DOCX](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-markdown-to-docx-s3)
+* [MOV to MP4](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-ffmpeg-mov-to-mp4-s3)
+
 ## How to use Layers in your applications
 
 You can easily attach these layers to your functions using CloudFormation. Just include the `Layers` property into `AWS::Lambda::Function`
