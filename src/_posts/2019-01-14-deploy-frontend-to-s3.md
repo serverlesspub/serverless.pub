@@ -22,9 +22,7 @@ We’ve provided it with a Python Lambda Layer which contains the `resource_hand
 
 ## Publishing Frontend Apps to AWS Serverless Application Repository
 
-The biggest benefit of this stack is that it allows you to publish your Frontend Applications or Components to the AWS Serverless Application Repository (SAR, from now on). Previously, it was very hard to virtually impossible to deploy any SPAs, static websites or even frontend components to SAR. Just before Re:Invent 2018, AWS announced support for CloudFormation Custom Resources, so we decided to try it out. It worked, so now you can deploy any kind of React.js, Vue.js, Angular or any kind of frontend, and combine it with your backend stacks too. Additionally, you can also combine these applications as Nested Applications, so that you can combine your frontend applications with some other published serverless applications that are available on Serverless Application Repository. Here is an example:
-
-- Contact Form static site connected to an API to send emails
+The biggest benefit of this stack is that it allows you to publish your Frontend Applications or Components to the AWS Serverless Application Repository (SAR, from now on). Previously, it was very hard to virtually impossible to deploy any SPAs, static websites or even frontend components to SAR. Just before Re:Invent 2018, AWS announced support for CloudFormation Custom Resources, so we decided to try it out. It worked, so now you can deploy any kind of React.js, Vue.js, Angular or any kind of frontend, and combine it with your backend stacks too. Additionally, you can also combine these applications as Nested Applications, so that you can combine your frontend applications with some other published serverless applications that are available on Serverless Application Repository.
 
 ## Multi-App Deployment
 
