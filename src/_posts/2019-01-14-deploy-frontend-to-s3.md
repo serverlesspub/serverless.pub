@@ -20,6 +20,12 @@ If you ever wanted to do automatic deployments of frontend web applications alon
 
 We’ve provided it with a Python Lambda Layer which contains `the resource_handler` for  uploading the files to the Target S3 Bucket, so you don’t have to have any code to be able to deploy. It’s written in such a way that even if you don’t know CloudFormation you’ll be able to deploy it. Also ,we provided a Custom Resource, which invokes the Lambda the moment the CloudFormation Stack is created, meaning that the code gets deployed on every `sam deploy` or `cloudformation deploy` command.
 
+## Publishing Frontend Apps to AWS Serverless Application Repository
+
+The biggest benefit of this stack is that it allows you to publish your Frontend Applications or Components to the AWS Serverless Application Repository (SAR, from now on). Previously, it was very hard to virtually impossible to deploy any SPAs, static websites or even frontend components to SAR. Just before Re:Invent 2018, AWS announced support for CloudFormation Custom Resources, so we decided to try it out. It worked, so now you can deploy any kind of React.js, Vue.js, Angular or any kind of frontend, and combine it with your backend stacks too. Additionally, you can also combine these applications as Nested Applications, so that you can combine your frontend applications with some other published serverless applications that are available on Serverless Application Repository. Here is an example:
+
+- Contact Form static site connected to an API to send emails
+
 ## Multi-App Deployment
 
 A Lambda Layer are a common piece of code that you can attach to any Lambda, and they are defined only once. You can reuse it and even deploy multiple websites or SPA applications inside the same Stack as well, without needing to define a deploy command per website, you can just specify each Lambda with the appropriate Layer and its corresponding AWS Custom Resource to  deploy a certain website. That means that you can easily do MicroFrontends using just one CloudFormation stack.
