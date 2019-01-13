@@ -16,23 +16,35 @@ show_related_posts: false
 square_related: recommend-simalexan
 ---
 
-If you ever wanted to do automatic deployments of frontend web applications along with CloudFormation resources, your time has arrived. We’ve created a Lambda Layer and a Custom Resource which automatically deploys frontend web apps and their files into a specified destination S3 bucket upon every deployment. No need to do deploy a SPA app or a static website separately from the backend, you can just do it with a standard `sam deploy` or `aws cloudformation deploy` commands.
+If you ever wanted to do automatic deployments of frontend web applications along with CloudFormation resources, your time has arrived. We’ve created a Lambda Layer and a Custom Resource which automatically deploys frontend web apps and their files into a specified destination S3 bucket. No need to do deploy a SPA app or a static website separately from the backend, you can just do it with a standard `sam deploy` or `aws cloudformation deploy` commands.
 
-We’ve provided it with a Python Lambda Layer which contains `the resource_handler` for  uploading the files to the Target S3 Bucket, so you don’t have to have any code to be able to deploy. It’s written in such a way that even if you don’t know CloudFormation you’ll be able to deploy it. Also ,we provided a Custom Resource, which invokes the Lambda the moment the CloudFormation Stack is created, meaning that the code gets deployed on every `sam` or `cloudformation`  deployment command.
+We’ve provided it with a Python Lambda Layer which contains `the resource_handler` for  uploading the files to the Target S3 Bucket, so you don’t have to have any code to be able to deploy. It’s written in such a way that even if you don’t know CloudFormation you’ll be able to deploy it. Also ,we provided a Custom Resource, which invokes the Lambda the moment the CloudFormation Stack is created, meaning that the code gets deployed on every `sam deploy` or `cloudformation deploy` command.
 
 ## Multi-App Deployment
 
-A Lambda Layer are a common piece of code that you can attach to any Lambda, and they are defined only once. You can reuse it and even deploy multiple websites or SPA applications inside the same Stack as well, without needing to define a deployment command per website, you can just specify each Lambda with the appropriate Layer and its corresponding AWS Custom Resource to  deploy a certain website. That means that you can easily do MicroFrontends using just one CloudFormation stack.
+A Lambda Layer are a common piece of code that you can attach to any Lambda, and they are defined only once. You can reuse it and even deploy multiple websites or SPA applications inside the same Stack as well, without needing to define a deploy command per website, you can just specify each Lambda with the appropriate Layer and its corresponding AWS Custom Resource to  deploy a certain website. That means that you can easily do MicroFrontends using just one CloudFormation stack.
 
 ## The S3 Deployment Layer
 
-Here is the ARN of the S3 Deployment Layer we published which is publicly available for everyone to use:
+Here is the ARN of the Layer we published which is publicly available for everyone to use:
 
 `arn:aws:lambda:us-east-1:145266761615:layer:s3-deployment:4`
 
 The layer is published with the MIT license.
 
-For some nice examples of this S3 Deployment Layer along with the Custom Resource, check out the examples folder within the Github repository.
+For some nice examples of this Layer along with the Custom Resource, check out the examples folder within the Github repository.
+
+## How does it work
+
+The whole process may seem a bit scary, as it involves both a Lambda Layer and a Custom Resource, which you might not be familiar with, but its actually quite simple.
+
+We want our frontend files to be uploaded to S3. S3 doesn't accept files as its contents, so we are going to use a Lambda Function specified in the Serverless Application Model transformation format. We need to put the files inside a folder, and the AWS Serverless Function needs to reference this folder as its CodeUri, as it needs to load them. The Function also needs to reference this s3 deployer Lambda Layer. Because, in order to load its files, it needs to use its the `deployer.py` method called `resource_handler` as the function Handler. That means when the Lambda is invoked it will run the `deployer.resource_handler` and the Layer handler will have access to your files inside the specifed `CodeUri`.
+
+Now it only needs to be invoked whenever we do a deploy our CloudFormation stack.
+
+To achieve that we are using a AWS CustomResource which invokes a Function by its ARN specified in its `ServiceToken` property. We also need to specify the Bucket where we want to send the files to, what kind of Access Control List we want too and to pass a `Version` parameter to redeploy each time we deploy. If we didn't specify it, it wouldn't redeploy if the files are already there, despite them being different. You can see this flow in the following figure.
+
+![](/img/cloudformation-deploy-to-s3-figure.png)
 
 ## How to use this in your web application
 
