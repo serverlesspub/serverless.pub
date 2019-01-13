@@ -18,7 +18,7 @@ square_related: recommend-simalexan
 
 If you ever wanted to do automatic deployments of frontend web applications along with CloudFormation resources, your time has arrived. We’ve created a Lambda Layer and a Custom Resource which automatically deploys frontend web apps and their files into a specified destination S3 bucket. No need to do deploy a SPA app or a static website separately from the backend, you can just do it with a standard `sam deploy` or `aws cloudformation deploy` commands.
 
-We’ve provided it with a Python Lambda Layer which contains `the resource_handler` for  uploading the files to the Target S3 Bucket, so you don’t have to have any code to be able to deploy. It’s written in such a way that even if you don’t know CloudFormation you’ll be able to deploy it. Also ,we provided a Custom Resource, which invokes the Lambda the moment the CloudFormation Stack is created, meaning that the code gets deployed on every `sam deploy` or `cloudformation deploy` command.
+We’ve provided it with a Python Lambda Layer which contains the `resource_handler` which  uploads the files to the Target S3 Bucket, so you don’t have to have any code whatsoever. It’s written in such a way that even if you don’t know CloudFormation at all, you’ll be able to deploy it. Additionally, we provided a Custom Resource, whose purpose is to invoke the Lambda the moment the CloudFormation Stack is created, to have the code deployed on every `sam deploy` or `cloudformation deploy` command.
 
 ## Publishing Frontend Apps to AWS Serverless Application Repository
 
