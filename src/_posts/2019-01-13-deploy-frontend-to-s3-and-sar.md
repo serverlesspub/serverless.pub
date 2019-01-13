@@ -2,7 +2,7 @@
 layout: post
 title:  "How to use CloudFormation to deploy Frontend Apps to S3 and Serverless Application Repository"
 excerpt: "Deploy and publish Frontend SPA apps, static websites and MicroFrontends to S3 and Serverless Application Repository using CloudFormation"
-date: 2019-01-14 10:00:00
+date: 2019-01-13 20:00:00
 categories: 
   - Serverless
   - CloudFormation
