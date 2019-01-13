@@ -38,7 +38,7 @@ For some nice examples of this Layer along with the Custom Resource, check out t
 
 The whole process may seem a bit scary, as it involves both a Lambda Layer and a Custom Resource, which you might not be familiar with, but its actually quite simple.
 
-We want our frontend files to be uploaded to S3. S3 doesn't accept files as its contents, so we are going to use a Lambda Function specified in the Serverless Application Model transformation format. We need to put the files inside a folder, and the AWS Serverless Function needs to reference this folder as its CodeUri, as it needs to load them. The Function also needs to reference this s3 deployer Lambda Layer. Because, in order to load its files, it needs to use its the `deployer.py` method called `resource_handler` as the function Handler. That means when the Lambda is invoked it will run the `deployer.resource_handler` and the Layer handler will have access to your files inside the specifed `CodeUri`.
+We want our frontend files to be uploaded to S3. S3 doesn't accept files as its contents, so we are going to use a Lambda Function which is able to load files into it. Therefore we put the files inside a folder, and the Lambda Function needs to reference this folder as its CodeUri, in order to load them. Now, the Lambda also needs to reference our S3 Deployement Lambda Layer, as its supposed to use its the `deployer.py` method called `resource_handler` as the function Handler, which will load the files within a Lambda into your S3 Bucket. That means when the Lambda is invoked it will run the `deployer.resource_handler` and the Layer handler will have access to your folder files specifed with the `CodeUri`.
 
 Now it only needs to be invoked whenever we do a deploy our CloudFormation stack.
 
