@@ -38,8 +38,6 @@ Here is the ARN of the Layer we published which is publicly available for everyo
 
 The layer is published with the MIT license.
 
-For some nice examples of this Layer along with the Custom Resource, check out the examples folder within the Github repository.
-
 ## How does it work
 
 The whole process may seem a bit scary, as it involves both a Lambda Layer and a Custom Resource, which you might not be familiar with, but its actually quite simple.
