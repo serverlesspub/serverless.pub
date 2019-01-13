@@ -6,6 +6,8 @@ date: 2019-01-14 10:00:00
 categories: 
   - Serverless
   - CloudFormation
+  - S3
+  - Frontend
 author_name : Aleksandar Simovic
 author_url : /author/simalexan
 author_avatar: simalexan.jpg
