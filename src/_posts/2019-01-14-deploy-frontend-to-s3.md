@@ -151,6 +151,8 @@ Resources:
       CacheControlMaxAge: 600
 ```
 
+You can also see this example in the Github repository `/example` folder by clicking [here](https://github.com/serverlesspub/cloudformation-deploy-to-s3/blob/master/example).
+
 Now just run:
 `aws cloudformation package --template-file <template-file-location> --output-template-file <output-template-file-location> --s3-bucket=<cloudformation-bucket-name>`
 and then run
