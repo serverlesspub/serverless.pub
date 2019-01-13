@@ -42,7 +42,7 @@ We want our frontend files to be uploaded to S3. S3 doesn't accept files as its 
 
 Now it only needs to be invoked whenever we do a deploy our CloudFormation stack.
 
-To achieve that we are using a AWS CustomResource which invokes a Function by its ARN specified in its `ServiceToken` property. We also need to specify the Bucket where we want to send the files to, what kind of Access Control List we want too and to pass a `Version` parameter to redeploy each time we deploy. If we didn't specify it, it wouldn't redeploy if the files are already there, despite them being different. You can see this flow in the following figure.
+To achieve that we are using a AWS CustomResource which invokes a Function by its ARN specified in its `ServiceToken` property. We also need to specify the Bucket where we want to send the files to, what kind of Access Control List we want too and to pass a `Version` parameter to redeploy each time we deploy. If we didn't specify it, it wouldn't redeploy if the files are already there, despite them being different. But the Lambda version is always the same when you initially deploy, so we then need to add the `AutoPublishAlias: live` on the Lambda in order to get the generated deploy version, to enable the Custom Resource to wake up and invoke the function each time the stack is deployed. You can see this flow in the following figure.
 
 ![](/img/cloudformation-deploy-to-s3-figure.png)
 
