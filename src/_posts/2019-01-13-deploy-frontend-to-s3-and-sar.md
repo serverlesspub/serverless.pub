@@ -13,7 +13,7 @@ author_url : /author/simalexan
 author_avatar: simalexan.jpg
 twitter_username: simalexan
 show_avatar: true
-feature_image: s3-deployment-diagram.jpg
+feature_image: s3-deployment-diagram.png
 show_related_posts: false
 square_related: recommend-simalexan
 ---
