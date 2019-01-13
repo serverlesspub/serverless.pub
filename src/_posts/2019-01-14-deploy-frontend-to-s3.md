@@ -11,7 +11,7 @@ author_url : /author/simalexan
 author_avatar: simalexan.jpg
 twitter_username: simalexan
 show_avatar: true
-feature_image: cloudformation-deploy-s3.jpg
+feature_image: s3-deployment-diagram.jpg
 show_related_posts: false
 square_related: recommend-simalexan
 ---
@@ -48,7 +48,7 @@ Now it only needs to be invoked whenever we do a deploy our CloudFormation stack
 
 To achieve that we are using a AWS CustomResource which invokes a Function by its ARN specified in its `ServiceToken` property. We also need to specify the Bucket where we want to send the files to, what kind of Access Control List we want too and to pass a `Version` parameter to redeploy each time we deploy. If we didn't specify it, it wouldn't redeploy if the files are already there, despite them being different. But the Lambda version is always the same when you initially deploy, so we then need to add the `AutoPublishAlias: live` on the Lambda in order to get the generated deploy version, to enable the Custom Resource to wake up and invoke the function each time the stack is deployed. You can see this flow in the following figure.
 
-![](/img/cloudformation-deploy-to-s3-figure.png)
+![](/img/s3-deployment-diagram.png)
 
 ## How to use this in your web application
 
@@ -70,7 +70,7 @@ SiteSource:
     Layers:
       - arn:aws:lambda:us-east-1:145266761615:layer:s3-deployment:4
     CodeUri: web-site/
-    Runtime: python3.6 
+    Runtime: python3.6
     Handler: deployer.resource_handler
 ```
 
