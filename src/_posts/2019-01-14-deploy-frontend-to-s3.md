@@ -1,18 +1,11 @@
 ---
 layout: post
-title:  "How to use CloudFormation to deploy your frontend apps to S3"
-excerpt: "Deploy your Frontend SPA apps, static websites and MicroFrontends to S3 using CloudFormation"
+title:  "How to use CloudFormation to deploy frontend apps to S3"
+excerpt: "Deploy Frontend SPA apps, static websites and MicroFrontends to S3 using CloudFormation"
 date: 2019-01-14 10:00:00
 categories: 
   - Serverless
   - CloudFormation
-  - SAM
-  - S3
-  - Frontend
-  - Deployment
-  - SPA
-  - Static Website
-  - Custom Resource
 author_name : Aleksandar Simovic
 author_url : /author/simalexan
 author_avatar: simalexan.jpg
@@ -23,9 +16,9 @@ show_related_posts: false
 square_related: recommend-simalexan
 ---
 
-If you ever wanted to do automatic deployments of your frontend web applications along with your CloudFormation resources, your time has arrived. We’ve created a Lambda Layer and a Custom Resource which automatically deploys your frontend web apps and their files into your destined S3 bucket upon every deployment. No need to do deploy your SPA app or your static website separately from your backend, you can just do it with your standard `sam deploy` or `aws cloudformation deploy` commands. Or if you had that, you might have had to define an another Lambda along with its code to deploy your frontend application whenever you invoke it.
+If you ever wanted to do automatic deployments of frontend web applications along with CloudFormation resources, your time has arrived. We’ve created a Lambda Layer and a Custom Resource which automatically deploys frontend web apps and their files into a specified destination S3 bucket upon every deployment. No need to do deploy a SPA app or a static website separately from the backend, you can just do it with a standard `sam deploy` or `aws cloudformation deploy` commands.
 
-We’ve provided it with a Python Lambda Layer which contains `the resource_handler` for  uploading the files to your Target S3 Bucket, so you don’t have to have any code to be able to deploy. It’s written in such a way that even if you don’t know CloudFormation you’ll be able to deploy it. Also ,we provided a Custom Resource, which invokes your Lambda the moment the CloudFormation Stack is created, meaning that your code gets deployed on every `sam` or `cloudformation`  deployment command.
+We’ve provided it with a Python Lambda Layer which contains `the resource_handler` for  uploading the files to the Target S3 Bucket, so you don’t have to have any code to be able to deploy. It’s written in such a way that even if you don’t know CloudFormation you’ll be able to deploy it. Also ,we provided a Custom Resource, which invokes the Lambda the moment the CloudFormation Stack is created, meaning that the code gets deployed on every `sam` or `cloudformation`  deployment command.
 
 ## Multi-App Deployment
 
@@ -52,14 +45,7 @@ Transform: 'AWS::Serverless-2016-10-31'
 Resources:
 ```
 
-2. Add an S3 Bucket Resource in the template, you can call it `TargetBucket`
-
-```yml
-TargetBucket:
-  Type: AWS::S3::Bucket
-```
-
-3. Add a Serverless Function Resource, call it `SiteSource` and add as its `Properties` the aforementioned `Layer`, `CodeUri` pointing to a folder inside your project (for example `web-site`), containing your frontend files, set the `Runtime` to `python3.6` and the `Handler` pointing to `deployer.resource_handler`.
+2. Add a Serverless Function Resource, call it `SiteSource` and add as its `Properties` the aforementioned `Layer`, `CodeUri` pointing to a folder inside the project (for example `web-site`), containing the frontend files, set the `Runtime` to `python3.6` and the `Handler` pointing to `deployer.resource_handler`.
 
 ```yml
 SiteSource:
@@ -72,7 +58,7 @@ SiteSource:
     Handler: deployer.resource_handler
 ```
 
-4. Set the Properties `Timeout` to `600` (10 minutes, as we want to be sure in case our website is too big or our network is bit slow) and also add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` with a parameter `BucketName` referencing your defined `TargetBucket` S3 resource. Also add  an `AutoPublishAlias` with the value of `live`. This will generate a new version of the Lambda and make it available as a retrievable property on every CloudFormation deployment.
+3. Set the Properties `Timeout` to `600` (10 minutes, as we want to be sure in case our website is too big or our network is bit slow) and also add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` with a parameter `BucketName` referencing the defined `TargetBucket` S3 resource. Also add  an `AutoPublishAlias` with the value of `live`. This will generate a new version of the Lambda and make it available as a retrievable property on every CloudFormation deployment.
 
 ```yml
 SiteSource:
@@ -90,8 +76,8 @@ SiteSource:
           BucketName: !Ref TargetBucket
 ```
 
-5. Define an AWS::CloudFormation::CustomResource with a name `DeploymentResource`. Set its `Properties` to have:
-- a `ServiceToken` which takes the `Arn` attribute from your `SiteSource` Serverless Function,
+4. Define an AWS::CloudFormation::CustomResource with a name `DeploymentResource`. Set its `Properties` to have:
+- a `ServiceToken` which takes the `Arn` attribute from the `SiteSource` Serverless Function,
 - a `Version` property referencing a string variable `"SiteSource.Version”`,
 - a `TargetBucket` property referencing a the `TargetBucket` S3 resource,
 - property `Acl` set to `public-read` (if you want it to be publicly visible from the browser, otherwise set it to `private`) and,
@@ -106,6 +92,13 @@ DeploymentResource:
     TargetBucket: !Ref TargetBucket
     Acl: 'public-read'
     CacheControlMaxAge: 600
+```
+
+5. Add an S3 Bucket Resource in the template, you can call it `TargetBucket`
+
+```yml
+TargetBucket:
+  Type: AWS::S3::Bucket
 ```
 
 If you wanted to see it whole, here is the complete code preview:
@@ -141,6 +134,6 @@ Resources:
 ```
 
 Now just run:
-`aws cloudformation package --template-file <your-template-file-location> --output-template-file <your-output-template-file-location> --s3-bucket=<cloudformation-bucket-name>`
+`aws cloudformation package --template-file <template-file-location> --output-template-file <output-template-file-location> --s3-bucket=<cloudformation-bucket-name>`
 and then run
-`aws cloudformation deploy --template-file  <your-template-file-location> --stack-name <your-stack-name> --capabilities CAPABILITY_IAM`
+`aws cloudformation deploy --template-file  <template-file-location> --stack-name <stack-name> --capabilities CAPABILITY_IAM`
