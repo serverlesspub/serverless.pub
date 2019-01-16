@@ -18,21 +18,26 @@ show_related_posts: false
 square_related: recommend-simalexan
 ---
 
-If you ever wanted to do automatic deployments of frontend web applications along with CloudFormation resources, your time has come. We’ve created a Lambda Layer and a Custom Resource which automatically deploys frontend web apps and their files into a S3 bucket. No need to do deploy a SPA app or a static website separately from the backend, you can just do it with a standard `sam deploy` or `aws cloudformation deploy` commands.
+If you ever wanted to automatically deploy front-end web applications along with CloudFormation resources, your time has come. We created a custom CloudFormation resource that uploads files into an S3 bucket. You no longer need to deploy a SPA app or a static website separately from the back-end. Just do it all together with standard `sam deploy` or `aws cloudformation deploy` commands.
 
-We opensourced a Python Lambda Layer that will handle the uploads of your files to the S3 bucket, so you don’t have to write any additional code. The layer is easy to use in SAM and Cloudformation templates, even for beginners. We also published an example project that demonstrates how to package and deploy web site code using the layer and a Cloudformation Custom Resource.
+The custom resource works by using a [Python Lambda Layer](https://github.com/serverlesspub/cloudformation-deploy-to-s3) that will handle the uploads of your files to an S3 bucket, so you don’t have to write any additional code. The layer is easy to use in SAM and Cloudformation templates, even for beginners. We also published an [example project](https://github.com/serverlesspub/cloudformation-deploy-to-s3/blob/master/example) that demonstrates how to package and deploy web site code using Cloudformation.
 
-The deployment layer is available under the MIT license. You can get the source code from the GitHub [repository](https://github.com/serverlesspub/cloudformation-deploy-to-s3) and deploy to your account, or just use the public version available from the following ARN:
+The deployment layer is available under the MIT license. You can get the source code from the GitHub [repository](https://github.com/serverlesspub/cloudformation-deploy-to-s3) and create it in your AWS account, or just use the public version available from the following ARN:
 
 `arn:aws:lambda:us-east-1:145266761615:layer:s3-deployment:4`
 
 ## How it works
 
-We want our frontend files to be uploaded to S3. The standard S3 resources in CloudFormation are used only to create and configure buckets, so you can't use them to upload files. So, we use the web site assets directory as the source for a Lambda function, and CloudFormation will package them. Now, the Lambda also needs to reference our S3 Deployement Lambda Layer, as its supposed to use its the `deployer.py` method called `resource_handler` as the function Handler, which will load the files within a Lambda into your S3 Bucket. That means when the Lambda is invoked it will run the `deployer.resource_handler` and the Layer handler will have access to your folder files specifed with the `CodeUri`.
+We want to upload front-end files to S3. The standard S3 resources in CloudFormation are used only to create and configure buckets, so you can't use them to upload files. But CloudFormation can automatically version and upload Lambda function code, so we can trick it to pack front-end files by creating a Lambda function and point to web site assets as its source code. 
 
-Now it only needs to be invoked whenever we do a deploy our CloudFormation stack.
+That Lambda, of course, won't really be able to run, because it contains just the web site files. This is where our layer comes in. When you attach it to the Lambda function, it will make it executable. Running the Lambda function will upload the source code to an S3 bucket.  
 
-To achieve that we are using a Custom Resource which invokes a Function by its ARN specified in its `ServiceToken` property. We also need to specify the Bucket where we want to send the files to, what kind of Access Control List we want too and to pass a `Version` parameter to redeploy each time we deploy. Cloudformation usually updates custom resources only when their parameters change, not when the underlying Lambda function changes. Because we're using the web site assets as the source of the Lambda function, we need to additionally ensure that any changes to those assets automatically trigger the update. To do that, we'll make SAM deploy a new version with each update of the Lambda code (site assets), and add that version as the parameter of the custom resource. But the Lambda version is always the same when you initially deploy, so we then need to add the `AutoPublishAlias: live` on the Lambda in order to get the generated deploy version, to enable the Custom Resource to wake up and invoke the function each time the stack is deployed. You can see this flow in the following figure.
+The only thing left is to ensure that the function is invoked during a CloudFormation stack deployment. We can do that by creating a custom resource linked to a Lambda function. The layer we created is intended to run in this mode, so it automatically supports CloudFormation custom resource workflows.
+With the custom resource, you can configure the upload parameters, such as the target bucket, access control lists and caching properties, so it's easy to create web sites. 
+
+Cloudformation usually updates custom resources only when their parameters change, not when the underlying Lambda function changes. Because we're using the web site assets as the source of the Lambda function, we need to additionally ensure that any changes to those assets automatically trigger the update. To do that, we'll make SAM publish a new named version of the Lambda function with each update of the site assets, using the `AutoPublishAlias` flag. We now get an automatically incrementing number whenever asset files change, so we can add that version as a parameter of the custom resource, and CloudFormation will trigger the function and upload the changed files automatically.
+
+You can see this flow in the following figure:
 
 ![Deploy static assets to S3 using CloudFormation](/img/s3-deployment-diagram.png)
 
