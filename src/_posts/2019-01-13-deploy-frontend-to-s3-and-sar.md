@@ -97,7 +97,7 @@ DeploymentResource:
     CacheControlMaxAge: 600
 ```
 
-Add an S3 Bucket Resource in the template, you can call it `TargetBucket`
+The last thing to add is an S3 Bucket Resource in the template, where we want to deploy our frontend code. You can call it `TargetBucket`.
 
 ```yml
 TargetBucket:
