@@ -52,12 +52,13 @@ Transform: 'AWS::Serverless-2016-10-31'
 Resources:
 ```
 
-Add a Serverless Function Resource, call it `SiteSource` and add as its `Properties`:
+Add a Serverless Function Resource, call it `SiteSource` and as its `Properties` add:
 
 - the `Layer` property pointing to the `s3-deployment` layer ARN,
 - `CodeUri`, pointing to a folder inside the project (for example `web-site`), containing the frontend files,
 - set the `Runtime` to `python3.6`, because the layer is using it, and,
-- set the `Handler` pointing to `deployer.resource_handler`.
+- set the `Handler` pointing to `deployer.resource_handler`,
+- the `Timeout` set to `600` (10 minutes, as we want to be sure in case our website is too big or our network is bit slow).
 
 ```yml
 SiteSource:
@@ -68,12 +69,12 @@ SiteSource:
     CodeUri: web-site/
     Runtime: python3.6
     Handler: deployer.resource_handler
+    Timeout: 600
 ```
 
 Now additional `Properties` are:
 
-- the `Timeout` set to `600` (10 minutes, as we want to be sure in case our website is too big or our network is bit slow),
-- add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` with a parameter `BucketName` referencing the target bucket for uploads.
+- add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` policy template with a parameter `BucketName` referencing the target bucket for uploads.
 - Set an `AutoPublishAlias` with the value of `live`. This will generate a new version of the Lambda and make it available as a retrievable property on every CloudFormation deployment.
 
 ```yml
