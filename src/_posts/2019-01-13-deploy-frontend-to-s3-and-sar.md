@@ -74,7 +74,7 @@ SiteSource:
 
 Now additional `Properties` are:
 
-- add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` policy template with a parameter `BucketName` referencing the target bucket for uploads.
+- add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` policy template with a parameter `BucketName` referencing the target bucket for uploads,
 - Set an `AutoPublishAlias` with the value of `live`. This will generate a new version of the Lambda and make it available as a retrievable property on every CloudFormation deployment.
 
 ```yml
