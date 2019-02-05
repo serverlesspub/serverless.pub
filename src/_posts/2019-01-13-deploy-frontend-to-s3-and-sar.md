@@ -33,13 +33,11 @@ We want to upload front-end files to S3. The standard S3 resources in CloudForma
 That Lambda, of course, won't really be able to run, because it contains just the web site files. This is where our layer comes in. When you attach it to the Lambda function, it will make it executable. Running the Lambda function will upload the source code to an S3 bucket.  
 
 The only thing left is to ensure that the function is invoked during a CloudFormation stack deployment. We can do that by creating a custom resource linked to a Lambda function. The layer we created is intended to run in this mode, so it automatically supports CloudFormation custom resource workflows.
-With the custom resource, you can configure the upload parameters, such as the target bucket, access control lists and caching properties, so it's easy to create web sites. 
-
-Cloudformation usually updates custom resources only when their parameters change, not when the underlying Lambda function changes. Because we're using the web site assets as the source of the Lambda function, we need to additionally ensure that any changes to those assets automatically trigger the update. To do that, we'll make SAM publish a new named version of the Lambda function with each update of the site assets, using the `AutoPublishAlias` flag. We now get an automatically incrementing number whenever asset files change, so we can add that version as a parameter of the custom resource, and CloudFormation will trigger the function and upload the changed files automatically.
-
-You can see this flow in the following figure:
+With the custom resource, you can configure the upload parameters, such as the target bucket, access control lists and caching properties, so it's easy to create web sites.
 
 ![Deploy static assets to S3 using CloudFormation](/img/s3-deployment-diagram.png)
+
+Cloudformation usually updates custom resources only when their parameters change, not when the underlying Lambda function changes. Because we're using the web site assets as the source of the Lambda function, we need to additionally ensure that any changes to those assets automatically trigger the update. To do that, we'll make SAM publish a new named version of the Lambda function with each update of the site assets, using the `AutoPublishAlias` flag. We now get an automatically incrementing number whenever asset files change, so we can add that version as a parameter of the custom resource, and CloudFormation will trigger the function and upload the changed files automatically.
 
 ## How to use this in your web application
 
@@ -52,29 +50,17 @@ Transform: 'AWS::Serverless-2016-10-31'
 Resources:
 ```
 
-Add a Serverless Function Resource, call it `SiteSource` and add as its `Properties`:
+Add a Serverless Function Resource, call it `SiteSource` and as its `Properties` add:
 
 - the `Layer` property pointing to the `s3-deployment` layer ARN,
 - `CodeUri`, pointing to a folder inside the project (for example `web-site`), containing the frontend files,
 - set the `Runtime` to `python3.6`, because the layer is using it, and,
-- set the `Handler` pointing to `deployer.resource_handler`.
-
-```yml
-SiteSource:
-  Type: AWS::Serverless::Function
-  Properties:
-    Layers:
-      - arn:aws:lambda:us-east-1:145266761615:layer:s3-deployment:4
-    CodeUri: web-site/
-    Runtime: python3.6
-    Handler: deployer.resource_handler
-```
-
-Now additional `Properties` are:
-
-- the `Timeout` set to `600` (10 minutes, as we want to be sure in case our website is too big or our network is bit slow),
-- add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` with a parameter `BucketName` referencing the target bucket for uploads.
+- set the `Handler` pointing to `deployer.resource_handler`,
+- the `Timeout` set to `600` (10 minutes, as we want to be sure in case our website is too big or our network is bit slow).
+- add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` policy template with a parameter `BucketName` referencing the target bucket for uploads,
 - Set an `AutoPublishAlias` with the value of `live`. This will generate a new version of the Lambda and make it available as a retrievable property on every CloudFormation deployment.
+
+The `SiteSource` Lambda Function should like like the following code:
 
 ```yml
 SiteSource:
@@ -111,7 +97,7 @@ DeploymentResource:
     CacheControlMaxAge: 600
 ```
 
-Add an S3 Bucket Resource in the template, you can call it `TargetBucket`
+The last thing to add is an S3 Bucket Resource in the template, where we want to deploy our frontend code. You can call it `TargetBucket`.
 
 ```yml
 TargetBucket:

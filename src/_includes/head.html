@@ -40,6 +40,16 @@
     <meta name="twitter:data2" value="{% assign words = page.content | strip_html | number_of_words %}{% if words < 360 %}1 minute{% else %}{{ words | divided_by:180 }} minutes{% endif %} read" />
     {% endif %}
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107409591-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-107409591-1');
+    </script>
+
     <!--[if lt IE 9]>
         <script src="{{ "/js/vendor/html5shiv.min.js" | prepend: site.baseurl }}"></script>
     <![endif]-->
