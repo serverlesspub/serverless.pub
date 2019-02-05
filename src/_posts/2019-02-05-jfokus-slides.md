@@ -20,3 +20,5 @@ Here are the slides and the code from the workshop on "Serverless Apps with AWS 
 
 * [slides (PDF)](/resources/gojko-jfokus-2019-slides.pdf)
 * [final code](/resources/jfokus-2019-gojko-code.zip)
+
+![](/img/jfokus-arch.png)
