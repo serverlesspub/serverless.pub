@@ -1,12 +1,11 @@
 ---
 layout: post
-title:  "FFmpeg, SOX, Pandoc and RSVG for AWS Lambda"
+title:  "FFmpeg, ImageMagick, Pandoc and RSVG for AWS Lambda"
 excerpt: "Manipulate video, sound files, SVG images and text documents in Lambda functions, with just a few lines of code."
 date: 2019-01-06 08:50:28
 categories: 
   - Serverless
   - CloudFormation
-  - Claudiajs
 author_name : Gojko Adzic
 author_url : /author/gojko
 author_avatar: gojko.jpg
@@ -17,24 +16,66 @@ show_related_posts: false
 square_related: recommend-gojko
 ---
 
-You can now use all the power of FFmpeg, SOX, Pandoc and RSVG to manipulate video, sound files, SVG images and text documents in Lambda functions, with just a few lines of code. We've pre-packaged four commonly used file conversion utilities into Lambda layers, which you can use with any serverless framework or deployment utility. 
+**Update: 20 June 2019 - new versions of layers for Amazon Linux 2, all layers published to SAR**
 
-With low on-demand cost and scalability, cloud functions are ideal for file conversions. But for computationally intensive tasks, such as transcoding video, compiled code still rocks, and in most cases the best way of converting files is to just call into a standard Unix utility such as FFmpeg. The basic AWS Lambda container is quite constrained, and until recently it was relatively difficult to include additional binaries into Lambda functions. [Lambda Layers](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) make that easy.
+Lambda runtimes based on Amazon Linux 2 come without almost any system libraries and utilities. Using the additional layers listed in this post, you can add FFmpeg, ImageMagick, Pandoc and RSVG to your Lambda environments, and manipulate video, sound files, SVG images and text documents in Lambda functions, with just a few lines of code. The layers are compatible with Amazon Linux 1 and Amazon Linux 2 instances (including the nodejs10.x runtime, and the updated 2018.03 Amazon Linux 1 runtimes).
 
-A Layer is a common piece of code that is attached to your Lambda runtime in the `/opt` directory. You can reuse it in many functions, and deploy it only once. Individual functions do not need to include the layer code in their deployment packages, which means that the resulting functions are smaller and deploy faster. For example, at [MindMup](https://www.mindmup.com), we use Pandoc to convert markdown files into Word documents. The actual lambda function code is only a few dozen lines of JavaScript, but before layers, each deployment of the function had to include the whole Pandoc binary, larger than 100 MB. With a layer, we can publish Pandoc only once, so we use significantly less overall space for Lambda function versions. Each code change now requires just a quick redeployment.
+A [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) is a common piece of code that is attached to your Lambda runtime in the `/opt` directory. You can reuse it in many functions, and deploy it only once. Individual functions do not need to include the layer code in their deployment packages, which means that the resulting functions are smaller and deploy faster. 
 
 ![](/img/lambda-layers.png)
 
-And the best part of this is that you can also use Layers published by other people. Here are the four common Unix utility layers: you can build and deploy your own versions easily from Github, or just use the Layers we published directly:
+We published these layers to the AWS Serverless Application Repository, so you can install them with a single click into your AWS account. For manual deployments and to configure versions, check out the individual GitHub repositories. 
 
-* FFmpeg: `arn:aws:lambda:us-east-1:145266761615:layer:ffmpeg:4` installs `/opt/bin/ffpmeg` and `/opt/bin/ffprobe` ([Source on GitHub](https://github.com/serverlesspub/ffmpeg-aws-lambda-layer)).
-* Pandoc: `arn:aws:lambda:us-east-1:145266761615:layer:pandoc:1` installs `/opt/bin/pandoc` ([Source on GitHub](https://github.com/serverlesspub/pandoc-aws-lambda-binary))
-* RSVG: `arn:aws:lambda:us-east-1:145266761615:layer:rsvg-convert:2` installs `/opt/bin/rsvg-convert` ([Source on GitHub](https://github.com/serverlesspub/rsvg-convert-aws-lambda-binary))
-* SOX: `arn:aws:lambda:us-east-1:145266761615:layer:sox:1` installs `/opt/bin/sox`, `/opt/bin/lame` and `/opt/bin/soxi` ([Source on GitHub](https://github.com/serverlesspub/sox-aws-lambda-binary))
 
-The layers are published according to the original licenses from the Unix utilities, GPL2. For more information on those binaries and how to use them, check out the original project pages: <https://ffmpeg.org/>, <http://pandoc.org>, <http://sox.sourceforge.net> and <https://wiki.gnome.org/Projects/LibRsvg>.
+* FFmpeg: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/ffmpeg-lambda-layer` installs `/opt/bin/ffpmeg` and `/opt/bin/ffprobe` ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~ffmpeg-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/ffmpeg-aws-lambda-layer)).
+* Pandoc: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/pandoc-lambda-layer` installs `/opt/bin/pandoc` ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~pandoc-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/pandoc-aws-lambda-binary))
+* RSVG: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/rsvg-convert-lambda-layer` installs `/opt/bin/rsvg-convert` ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~rsvg-convert-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/rsvg-convert-aws-lambda-binary))
+* ImageMagick: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/image-magick-lambda-layer` installs `/opt/bin/convert`, `/opt/bin/mogrify` and similar tools ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~image-magick-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/imagemagick-aws-lambda-2))
 
-For some nice examples of these layers in action, check out these projects:
+The layers are published according to the original licenses from the Unix utilities, GPL2 or later. For more information on those binaries and how to use them, check out the original project pages: <https://ffmpeg.org/>, <http://pandoc.org>, <https://imagemagick.org> and <https://wiki.gnome.org/Projects/LibRsvg>.
+
+## How to use layers in your applications
+
+Using SAM, you can deploy the layer and a function from the same template:
+
+```yaml
+ImageMagick:
+  Type: AWS::Serverless::Application
+  Properties:
+    Location:
+      ApplicationId: arn:aws:serverlessrepo:us-east-1:145266761615:applications/image-magick-lambda-layer
+      SemanticVersion: 1.0.0
+ConvertFileFunction:
+  Type: AWS::Serverless::Function
+  Properties:
+    CodeUri: image-conversion/
+    Handler: index.handler
+    Runtime: nodejs10.x
+    Layers:
+      - !GetAtt ImageMagick.Outputs.LayerVersion
+```
+
+Without SAM, deploy a layer using the application links above, then just include the `Layers` property into `AWS::Lambda::Function`
+
+```yml
+ConvertFileFunction:
+  Type: AWS::Lambda::Function
+  Properties:
+    Handler: index.handler
+    Runtime: nodejs8.10
+    CodeUri: src/
+    Layers:
+      - !Ref LambdaLayerArn
+```
+
+With [`claudia`](https://claudiajs.com), use the `--layers <LambdaLayerArn>` option with `claudia create` or `claudia update` to attach a layer to a function. 
+
+With the Serverless Framework, use the [Layers property](https://serverless.com/framework/docs/providers/aws/guide/layers/) to link a layer to your service.
+
+
+## Examples
+
+Click on individual GitHub repository links to see example usage code in action. Here are also some additional projects:
 
 * [Serverless Video Thumbnail Builder](https://github.com/serverlesspub/s3-lambda-ffmpeg-thumbnail-builder) using AWS SAM and FFMpeg
 * [SVG to PDF converter](https://github.com/claudiajs/example-projects/tree/master/svg-to-pdf-s3-converter) using Claudia.js and RSVG
@@ -48,34 +89,3 @@ You can also use some ready-made components in the Serverless Application Reposi
 * [Markdown to DOCX](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-markdown-to-docx-s3)
 * [MOV to MP4](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-ffmpeg-mov-to-mp4-s3)
 
-## How to use Layers in your applications
-
-You can easily attach these layers to your functions using CloudFormation. Just include the `Layers` property into `AWS::Lambda::Function`
-
-```yml
-ConvertFileFunction:
-  Type: AWS::Lambda::Function
-  Properties:
-    Handler: index.handler
-    Runtime: nodejs8.10
-    CodeUri: src/
-    Layers:
-      - !Ref LambdaLayerArn
-```
-
-With AWS SAM, you can also use the `AWS::Serverless::Function` resource
-
-```yml
-ConvertFileFunction:
-  Type: AWS::Serverless::Function
-  Properties:
-    Handler: index.handler
-    Runtime: nodejs8.10
-    CodeUri: src/
-    Layers:
-      - !Ref LambdaLayerArn
-```
-
-With [`claudia`](https://claudiajs.com), use the `--layers <LambdaLayerArn>` option with `claudia create` or `claudia update` to attach a layer to a function. 
-
-With the Serverless Framework, use the [Layers property](https://serverless.com/framework/docs/providers/aws/guide/layers/) to link a layer to your service.
