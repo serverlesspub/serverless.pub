@@ -2,7 +2,7 @@
 layout: post
 title:  "FFmpeg, ImageMagick, Pandoc and RSVG for AWS Lambda"
 excerpt: "Manipulate video, sound files, SVG images and text documents in Lambda functions, with just a few lines of code."
-date: 2019-01-06 08:50:28
+date: 2019-06-20 00:00:00
 categories: 
   - Serverless
   - CloudFormation
@@ -18,7 +18,7 @@ square_related: recommend-gojko
 
 **Update: 20 June 2019 - new versions of layers for Amazon Linux 2, all layers published to SAR**
 
-Lambda runtimes based on Amazon Linux 2 come without almost any system libraries and utilities. Using the additional layers listed in this post, you can add FFmpeg, ImageMagick, Pandoc and RSVG to your Lambda environments, and manipulate video, sound files, SVG images and text documents in Lambda functions, with just a few lines of code. The layers are compatible with Amazon Linux 1 and Amazon Linux 2 instances (including the nodejs10.x runtime, and the updated 2018.03 Amazon Linux 1 runtimes).
+Lambda runtimes based on Amazon Linux 2 come without almost any system libraries and utilities. Using the additional layers listed in this post, you can add FFmpeg, ImageMagick, Pandoc and RSVG to your Lambda environments, and manipulate video, sound files, images and text documents in Lambda functions, with just a few lines of code. The layers are compatible with Amazon Linux 1 and Amazon Linux 2 instances (including the nodejs10.x runtime, and the updated 2018.03 Amazon Linux 1 runtimes).
 
 A [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html) is a common piece of code that is attached to your Lambda runtime in the `/opt` directory. You can reuse it in many functions, and deploy it only once. Individual functions do not need to include the layer code in their deployment packages, which means that the resulting functions are smaller and deploy faster. 
 
@@ -26,11 +26,23 @@ A [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-laye
 
 We published these layers to the AWS Serverless Application Repository, so you can install them with a single click into your AWS account. For manual deployments and to configure versions, check out the individual GitHub repositories. 
 
+* `image-magick-lambda-layer`: installs `/opt/bin/convert`, `/opt/bin/mogrify` and similar tools 
+  * ARN: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/image-magick-lambda-layer`
+  * [App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~image-magick-lambda-layer)
+  * [Source/Manual deployment](https://github.com/serverlesspub/imagemagick-aws-lambda-2)
+* `ffmpeg-lambda-layer`: installs `/opt/bin/ffpmeg` and `/opt/bin/ffprobe`
+  * ARN: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/ffmpeg-lambda-layer`
+  * [App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~ffmpeg-lambda-layer)
+  * [Source/Manual deployment](https://github.com/serverlesspub/ffmpeg-aws-lambda-layer)
+* `pandoc-lambda-layer`: installs `/opt/bin/pandoc` 
+  * ARN: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/pandoc-lambda-layer`
+  * [App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~pandoc-lambda-layer)   
+  * [Source/Manual deployment](https://github.com/serverlesspub/pandoc-aws-lambda-binary)
+* `rsvg-convert-lambda-layer`: installs `/opt/bin/rsvg-convert` 
+  * ARN: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/rsvg-convert-lambda-layer`
+  * [App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~rsvg-convert-lambda-layer)
+  * [Source/Manual deployment](https://github.com/serverlesspub/rsvg-convert-aws-lambda-binary)
 
-* FFmpeg: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/ffmpeg-lambda-layer` installs `/opt/bin/ffpmeg` and `/opt/bin/ffprobe` ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~ffmpeg-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/ffmpeg-aws-lambda-layer)).
-* Pandoc: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/pandoc-lambda-layer` installs `/opt/bin/pandoc` ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~pandoc-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/pandoc-aws-lambda-binary))
-* RSVG: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/rsvg-convert-lambda-layer` installs `/opt/bin/rsvg-convert` ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~rsvg-convert-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/rsvg-convert-aws-lambda-binary))
-* ImageMagick: `arn:aws:serverlessrepo:us-east-1:145266761615:applications/image-magick-lambda-layer` installs `/opt/bin/convert`, `/opt/bin/mogrify` and similar tools ([App link](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:145266761615:applications~image-magick-lambda-layer), [Source on GitHub](https://github.com/serverlesspub/imagemagick-aws-lambda-2))
 
 The layers are published according to the original licenses from the Unix utilities, GPL2 or later. For more information on those binaries and how to use them, check out the original project pages: <https://ffmpeg.org/>, <http://pandoc.org>, <https://imagemagick.org> and <https://wiki.gnome.org/Projects/LibRsvg>.
 
