@@ -48,6 +48,12 @@ The layers are published according to the original licenses from the Unix utilit
 
 ## How to use layers in your applications
 
+Click on individual GitHub repository links to see example usage code in action. Here are a few code snippets for quick access:
+
+<a href="https://www.eventbrite.co.uk/e/serverless-days-belgrade-tickets-62152277134?aff=serverlesspub">
+<img src="/img/sls-bg.png" style="width: 100%; margin:auto" />
+</a>
+
 Using SAM, you can deploy the layer and a function from the same template:
 
 ```yaml
@@ -84,20 +90,4 @@ With [`claudia`](https://claudiajs.com), use the `--layers <LambdaLayerArn>` opt
 
 With the Serverless Framework, use the [Layers property](https://serverless.com/framework/docs/providers/aws/guide/layers/) to link a layer to your service.
 
-
-## Examples
-
-Click on individual GitHub repository links to see example usage code in action. Here are also some additional projects:
-
-* [Serverless Video Thumbnail Builder](https://github.com/serverlesspub/s3-lambda-ffmpeg-thumbnail-builder) using AWS SAM and FFMpeg
-* [SVG to PDF converter](https://github.com/claudiajs/example-projects/tree/master/svg-to-pdf-s3-converter) using Claudia.js and RSVG
-* [Markdown to DOCX converter](https://github.com/claudiajs/example-projects/tree/master/pandoc-s3-converter) using Claudia.js and Pandoc
-* [Markdown to DOCX converter](https://github.com/serverlesspub/s3-lambda-pandoc-s3) using AWS SAM and Pandoc
-
-You can also use some ready-made components in the Serverless Application Repository that convert files using S3 bucket uploads:
-
-* [SVG to PDF](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-svg-to-pdf-s3) 
-* [Markdown to HTML](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-markdown-to-html-s3)
-* [Markdown to DOCX](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-markdown-to-docx-s3)
-* [MOV to MP4](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~s3-lambda-ffmpeg-mov-to-mp4-s3)
 
