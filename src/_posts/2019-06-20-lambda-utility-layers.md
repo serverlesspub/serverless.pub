@@ -50,10 +50,6 @@ The layers are published according to the original licenses from the Unix utilit
 
 Click on individual GitHub repository links to see example usage code in action. Here are a few code snippets for quick access:
 
-<a href="https://www.eventbrite.co.uk/e/serverless-days-belgrade-tickets-62152277134?aff=serverlesspub">
-<img src="/img/sls-bg.png" style="width: 100%; margin:auto" />
-</a>
-
 Using SAM, you can deploy the layer and a function from the same template:
 
 ```yaml
