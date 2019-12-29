@@ -2,7 +2,7 @@
 layout: post
 title:  "Handling webhooks with EventBridge, SAM and SAR"
 excerpt: "Semantic versioning, region replication and account permissions for Lambda layers"
-date: 2019-12-28 12:00:00 +0200
+date: 2019-12-29 10:00:00 +0200
 categories: Serverless
 author_name : Slobodan Stojanović
 author_url : /author/slobodan
