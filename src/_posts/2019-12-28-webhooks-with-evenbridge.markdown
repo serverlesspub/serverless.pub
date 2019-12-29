@@ -33,7 +33,7 @@ Not a bad for an initial idea, but we quickly realized that there is a common th
 
 What's an easy way to handle a webhook in a serverless application? We need some API; we can start with an API Gateway. And we need some integration point with the rest of our business logic. One of the logical picks would be [Amazon Simple Notification Service](https://aws.amazon.com/sns/) (SNS). And we need a Lambda in between.
 
-Wait, do we need that Lamdba function?
+Wait, do we need that Lambda function?
 
 It seems that we do not need it, because API Gateway can talk directly to multiple services, including SNS, using [a service integration](https://www.alexdebrie.com/posts/aws-api-gateway-service-proxy/). You need to write a "simple" template using the [Velocity Template Language](https://velocity.apache.org/engine/1.7/vtl-reference.html) (VTL).
 
@@ -55,7 +55,7 @@ It would be great if AWS had an event bus that would make this easier, right?
 
 Meet [Amazon EventBridge](https://aws.amazon.com/eventbridge/), a serverless event bus that connects application data from your apps, SaaS, and AWS services. Yes, something like an enterprise service bus.
 
-### Why EventBridge
+### Why EventBridge instead of SNS
 
 Events are the core of the common serverless application. We use events to trigger our functions; we send them to queues and notification services, we stream them. But events are also the core of almost any application.
 
@@ -63,12 +63,12 @@ Let's take Vacation Tracker as an example. When you request a leave or a vacatio
 
 EventBridge represents a new home for your events. We can use it to integrate with some of the third-party services or build our integrations.
 
-Here are a few things that make EventBridge useful for our applications:
+Here are a few reasons why we would pick EventBridge instead of SNS:
 
-- We can integrate EventBridge with 20 different targets, including Lambda functions, SQS, SNS, Kinesis and others.
+- We can connect Amazon SNS with a few other services directly. At the moment, EventBridge supports 20 different targets, including Lambda functions, SQS, SNS, Kinesis and others.
 - It gives us a single place to see and handle all of our event subscriptions.
-- It does retries out of the box for 24 hours, if the event target is not able to receive an event.
-- It has [Schema Registry](https://aws.amazon.com/about-aws/whats-new/2019/12/introducing-amazon-eventbridge-schema-registry-now-in-preview/) for events (with versioning, auto-discovery and code binding generation).
+- For unsuccessful deliveries, SNS retries up to three times. EventBridge does retries out of the box for 24 hours. Both SNS and EventBridge support [Lambda Destinations](https://aws.amazon.com/blogs/compute/introducing-aws-lambda-destinations/).
+- EventBridge has [Schema Registry](https://aws.amazon.com/about-aws/whats-new/2019/12/introducing-amazon-eventbridge-schema-registry-now-in-preview/) for events. It supports versioning, and it has an auto-discovery and can generate code bindings.
 
 Enough to give it a chance.
 
