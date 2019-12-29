@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Handling webhooks with EventBridge, SAM and SAR"
-excerpt: "Semantic versioning, region replication and account permissions for Lambda layers"
+excerpt: "A serverless application for handling webhooks using EventBridge event bus, API Gateway's HTTP API and Lambda function"
 date: 2019-12-29 10:00:00 +0200
 categories: Serverless
 author_name : Slobodan Stojanović
