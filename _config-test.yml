@@ -1,3 +1,4 @@
 # Site settings
 title: Serverless.Pub (Test)
 url: "https://test.serverless.pub" # the base hostname & protocol for your site
+highlighter: rouge
