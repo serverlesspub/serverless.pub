@@ -27,6 +27,7 @@
 		&.active
 			border-bottom: solid 2px #000
 			color: $text-color
+			text-decoration: none
 
 .post
 	padding: 30px 0
@@ -34,6 +35,11 @@
 	+clearfix
 
 	.post-preview
+
+		.meta
+			border-bottom: none
+			margin-bottom: 0
+			padding-bottom: 0
 
 		h2
 			margin-top: 0
@@ -74,9 +80,16 @@
 		margin: 0
 		padding: 10px
 		position: absolute
-		bottom: 0
+		bottom: 30px
 		+font-size(20)
-		color: #fff
+		color: $white
+
+	p
+		margin: 0
+		padding: 10px
+		position: absolute
+		bottom: 0
+		color: $white
 
 .split-footer
 	padding: 10px 0

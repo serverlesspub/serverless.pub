@@ -23,6 +23,18 @@ layout: default
 
             {{ content }}
 
+            <div class="related-posts">
+                <p>Read next:</p>
+                <ul>
+                    {% if page.previous.url %}
+                    <li><a class="prev" href="{{page.previous.url}}">{{page.previous.title}}</a></li>
+                    {% endif %}
+                    {% if page.next.url %}
+                    <li><a class="next" href="{{page.next.url}}">{{page.next.title}}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
         </div><!-- main-content/col -->
     </div> <!--/row -->
 

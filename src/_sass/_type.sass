@@ -7,6 +7,12 @@ $text-color : #333337
 $light-grey : #b6b6b6
 $light-blue : #4761e2
 
+$raisin-black   : #222222
+$white          : #FFFFFF
+$vivid-cerulean : #00A6FB
+$blue           : #0582CA
+$sea_blue       : #006494
+
 $base-color : $light-blue
 
 body
@@ -29,14 +35,14 @@ textarea
     -webkit-font-smoothing: antialiased
 
 p
-    margin-bottom: 30px
-    +font-size(18)
+    margin-bottom: 20px
+    +font-size(16)
 
     +breakpoint(sm)
-        +font-size(20)
+        +font-size(16)
 
     +breakpoint(md)
-        +font-size(21)
+        +font-size(18)
 a
     text-decoration: none
     color: #fff
@@ -51,11 +57,12 @@ h1,
 h2
     font-weight: 700
     font-family: $sans
+    color: $raisin-black
 
 h1
-    +font-size(38)
+    +font-size(36)
 h2
-    +font-size(32)
+    +font-size(28)
     &.favorites
         padding: 10px 0
         color: #b3b3b7
@@ -65,8 +72,8 @@ h2
         border-top: solid 1px #dedede
         +font-size(12)
 h3
-    +font-size(26)
-
+    +font-size(24)
+    color: $raisin-black
 
 b
     font-weight: 700
@@ -75,14 +82,34 @@ i
 ul,
 ol
     margin-bottom: 20px
+    margin-left: 5px
     padding-left: 20px
-    +font-size(18)
+    +font-size(16)
 
     +breakpoint(sm)
-        +font-size(20)
+        +font-size(16)
 
     +breakpoint(md)
-        +font-size(21)
+        +font-size(18)
 
     li
         margin: 5px 0
+
+.header-link
+    position: absolute
+    margin-left: 5px
+    opacity: 0
+
+    -webkit-transition: opacity 0.2s ease-in-out 0.1s
+    -moz-transition: opacity 0.2s ease-in-out 0.1s
+    -ms-transition: opacity 0.2s ease-in-out 0.1s
+
+h2:hover .header-link,
+h3:hover .header-link,
+h4:hover .header-link,
+h5:hover .header-link,
+h6:hover .header-link
+    opacity: .3
+
+    &:hover
+        opacity: 1

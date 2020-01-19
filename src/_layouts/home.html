@@ -39,7 +39,8 @@ layout: with-sidebar
 
                 <div class="category-preview col-xs-6 col-sm-4 ">
                     <h2>{{ category | first }}</h2>
-                    <a href='{{ "/category/" | append: category.first | prepend: site.baseurl }}'><img src='{{ "/img/" | append: category.first | prepend: site.baseurl }}-thumbnail.jpg' alt="category-image"></a>
+                    <p>{{ category[1].size }} article{% if category[1].size != 1 %}s{% endif %}</p>
+                    <a href='{{ "/category/" | append: category.first | prepend: site.baseurl }}'><img src="/img/feature-forest.jpg" alt="category-image"></a>
                 </div>
             {% endfor %}
         </section>

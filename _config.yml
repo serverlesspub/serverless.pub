@@ -12,8 +12,8 @@ nav_list:
   Book : ['Book', '/book', 'fa-book']
 single_footer: '<p>Serverless.Pub &copy; 2018 <a href="/">latest posts</a></p>'
 footer_links:
-    Blog: ['Blog', '/']
-    About: ['About', '/about']
+  Blog: ['Blog', '/']
+  About: ['About', '/about']
 
 
 # Build settings
