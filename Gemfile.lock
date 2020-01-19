@@ -58,6 +58,7 @@ PLATFORMS
 
 DEPENDENCIES
   jekyll (~> 3.8)
+  kramdown
   rouge
 
 BUNDLED WITH
