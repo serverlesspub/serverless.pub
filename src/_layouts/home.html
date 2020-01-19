@@ -38,9 +38,11 @@ layout: with-sidebar
             {% for category in site.categories %}
 
                 <div class="category-preview col-xs-6 col-sm-4 ">
-                    <h2>{{ category | first }}</h2>
-                    <p>{{ category[1].size }} article{% if category[1].size != 1 %}s{% endif %}</p>
-                    <a href='{{ "/category/" | append: category.first | prepend: site.baseurl }}'><img src="/img/feature-forest.jpg" alt="category-image"></a>
+                    <a href='{{ "/category/" | append: category.first | prepend: site.baseurl }}'>
+                        <img src="/img/categories/c{{ forloop.index | modulo: 10 }}.png" alt="category-image">
+                        <h2>{{ category | first }}</h2>
+                        <p>{{ category[1].size }} article{% if category[1].size != 1 %}s{% endif %}</p>
+                    </a>
                 </div>
             {% endfor %}
         </section>

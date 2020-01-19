@@ -76,20 +76,29 @@
 .category-preview
 	margin: 15px 0
 
+	a
+		overflow: hidden
+		display: block
+		border: 3px solid $light-grey
+
+		&:hover
+			border: 3px solid $vivid-cerulean
+			text-decoration: none
+
+			h2, p
+				color: $vivid-cerulean
+
 	h2
-		margin: 0
-		padding: 10px
-		position: absolute
-		bottom: 30px
+		margin: -20px 0 0
+		padding: 10px 10px 0
 		+font-size(20)
-		color: $white
+		color: $raisin-black
 
 	p
 		margin: 0
-		padding: 10px
-		position: absolute
-		bottom: 0
-		color: $white
+		padding: 5px 10px 10px
+		+font-size(14)
+		color: $raisin-black
 
 .split-footer
 	padding: 10px 0
