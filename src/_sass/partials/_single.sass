@@ -138,6 +138,10 @@ footer.single
     border-top: solid 1px #E9E9E9
     text-align: center
 
+    +dark-mode
+        background: $black
+        border-top: solid 1px $raisin-black
+
     &.without-readmore
         padding: 40px 0 40px 0
 
@@ -208,6 +212,8 @@ footer.single-page
     text-align: center
 
 footer
+    +dark-mode
+        background: $black
 
     .read-another-container
         position: relative
@@ -243,3 +249,15 @@ footer
 code
     color: $code-text
     background-color: $code-background
+
+    +dark-mode
+        color: $code-text-dark
+        background-color: $code-background-dark
+
+pre
+    background-color: $code-background
+    border: 1px solid #ccc
+
+    +dark-mode
+        background-color: $code-background-dark
+        border: 1px solid $black
