@@ -22,17 +22,32 @@ square_related: recommend-simalexan
 
 If you ever wanted to automatically deploy front-end web applications along with CloudFormation resources, here is how to do that. You no longer need to deploy a SPA app or a static website separately from the back-end. Just do it all together with standard `sam deploy` or `aws cloudformation deploy` commands.
 
-We built and opensourced a custom CloudFormation resource that can manage file uploads to S3, even substituting variables in web pages when uploading to allow you to configure single-page apps and web sites with dynamic parameters during deployment. The layer is easy to use in SAM and Cloudformation templates, even for beginners. The project is available under the MIT license. You can get the source code from the GitHub [repository](https://github.com/serverlesspub/cloudformation-deploy-to-s3), or deploy it directly from the [Serverless Application Repository.](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~deploy-to-s3).
+We built and opensourced a custom CloudFormation resource that can manage file uploads to S3, even substituting variables in web pages when uploading to allow you to configure single-page apps and web sites with dynamic parameters during deployment. The layer is easy to use in SAM and Cloudformation templates, even for beginners. The project is available under the MIT license. You can get the source code from the GitHub [repository](https://github.com/serverlesspub/cloudformation-deploy-to-s3), or deploy it directly from the [Serverless Application Repository](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~deploy-to-s3).
 
 We also published an [example project](https://github.com/serverlesspub/cloudformation-deploy-to-s3/blob/master/example) that demonstrates how to package and deploy a web site using this custom Cloudformation resource.
 
 _Note: previous versions of this page included a public layer deployed to `us-east-1`; the layer is still available, but we now discourage using it directly. Use the SAR resource, as explained below, to deploy everything in your account and not depend on any third-party resources. You can also use the SAR resource in any supported AWS region, unlike the public layer which can only be used in `us-east-1._
 
-## Deploying the layer
 
-There are three options for deploying the supporting layer in your account:
+## How it works
 
-* Deploy it from [source code](https://github.com/serverlesspub/cloudformation-deploy-to-s3), using `make deploy`. Check out the [Deployment from Soource](https://github.com/serverlesspub/cloudformation-deploy-to-s3#deployment-from-the-source) section in the GitHub repository README for more information.
+The standard S3 resources in CloudFormation are used only to create and configure buckets, so you can't use them to upload files. But CloudFormation can automatically version and upload Lambda function code, so we can trick it to pack front-end files by creating a Lambda function and point to web site assets as its source code. 
+
+That Lambda, of course, won't really be able to run, because it contains just the web site files. This is where our layer comes in. When you attach it to the Lambda function, it will make it executable. Running the Lambda function will upload the source code to an S3 bucket.  
+
+The only thing left is to ensure that the function is invoked during a CloudFormation stack deployment. We can do that by creating a custom resource linked to a Lambda function. The layer we created is intended to run in this mode, so it automatically supports CloudFormation custom resource workflows.
+With the custom resource, you can configure the upload parameters, such as the target bucket, access control lists and caching properties, so it's easy to create web sites.
+
+![Deploy static assets to S3 using CloudFormation](/img/s3-deployment-diagram.png)
+
+Cloudformation usually updates custom resources only when their parameters change, not when the underlying Lambda function changes. Because we're using the web site assets as the source of the Lambda function, we need to additionally ensure that any changes to those assets automatically trigger the update. To do that, we'll make SAM publish a new named version of the Lambda function with each update of the site assets, using the `AutoPublishAlias` flag. We now get an automatically incrementing number whenever asset files change, so we can add that version as a parameter of the custom resource, and CloudFormation will trigger the function and upload the changed files automatically.
+
+## How to use this in your web application
+
+### Deploying the layer
+First, deploy the layer. There are three options for deploying the supporting layer in your account:
+
+* Deploy it from [source code](https://github.com/serverlesspub/cloudformation-deploy-to-s3), using `make deploy`. Check out the [Deployment from Source](https://github.com/serverlesspub/cloudformation-deploy-to-s3#deployment-from-the-source) section in the GitHub repository README for more information.
 * Deploy it from the [Serverless Application Repository](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~deploy-to-s3) web console, then note the Layer ARN in the stack outputs. 
 * Deploy it as a nested stack directly from a CloudFormation template, by including the following snippet in the template resources:
 
@@ -47,41 +62,19 @@ DeploymentLayer:
 
 You can then use `!GetAtt DeploymentLayer.Outputs.Arn` to retrieve the Layer ARN.
 
-## How it works
+### Packaging the web site files with CloudFormation
 
-We want to upload front-end files to S3. The standard S3 resources in CloudFormation are used only to create and configure buckets, so you can't use them to upload files. But CloudFormation can automatically version and upload Lambda function code, so we can trick it to pack front-end files by creating a Lambda function and point to web site assets as its source code. 
+Add an `AWS::Serverless::Function` resource  and as its `Properties` add:
 
-That Lambda, of course, won't really be able to run, because it contains just the web site files. This is where our layer comes in. When you attach it to the Lambda function, it will make it executable. Running the Lambda function will upload the source code to an S3 bucket.  
-
-The only thing left is to ensure that the function is invoked during a CloudFormation stack deployment. We can do that by creating a custom resource linked to a Lambda function. The layer we created is intended to run in this mode, so it automatically supports CloudFormation custom resource workflows.
-With the custom resource, you can configure the upload parameters, such as the target bucket, access control lists and caching properties, so it's easy to create web sites.
-
-![Deploy static assets to S3 using CloudFormation](/img/s3-deployment-diagram.png)
-
-Cloudformation usually updates custom resources only when their parameters change, not when the underlying Lambda function changes. Because we're using the web site assets as the source of the Lambda function, we need to additionally ensure that any changes to those assets automatically trigger the update. To do that, we'll make SAM publish a new named version of the Lambda function with each update of the site assets, using the `AutoPublishAlias` flag. We now get an automatically incrementing number whenever asset files change, so we can add that version as a parameter of the custom resource, and CloudFormation will trigger the function and upload the changed files automatically.
-
-## How to use this in your web application
-
-Define a new CloudFormation template and add AWS Serverless Transformation
-
-```yml
-AWSTemplateFormatVersion: 2010-09-09
-Transform: 'AWS::Serverless-2016-10-31'
-
-Resources:
-```
-
-Add a Serverless Function Resource, call it `SiteSource` and as its `Properties` add:
-
-- the `Layer` property pointing to the `s3-deployment` layer ARN,
+- the `Layer` property pointing to layer ARN,
 - `CodeUri`, pointing to a folder inside the project (for example `web-site`), containing the frontend files,
-- set the `Runtime` to `python3.6`, because the layer is using it, and,
-- set the `Handler` pointing to `deployer.resource_handler`,
-- the `Timeout` set to `600` (10 minutes, as we want to be sure in case our website is too big or our network is bit slow).
-- add `Policies` to the Properties too. In the Policies, specify `S3FullAccessPolicy` policy template with a parameter `BucketName` referencing the target bucket for uploads,
-- Set an `AutoPublishAlias` with the value of `live`. This will generate a new version of the Lambda and make it available as a retrievable property on every CloudFormation deployment.
+- set the `Runtime` to `python3.6` or `python3.7`, because the layer is using it, and,
+- set the `Handler` pointing to `deployer.resource_handler` (this comes from the layer),
+- the `Timeout` set to long enough to upload the files (`600` means 10 minutes)
+- add `Policies` to allow the function to upload to your target bucket (for example, using `S3FullAccessPolicy`)
+- Set an `AutoPublishAlias` property to something. This will generate a new version of the Lambda and make it available as a retrievable property on every CloudFormation deployment.
 
-The `SiteSource` Lambda Function should like like the following code:
+Here is an example:
 
 ```yml
 SiteSource:
@@ -99,13 +92,17 @@ SiteSource:
           BucketName: !Ref TargetBucket
 ```
 
-Define a AWS::CloudFormation::CustomResource with a name `DeploymentResource`. Set its `Properties` to have:
+### Triggering the upload during CloudFormation deployment
 
-- a `ServiceToken` which takes the `Arn` attribute from the `SiteSource` Serverless Function,
+Define an `AWS::CloudFormation::CustomResource`. Set its `Properties` to have:
+
+- a `ServiceToken` which takes the `Arn` attribute from the site source function you created in the previous step,
 - a `Version` property referencing a string variable `"SiteSource.Version”`,
 - a `TargetBucket` property referencing a the target bucket,
 - property `Acl` set to a [pre-canned S3 access policy](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl). For example, `public-read` for publicly accessible web sites and,
 - the `CacheControlMaxAge` set to 600.
+
+Here is an example:
 
 ```yml
 DeploymentResource:
@@ -118,7 +115,7 @@ DeploymentResource:
     CacheControlMaxAge: 600
 ```
 
-## Applying substitutions
+### Applying substitutions
 
 Static web sites often need to refer to other resources within the stack, such as API URLs, Lambda function ARNs and other buckets. The deployment resource can optionally substitute variables in files while copying them to S3 with values you can assign directly in the template. To do so, mark the variables with `${}` in the files (for example, to add a variable called `APP_NAME`, use `${APP_NAME}`). Then, set up the values in the `Substitutions` property of the custom resource. The property has two sub-keys:
 
