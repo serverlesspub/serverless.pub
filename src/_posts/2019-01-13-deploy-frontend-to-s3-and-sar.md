@@ -18,9 +18,9 @@ show_related_posts: false
 square_related: recommend-simalexan
 ---
 
-If you ever wanted to automatically deploy front-end web applications along with CloudFormation resources, here is how to do that. You no longer need to deploy a SPA app or a static website separately from the back-end. Just do it all together with standard `sam deploy` or `aws cloudformation deploy` commands.
+**Update: 2020-02-20: version 2.4.1 - Deployment directly from SAR embedded resources, documented substitutions**
 
-**Update: 2020-02-20: version 2.4.1 - Deployment directly from SAR embedded resources, documented substitutions***
+If you ever wanted to automatically deploy front-end web applications along with CloudFormation resources, here is how to do that. You no longer need to deploy a SPA app or a static website separately from the back-end. Just do it all together with standard `sam deploy` or `aws cloudformation deploy` commands.
 
 We built and opensourced a custom CloudFormation resource that can manage file uploads to S3, even substituting variables in web pages when uploading to allow you to configure single-page apps and web sites with dynamic parameters during deployment. The layer is easy to use in SAM and Cloudformation templates, even for beginners. The project is available under the MIT license. You can get the source code from the GitHub [repository](https://github.com/serverlesspub/cloudformation-deploy-to-s3), or deploy it directly from the [Serverless Application Repository.](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~deploy-to-s3).
 
