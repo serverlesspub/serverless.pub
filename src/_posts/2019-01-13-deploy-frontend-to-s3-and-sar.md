@@ -18,7 +18,7 @@ show_related_posts: false
 square_related: recommend-simalexan
 ---
 
-**Update: 2020-02-20: version 2.4.1 - Deployment directly from SAR embedded resources, documented substitutions**
+**Update: 2020-02-20: version 2.4.2 - Deployment directly from SAR embedded resources, documented substitutions**
 
 If you ever wanted to automatically deploy front-end web applications along with CloudFormation resources, here is how to do that. You no longer need to deploy a SPA app or a static website separately from the back-end. Just do it all together with standard `sam deploy` or `aws cloudformation deploy` commands.
 
