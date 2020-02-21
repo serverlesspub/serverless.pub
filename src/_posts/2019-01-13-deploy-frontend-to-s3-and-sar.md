@@ -18,13 +18,34 @@ show_related_posts: false
 square_related: recommend-simalexan
 ---
 
-If you ever wanted to automatically deploy front-end web applications along with CloudFormation resources, your time has come. We created a custom CloudFormation resource that uploads files into an S3 bucket. You no longer need to deploy a SPA app or a static website separately from the back-end. Just do it all together with standard `sam deploy` or `aws cloudformation deploy` commands.
+If you ever wanted to automatically deploy front-end web applications along with CloudFormation resources, here is how to do that. You no longer need to deploy a SPA app or a static website separately from the back-end. Just do it all together with standard `sam deploy` or `aws cloudformation deploy` commands.
 
-The custom resource works by using a [Python Lambda Layer](https://github.com/serverlesspub/cloudformation-deploy-to-s3) that will handle the uploads of your files to an S3 bucket, so you don’t have to write any additional code. The layer is easy to use in SAM and Cloudformation templates, even for beginners. We also published an [example project](https://github.com/serverlesspub/cloudformation-deploy-to-s3/blob/master/example) that demonstrates how to package and deploy web site code using Cloudformation.
+**Update: 2020-02-20: version 2.4.1 - Deployment directly from SAR embedded resources, documented substitutions***
 
-The deployment layer is available under the MIT license. You can get the source code from the GitHub [repository](https://github.com/serverlesspub/cloudformation-deploy-to-s3) and create it in your AWS account, or just use the public version available from the following ARN:
+We built and opensourced a custom CloudFormation resource that can manage file uploads to S3, even substituting variables in web pages when uploading to allow you to configure single-page apps and web sites with dynamic parameters during deployment. The layer is easy to use in SAM and Cloudformation templates, even for beginners. The project is available under the MIT license. You can get the source code from the GitHub [repository](https://github.com/serverlesspub/cloudformation-deploy-to-s3), or deploy it directly from the [Serverless Application Repository.](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~deploy-to-s3).
 
-`arn:aws:lambda:us-east-1:145266761615:layer:s3-deployment:4`
+We also published an [example project](https://github.com/serverlesspub/cloudformation-deploy-to-s3/blob/master/example) that demonstrates how to package and deploy a web site using this custom Cloudformation resource.
+
+_Note: previous versions of this page included a public layer deployed to `us-east-1`; the layer is still available, but we now discourage using it directly. Use the SAR resource, as explained below, to deploy everything in your account and not depend on any third-party resources. You can also use the SAR resource in any supported AWS region, unlike the public layer which can only be used in `us-east-1._
+
+## Deploying the layer
+
+There are three options for deploying the supporting layer in your account:
+
+* Deploy it from [source code](https://github.com/serverlesspub/cloudformation-deploy-to-s3), using `make deploy`. Check out the [Deployment from Soource](https://github.com/serverlesspub/cloudformation-deploy-to-s3#deployment-from-the-source) section in the GitHub repository README for more information.
+* Deploy it from the [Serverless Application Repository](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:375983427419:applications~deploy-to-s3) web console, then note the Layer ARN in the stack outputs. 
+* Deploy it as a nested stack directly from a CloudFormation template, by including the following snippet in the template resources:
+
+```yaml
+DeploymentLayer:
+  Type: AWS::Serverless::Application
+  Properties:
+    Location:
+      ApplicationId: arn:aws:serverlessrepo:us-east-1:375983427419:applications/deploy-to-s3
+      SemanticVersion: 2.4.2
+```
+
+You can then use `!GetAtt DeploymentLayer.Outputs.Arn` to retrieve the Layer ARN.
 
 ## How it works
 
@@ -67,7 +88,7 @@ SiteSource:
   Type: AWS::Serverless::Function
   Properties:
     Layers:
-      - arn:aws:lambda:us-east-1:145266761615:layer:s3-deployment:4
+      - !GetAtt DeploymentLayer.Outputs.Arn
     CodeUri: web-site/
     AutoPublishAlias: live
     Runtime: python3.6 
@@ -97,44 +118,33 @@ DeploymentResource:
     CacheControlMaxAge: 600
 ```
 
-The last thing to add is an S3 Bucket Resource in the template, where we want to deploy our frontend code. You can call it `TargetBucket`.
+## Applying substitutions
+
+Static web sites often need to refer to other resources within the stack, such as API URLs, Lambda function ARNs and other buckets. The deployment resource can optionally substitute variables in files while copying them to S3 with values you can assign directly in the template. To do so, mark the variables with `${}` in the files (for example, to add a variable called `APP_NAME`, use `${APP_NAME}`). Then, set up the values in the `Substitutions` property of the custom resource. The property has two sub-keys:
+
+* `FilePattern`: a standard shell pattern for files to process
+* `Values`: a key-value map of variable names and substitutions
+
+
+Here is an example:
 
 ```yml
-TargetBucket:
-  Type: AWS::S3::Bucket
+DeploymentResource:
+  Type: AWS::CloudFormation::CustomResource
+  Properties:
+    ServiceToken: !GetAtt SiteSource.Arn
+    Version: !Ref "SiteSource.Version"
+    TargetBucket: !Ref TargetBucket
+    Acl: 'public-read'
+    CacheControlMaxAge: 600
+    Substitutions:
+      FilePattern: "*.html"
+      Values:
+        APP_NAME: 'Example Application'
+        STACK_ID: !Ref AWS::StackId
 ```
 
-Here is the complete code:
-
-```yml
-AWSTemplateFormatVersion: 2010-09-09
-Transform: 'AWS::Serverless-2016-10-31'
-
-Resources:
-  TargetBucket:
-    Type: AWS::S3::Bucket
-  SiteSource:
-    Type: AWS::Serverless::Function
-    Properties:
-      Layers:
-        - arn:aws:lambda:us-east-1:145266761615:layer:s3-deployment:4
-      CodeUri: web-site/
-      AutoPublishAlias: live
-      Runtime: python3.6 
-      Handler: deployer.resource_handler
-      Timeout: 600
-      Policies:
-        - S3FullAccessPolicy:
-            BucketName: !Ref TargetBucket
-  DeploymentResource:
-    Type: AWS::CloudFormation::CustomResource
-    Properties:
-      ServiceToken: !GetAtt SiteSource.Arn
-      Version: !Ref "SiteSource.Version"
-      TargetBucket: !Ref TargetBucket
-      Acl: 'public-read'
-      CacheControlMaxAge: 600
-```
+For the full template source code, check out the [example project](https://github.com/serverlesspub/cloudformation-deploy-to-s3/blob/master/example/template.yml).
 
 ## Publishing Frontend Apps to AWS Serverless Application Repository
 
