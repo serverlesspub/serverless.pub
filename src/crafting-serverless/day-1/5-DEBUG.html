@@ -1,0 +1,658 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>05. Debugging serverless apps · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-toc/page-toc.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-accordion/accordion.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="6-DYNAMODB.html" />
+    
+    
+    <link rel="prev" href="4-APIGW.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../WARMUPS.html">
+            
+                <a href="../WARMUPS.html">
+            
+                    
+                    Warmups
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Day 1
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="1-SETUP.html">
+            
+                <a href="1-SETUP.html">
+            
+                    
+                    01. Setup your AWS Account
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="2-LAMBDA.html">
+            
+                <a href="2-LAMBDA.html">
+            
+                    
+                    02. Serverless app with AWS Lambda
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="3-CLOUDFORMATION.html">
+            
+                <a href="3-CLOUDFORMATION.html">
+            
+                    
+                    03. CloudFormation Infra as Code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="4-APIGW.html">
+            
+                <a href="4-APIGW.html">
+            
+                    
+                    04. APIs withs API Gateway
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.5" data-path="5-DEBUG.html">
+            
+                <a href="5-DEBUG.html">
+            
+                    
+                    05. Debugging serverless apps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="6-DYNAMODB.html">
+            
+                <a href="6-DYNAMODB.html">
+            
+                    
+                    06. DynamoDB a serverless database
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="7-TESTING.html">
+            
+                <a href="7-TESTING.html">
+            
+                    
+                    07. Designing Testable Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="8-CICD.html">
+            
+                <a href="8-CICD.html">
+            
+                    
+                    08. CI/CD
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="9-DEPLOYMENT.html">
+            
+                <a href="9-DEPLOYMENT.html">
+            
+                    
+                    09. Deployment preferences
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../day-2/">
+            
+                <a href="../day-2/">
+            
+                    
+                    Day 2
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                <a href="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                    
+                    01. Upload receipts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                <a href="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                    
+                    02. Extract receipt text
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                <a href="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                    
+                    03. Performance optimization - background processing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../day-2/04-COLD-START.html">
+            
+                <a href="../day-2/04-COLD-START.html">
+            
+                    
+                    04. Performance optimization - latency and cold starts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="../day-2/05-NO-LAMBDA.html">
+            
+                <a href="../day-2/05-NO-LAMBDA.html">
+            
+                    
+                    05. Performance optimization - skip Lambdas
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="../day-2/06-STREAMING.html">
+            
+                <a href="../day-2/06-STREAMING.html">
+            
+                    
+                    06. Serverless streaming patterns
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.7" data-path="../day-2/07-ORCHESTRATION.html">
+            
+                <a href="../day-2/07-ORCHESTRATION.html">
+            
+                    
+                    07. Orchestration using Step functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.8" data-path="../day-2/08-MIGRATION.html">
+            
+                <a href="../day-2/08-MIGRATION.html">
+            
+                    
+                    08. The Enterprise Migration Path to Serverless
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.9" data-path="../day-2/09-WARDLEY-MAPS.html">
+            
+                <a href="../day-2/09-WARDLEY-MAPS.html">
+            
+                    
+                    09. Build or outsource - Designing a Serverless Architecture with Wardley Maps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.10" data-path="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                <a href="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                    
+                    10. Business case for refactoring
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../CONCLUSION.html">
+            
+                <a href="../CONCLUSION.html">
+            
+                    
+                    Conclusion
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >05. Debugging serverless apps</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="debugging-serverless-functions-locally-and-using-cloudwatch">Debugging serverless functions locally and using CloudWatch</h1>
+<p>Learning to develop serverless in a workshop seems easy, but we all know that when we start building them it in production, things somehow get a lot harder. And one of the reasons lies in our own mistakes, the unknown errors that we won&apos;t see initially, but then might cost us much.</p>
+<p>You might wonder how do we debug serverless apps if &#x201C;there is no server&#x201D; we can connect to. Where are the logs?</p>
+<p>Our client &quot;Sauf Pompiers&quot; SARL, won&apos;t forgive us if we mess up that badly, so we need to be ready to jump in and fix, as they have an SLA (Service Layer Agreement) of 99.95%. Meaning that their downtime is less than 0.05% per month. Ouch!</p>
+<h2 id="debugging-a-serverless-app-with-cloudwatch-console">Debugging a serverless app with CloudWatch console</h2>
+<p>Before we do anything let&apos;s first introduce a temporary error. Let&apos;s see how to do that with out Hello World Function code:</p>
+<pre><code class="lang-javascript">exports.handler = <span class="hljs-keyword">async</span> (event) =&gt; {
+  <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&apos;an error from AWS Lambda&apos;</span>);
+
+  <span class="hljs-keyword">const</span> response = {
+      statusCode: <span class="hljs-number">200</span>,
+      body: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">&apos;Hello from Lambda!&apos;</span>),
+  };
+  <span class="hljs-keyword">return</span> response;
+};
+</code></pre>
+<p>Now after we need to deploy this, so please run <code>sam deploy</code>.
+Then invoke the Lambda through its API.
+You should receive an HTTP status 500.</p>
+<p>Now to debug, we will first use CloudWatch, the AWS monitoring and observability service. CloudWatch captures logs, metrics, and events coming from your serverless applications. Specifically for AWS Lambda it creates a Log group for each and every Lambda function and separate Log entries for each deployment.</p>
+<p>To access CloudWatch, go to the <a href="https://console.aws.amazon.com/cloudwatch/home" target="_blank">CloudWatch Console</a></p>
+<p>Then click <strong>Logs</strong> and then click <strong>Log Groups</strong>. You should see a page containing a table with some if items (in case it&apos;s an empty account, you might see only one). If you&apos;re using a company account you might see a lot of these entries, so to find the one you deployed, type in <code>/aws/lambda/</code> then the name of your CloudFormation stack, a dash <code>-</code> and then your function name.</p>
+<p>Then, click on the Log group and you should a new page consisting of a table of Log Streams. A single Log Stream entry contains all of your log entries from that Lambda Function&apos;s single deployment. It is important to remember, that if you didn&apos;t deploy again, the same Log entry may contain the logs from multiple Lambda executions.</p>
+<p>Now to find the last entry, sort by Last Event Time and then click on the top one. You should see (yet another!) table with multiple lines representing all the events the AWS CloudWatch service stored for your single Lambda function, its single Log group, single Log entry from a single deployment (too many singles).</p>
+<p>You should see the error you created in one of the Log event entries. Feel free to click on it to expand. You&apos;ve done a first CloudWatch Console debug session on an AWS Lambda, isn&apos;t it annoying already?</p>
+<p>To make it even more annoying, you have a task to do.</p>
+<h2 id="task-1">Task #1</h2>
+<ol>
+<li>Create an error in one of your Expenses functions</li>
+<li>Deploy the stack</li>
+<li>Call its API endpoint</li>
+<li>Debug the error through your AWS CloudFormation console</li>
+</ol>
+<h3 id="note">Note</h3>
+<p>When you&apos;ve finished, continue reading this chapter!</p>
+<h2 id="local-debug-of-serverless-applications">Local debug of serverless applications</h2>
+<p>As you could already notice, the way of debugging serverless applications by deploying, running and then checking the CloudWatch Logs is pretty annoying. Before we could debug apps locally and then deploy them, so why can&apos;t we do it now too?</p>
+<p>Luckily for us, we can!</p>
+<p>But, to be able to do that we need to do a little setup, because we need to install LambCI, a CI built on AWS Lambda (by another AWS Serverless Hero, Michael Hart).</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<h3 id="docker">Docker</h3>
+<p>Before we continue, you will need to have Docker installed. So please,before continuing, have it installed.</p>
+<h3 id="setup-your-tools-ide">Setup your tool&apos;s IDE</h3>
+<p><strong>Important</strong>
+We will we only covering the Visual Studio Code&apos;s setup and debug, but it can be useful for comparing to your own IDE&apos;s setup.</p>
+<p>For Visual Studio Code, open the Debug tab. Then click to create a <code>launch.json</code>. Pick the one you are using and add something similar to the following example:</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.2.0&quot;</span>,
+  <span class="hljs-string">&quot;configurations&quot;</span>: [
+    {
+      <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;YOUR_PROJECT_NAME_YOU_PUT_AS_EVENT&quot;</span>,
+      <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;node&quot;</span>,
+      <span class="hljs-string">&quot;request&quot;</span>: <span class="hljs-string">&quot;attach&quot;</span>,
+      <span class="hljs-string">&quot;address&quot;</span>: <span class="hljs-string">&quot;localhost&quot;</span>,
+      <span class="hljs-string">&quot;port&quot;</span>: <span class="hljs-number">8888</span>,
+      <span class="hljs-comment">// Location to where the transpiled JS file is: follows CodeUri</span>
+      <span class="hljs-string">&quot;localRoot&quot;</span>: <span class="hljs-string">&quot;${workspaceRoot}/&quot;</span>,
+      <span class="hljs-string">&quot;remoteRoot&quot;</span>: <span class="hljs-string">&quot;/var/task&quot;</span>,
+      <span class="hljs-string">&quot;protocol&quot;</span>: <span class="hljs-string">&quot;inspector&quot;</span>,
+      <span class="hljs-string">&quot;stopOnEntry&quot;</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-comment">// Same as LocalRoot given we run on a docker container</span>
+      <span class="hljs-comment">// outFiles allows VSCode debugger to know where the source code is after finding its sourceMap</span>
+      <span class="hljs-string">&quot;outFiles&quot;</span>: [
+        <span class="hljs-string">&quot;${workspaceRoot}/index.js&quot;</span>,
+      ],
+      <span class="hljs-comment">// instructs debugger to use sourceMap to identify correct breakpoint line</span>
+      <span class="hljs-comment">// and more importantly expand line/column numbers correctly as code is minified</span>
+      <span class="hljs-string">&quot;sourceMaps&quot;</span>: <span class="hljs-literal">true</span>
+    }
+  ]
+}
+</code></pre>
+<p>Now before we try, we also need to setup your Lambda Function&apos;s test event. This test event is required because when we trigger our function, we need to send it an actual event. The main reason is that LambCI simulates an identical environment, as similar as possible to a real Lambda environment.</p>
+<p>Instead of copy/pasting this event from CloudWatch, there is a handy SAM command:</p>
+<p><code>sam local generate-event apigateway aws-proxy</code></p>
+<p>The <code>generate-event</code> command can create a whole bunch of other Lambda events. You can read more about the <code>sam local generate-event</code> command <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-generate-event.html" target="_blank">here</a></p>
+<p>Copy it and save it in a file. Then you should put the event inside your <code>tests</code> folder, and a separate folder called <code>test-events</code> or something similar. When you have created your test event, its time to try it out!</p>
+<p>To try, run:</p>
+<p><code>sam local invoke YOUR_PROJECT_NAME_YOU_PUT_AS_EVENT --event tests/test-events/event-deploy.json --profile default --region us-east-1 --debug-port 8888</code></p>
+<h4 id="note-environment-varialbes">Note: Environment varialbes</h4>
+<p>If you want to pass environment variables to this local invocation of your Lambda function, you need to add an <code>env</code> parameter flag and pass it the location to the JSON file containing the enviroment variable values.</p>
+<p>Something like the following line:
+<code>sam local invoke YOUR_PROJECT_NAME_YOU_PUT_AS_EVENT --event tests/test-events/event-deploy.json --env-vars env.json --profile default --region us-east-1</code></p>
+<p>The file contents should looks something like this:</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;YOUR_PROJECT_NAME_YOU_PUT_AS_EVENT&quot;</span>: {
+    <span class="hljs-string">&quot;PARAM_1&quot;</span>: <span class="hljs-string">&quot;param-1-value&quot;</span>,
+    <span class="hljs-string">&quot;PARAM_2&quot;</span>: <span class="hljs-string">&quot;param-2-value&quot;</span>
+  }
+}
+</code></pre>
+<p>That&apos;s it! Now you know how to locally debug your Lambda Functions.</p>
+<h2 id="task-2">Task #2</h2>
+<ol>
+<li>Create test events for all 3 Expense functions</li>
+<li>Add a debug breakpoint for each three</li>
+<li>Run and check if the breakpoints stop the function execution</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="4-APIGW.html" class="navigation navigation-prev " aria-label="Previous page: 04. APIs withs API Gateway">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="6-DYNAMODB.html" class="navigation navigation-next " aria-label="Next page: 06. DynamoDB a serverless database">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"05. Debugging serverless apps","level":"1.3.5","depth":2,"next":{"title":"06. DynamoDB a serverless database","level":"1.3.6","depth":2,"path":"day-1/6-DYNAMODB.md","ref":"day-1/6-DYNAMODB.md","articles":[]},"previous":{"title":"04. APIs withs API Gateway","level":"1.3.4","depth":2,"path":"day-1/4-APIGW.md","ref":"day-1/4-APIGW.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["page-toc","accordion"],"pluginsConfig":{"page-toc":{"position":"before-first","selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4","showByDefault":true},"accordion":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"day-1/5-DEBUG.md","mtime":"2020-02-26T17:16:12.664Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-26T22:03:57.845Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/anchor-3.1.1.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/page-toc.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-accordion/accordionSelector.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

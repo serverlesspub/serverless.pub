@@ -1,0 +1,729 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>04. APIs withs API Gateway · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-toc/page-toc.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-accordion/accordion.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="5-DEBUG.html" />
+    
+    
+    <link rel="prev" href="3-CLOUDFORMATION.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../WARMUPS.html">
+            
+                <a href="../WARMUPS.html">
+            
+                    
+                    Warmups
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Day 1
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="1-SETUP.html">
+            
+                <a href="1-SETUP.html">
+            
+                    
+                    01. Setup your AWS Account
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="2-LAMBDA.html">
+            
+                <a href="2-LAMBDA.html">
+            
+                    
+                    02. Serverless app with AWS Lambda
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="3-CLOUDFORMATION.html">
+            
+                <a href="3-CLOUDFORMATION.html">
+            
+                    
+                    03. CloudFormation Infra as Code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.4" data-path="4-APIGW.html">
+            
+                <a href="4-APIGW.html">
+            
+                    
+                    04. APIs withs API Gateway
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="5-DEBUG.html">
+            
+                <a href="5-DEBUG.html">
+            
+                    
+                    05. Debugging serverless apps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="6-DYNAMODB.html">
+            
+                <a href="6-DYNAMODB.html">
+            
+                    
+                    06. DynamoDB a serverless database
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="7-TESTING.html">
+            
+                <a href="7-TESTING.html">
+            
+                    
+                    07. Designing Testable Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="8-CICD.html">
+            
+                <a href="8-CICD.html">
+            
+                    
+                    08. CI/CD
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="9-DEPLOYMENT.html">
+            
+                <a href="9-DEPLOYMENT.html">
+            
+                    
+                    09. Deployment preferences
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../day-2/">
+            
+                <a href="../day-2/">
+            
+                    
+                    Day 2
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                <a href="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                    
+                    01. Upload receipts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                <a href="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                    
+                    02. Extract receipt text
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                <a href="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                    
+                    03. Performance optimization - background processing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../day-2/04-COLD-START.html">
+            
+                <a href="../day-2/04-COLD-START.html">
+            
+                    
+                    04. Performance optimization - latency and cold starts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="../day-2/05-NO-LAMBDA.html">
+            
+                <a href="../day-2/05-NO-LAMBDA.html">
+            
+                    
+                    05. Performance optimization - skip Lambdas
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="../day-2/06-STREAMING.html">
+            
+                <a href="../day-2/06-STREAMING.html">
+            
+                    
+                    06. Serverless streaming patterns
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.7" data-path="../day-2/07-ORCHESTRATION.html">
+            
+                <a href="../day-2/07-ORCHESTRATION.html">
+            
+                    
+                    07. Orchestration using Step functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.8" data-path="../day-2/08-MIGRATION.html">
+            
+                <a href="../day-2/08-MIGRATION.html">
+            
+                    
+                    08. The Enterprise Migration Path to Serverless
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.9" data-path="../day-2/09-WARDLEY-MAPS.html">
+            
+                <a href="../day-2/09-WARDLEY-MAPS.html">
+            
+                    
+                    09. Build or outsource - Designing a Serverless Architecture with Wardley Maps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.10" data-path="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                <a href="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                    
+                    10. Business case for refactoring
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../CONCLUSION.html">
+            
+                <a href="../CONCLUSION.html">
+            
+                    
+                    Conclusion
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >04. APIs withs API Gateway</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="creating-an-api-gateway-with-http-api">Creating an API Gateway with HTTP API</h1>
+<p>First, congratulations again on learning how to define and deploy your first serverless application!</p>
+<p>But that&apos;s not enough for your client, the &quot;Sauf Pompiers&quot; folks. They also want a functional API with which they can interact, not just three isolated Lambdas in a CloudFormation stack. We can&apos;t expect them to manually invoke them, we need to expose their functionality through an API. And this requires us to use the AWS API Gateway. This section will connect on your previous work and we will create together an API that exposes an HTTP interface to all of your previous three Lambda function.</p>
+<p>As we briefly touched before, AWS Lambda is an isolated permissionless function. Completely locked down, without any external way to access it. It doesn&apos;t run at all, unless its triggered by an event. Those events can come from various other services, such as S3 Buckets, API Gateway, AppSync GraphQL, Alexa, and many more.</p>
+<p>So how do we create an API with AWS Lambda?</p>
+<h2 id="aws-api-gateway">AWS API Gateway</h2>
+<p>As you could presume, API Gateway is a completely separate service from AWS Lambda. It&apos;s purpose is only to define endpoints and provide external access to HTTP requests with their appropriate response formatting, security, rate limiting, and so on. If you want to get more specific on the API Gateway, please take a look at it&apos;s <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-basic-concept.html" target="_blank">Documentation</a></p>
+<p>There are multiple ways of how to define an API Gateway, as a :</p>
+<ul>
+<li>separate template resource, NO Swagger</li>
+<li>separate template resource, WITH Swagger</li>
+<li>through an AWS Lambda Event trigger</li>
+</ul>
+<p>Here are the definition examples</p>
+<h3 id="separate-api-template-resource-no-swagger">Separate API template resource NO Swagger</h3>
+<pre><code class="lang-yml"><span class="hljs-attr">BasicAWSApiGateway:</span>
+<span class="hljs-attr">  Type:</span> AWS::Serverless::Api
+<span class="hljs-attr">  Properties:</span>
+<span class="hljs-attr">    Name:</span> Basic AWS Api Gateway
+<span class="hljs-attr">    StageName:</span> Stage
+</code></pre>
+<h3 id="separate-api-template-resource-with-swagger">Separate API template resource WITH Swagger</h3>
+<p>Here is the example with the Swagger.</p>
+<pre><code class="lang-yml"><span class="hljs-attr">  GetOneApi:</span>
+<span class="hljs-attr">    Type:</span> AWS::Serverless::Api
+<span class="hljs-attr">    Properties:</span>
+<span class="hljs-attr">      StageName:</span> prod
+<span class="hljs-attr">      DefinitionBody:</span>
+<span class="hljs-attr">        swagger:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">        info:</span>
+<span class="hljs-attr">          title:</span>
+<span class="hljs-attr">            Ref:</span> AWS::StackName
+<span class="hljs-attr">        paths:</span>
+          /someitems/{id}:
+<span class="hljs-attr">            get:</span>
+<span class="hljs-attr">              parameters:</span>
+<span class="hljs-attr">              - name:</span> id
+<span class="hljs-attr">                in:</span> path
+<span class="hljs-attr">                required:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">                type:</span> string
+<span class="hljs-attr">              responses:</span> {}
+<span class="hljs-attr">              x-amazon-apigateway-integration:</span>
+<span class="hljs-attr">                httpMethod:</span> POST
+<span class="hljs-attr">                type:</span> aws_proxy
+<span class="hljs-attr">                uri:</span>
+<span class="hljs-attr">                  Fn:</span>:Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/<span class="hljs-number">2015</span><span class="hljs-bullet">-03</span><span class="hljs-bullet">-31</span>/functions/${GetOneLambda.Arn}/invocations
+<span class="hljs-attr">  GetOneLambda:</span>
+<span class="hljs-attr">    Type:</span> AWS::Serverless::Function
+    ...
+<span class="hljs-attr">      Events:</span>
+<span class="hljs-attr">        Api:</span>
+<span class="hljs-attr">          Type:</span> Api
+<span class="hljs-attr">          Properties:</span>
+<span class="hljs-attr">            Path:</span> /someitems/{id}
+<span class="hljs-attr">            Method:</span> GET
+<span class="hljs-attr">            RestApiId:</span> !Ref GetOneApi
+</code></pre>
+<p>Looks good, but its a bit too verbose, right?</p>
+<h3 id="aws-lambda-event-trigger">AWS Lambda Event trigger</h3>
+<p>Here comes a SAM abstracted example for a Serverless Function:</p>
+<pre><code class="lang-yml">YourSAMLambdaFunction
+<span class="hljs-attr">  Type:</span> AWS::Serverless::Function
+<span class="hljs-attr">  Properties:</span>
+<span class="hljs-attr">    Runtime:</span> nodejs12.x
+<span class="hljs-attr">    CodeUri:</span> src/
+<span class="hljs-attr">    Handler:</span> index.handler
+<span class="hljs-attr">    Events:</span>
+<span class="hljs-attr">      YourAPIEndpointName:</span>
+<span class="hljs-attr">        Type:</span> API
+<span class="hljs-attr">        Properties:</span>
+<span class="hljs-attr">          Path:</span> /hello
+<span class="hljs-attr">          Method:</span> GET
+<span class="hljs-attr">          RestApiId:</span> !Ref HelloApi <span class="hljs-comment">## This is optional.</span>
+</code></pre>
+<p>As you could notice, a lot simpler, but without any configuration for CORS, Stage, and so forth. Recommended for same origin domains. Tthis example is basically just adding an Event Trigger, which automatically creates the whole resource and the endpoints underneath.</p>
+<p>The <code>RestApiId</code> property points</p>
+<h2 id="task">Task</h2>
+<p>Within your SAM template, create three API GW endpoints for your Lambdas.</p>
+<ol>
+<li>The <strong>enter-expense</strong> Lambda should be a POST HTTP endpoint, which requires the following parameters:<ul>
+<li>issuer,</li>
+<li>date,</li>
+<li>description,</li>
+<li>amount,</li>
+<li>currency</li>
+</ul>
+</li>
+<li>The <strong>list-expenses</strong> Lambda should be a GET HTTP endpoint, it doesn&apos;t require any parameter.</li>
+<li>The <strong>update-expense</strong> Lambda should be a PUT HTTP endpoint in the format <code>/expenses/{expenseId}</code>, which requires the following parameters:<ul>
+<li>expenseId</li>
+<li>issuer,</li>
+<li>date,</li>
+<li>description,</li>
+<li>amount,</li>
+<li>currency</li>
+</ul>
+</li>
+<li>Deploy it using SAM CLI</li>
+<li>Try the code from the UI</li>
+</ol>
+<h2 id="hints">Hints</h2>
+<ol>
+<li><p>You don&apos;t have to define parameters in the Swagger for it, just add <code>Events</code> as a property to your Lambda Function properties.</p>
+</li>
+<li><p>Quite identical to the first solution.</p>
+</li>
+<li><p>The main difference for the <strong>update-expense</strong>  Lambda Function is that you need to pass a parameter for the expenseId in the path, while the rest go through the HTTP body.</p>
+</li>
+</ol>
+<h2 id="additional-help">Additional Help</h2>
+<p>Only use this if you&apos;ve spent more than 10 minutes on a single task item.</p>
+<div class="accordion accordionClose"><div class="accordionButton"><div class="accordionTitle">1. Enter Expense API</div><div class="accordionSpinnerBox"><div class="accordionSpinner"></div></div></div><div class="accordionContent">
+<pre><code class="lang-yml"><span class="hljs-attr">  ExpensesApi:</span>
+<span class="hljs-attr">    Type:</span> AWS::Serverless::Api
+
+  ...
+
+<span class="hljs-attr">  EnterExpense:</span>
+<span class="hljs-attr">    Type:</span> AWS::Serverless::Function
+<span class="hljs-attr">    Properties:</span>
+    ...
+<span class="hljs-attr">      Events:</span>
+<span class="hljs-attr">        SaveApi:</span>
+<span class="hljs-attr">          Type:</span> Api
+<span class="hljs-attr">          Properties:</span>
+<span class="hljs-attr">            Path:</span> /save
+<span class="hljs-attr">            Method:</span> POST
+<span class="hljs-attr">            RestApiId:</span> !Ref ExpensesApi
+</code></pre>
+</div></div>
+<div class="accordion accordionClose"><div class="accordionButton"><div class="accordionTitle">3. Update Expense API</div><div class="accordionSpinnerBox"><div class="accordionSpinner"></div></div></div><div class="accordionContent">
+<pre><code class="lang-yml"><span class="hljs-attr">  ExpensesApi:</span>
+<span class="hljs-attr">    Type:</span> AWS::Serverless::Api
+    ...
+<span class="hljs-attr">    Properties:</span>
+      ...
+<span class="hljs-attr">      DefinitionBody:</span>
+<span class="hljs-attr">        swagger:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">        info:</span>
+<span class="hljs-attr">          title:</span>
+<span class="hljs-attr">            Ref:</span> AWS::StackName
+<span class="hljs-attr">        paths:</span>
+          /expenses/{id}:
+<span class="hljs-attr">            put:</span>
+<span class="hljs-attr">              parameters:</span>
+<span class="hljs-attr">              - name:</span> id
+<span class="hljs-attr">                in:</span> path
+<span class="hljs-attr">                required:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">                type:</span> string
+<span class="hljs-attr">              responses:</span> {}
+<span class="hljs-attr">              x-amazon-apigateway-integration:</span>
+<span class="hljs-attr">                httpMethod:</span> POST
+<span class="hljs-attr">                type:</span> aws_proxy
+<span class="hljs-attr">                uri:</span>
+<span class="hljs-attr">                  Fn:</span>:Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/<span class="hljs-number">2015</span><span class="hljs-bullet">-03</span><span class="hljs-bullet">-31</span>/functions/${UpdateExpenseLambda.Arn}/invocations
+<span class="hljs-attr">  UpdateExpenseLambda:</span>
+<span class="hljs-attr">    Type:</span> AWS::Serverless::Function
+<span class="hljs-attr">    Properties:</span>
+<span class="hljs-attr">      Handler:</span> update-expense.handler
+<span class="hljs-attr">      Runtime:</span> nodejs12.x
+<span class="hljs-attr">      Events:</span>
+<span class="hljs-attr">        Api:</span>
+<span class="hljs-attr">          Type:</span> Api
+<span class="hljs-attr">          Properties:</span>
+<span class="hljs-attr">            Path:</span> /expenses/{id}
+<span class="hljs-attr">            Method:</span> PUT
+<span class="hljs-attr">            RestApiId:</span> !Ref ExpensesApi
+</code></pre>
+</div></div>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="3-CLOUDFORMATION.html" class="navigation navigation-prev " aria-label="Previous page: 03. CloudFormation Infra as Code">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="5-DEBUG.html" class="navigation navigation-next " aria-label="Next page: 05. Debugging serverless apps">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"04. APIs withs API Gateway","level":"1.3.4","depth":2,"next":{"title":"05. Debugging serverless apps","level":"1.3.5","depth":2,"path":"day-1/5-DEBUG.md","ref":"day-1/5-DEBUG.md","articles":[]},"previous":{"title":"03. CloudFormation Infra as Code","level":"1.3.3","depth":2,"path":"day-1/3-CLOUDFORMATION.md","ref":"day-1/3-CLOUDFORMATION.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["page-toc","accordion"],"pluginsConfig":{"page-toc":{"position":"before-first","selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4","showByDefault":true},"accordion":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"day-1/4-APIGW.md","mtime":"2020-02-26T16:47:18.585Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-26T22:03:57.845Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/anchor-3.1.1.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/page-toc.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-accordion/accordionSelector.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

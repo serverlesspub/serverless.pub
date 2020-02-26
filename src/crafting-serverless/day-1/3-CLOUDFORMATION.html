@@ -1,0 +1,677 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>03. CloudFormation Infra as Code · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-toc/page-toc.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-accordion/accordion.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="4-APIGW.html" />
+    
+    
+    <link rel="prev" href="2-LAMBDA.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../WARMUPS.html">
+            
+                <a href="../WARMUPS.html">
+            
+                    
+                    Warmups
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Day 1
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="1-SETUP.html">
+            
+                <a href="1-SETUP.html">
+            
+                    
+                    01. Setup your AWS Account
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="2-LAMBDA.html">
+            
+                <a href="2-LAMBDA.html">
+            
+                    
+                    02. Serverless app with AWS Lambda
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.3" data-path="3-CLOUDFORMATION.html">
+            
+                <a href="3-CLOUDFORMATION.html">
+            
+                    
+                    03. CloudFormation Infra as Code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="4-APIGW.html">
+            
+                <a href="4-APIGW.html">
+            
+                    
+                    04. APIs withs API Gateway
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="5-DEBUG.html">
+            
+                <a href="5-DEBUG.html">
+            
+                    
+                    05. Debugging serverless apps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="6-DYNAMODB.html">
+            
+                <a href="6-DYNAMODB.html">
+            
+                    
+                    06. DynamoDB a serverless database
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="7-TESTING.html">
+            
+                <a href="7-TESTING.html">
+            
+                    
+                    07. Designing Testable Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="8-CICD.html">
+            
+                <a href="8-CICD.html">
+            
+                    
+                    08. CI/CD
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="9-DEPLOYMENT.html">
+            
+                <a href="9-DEPLOYMENT.html">
+            
+                    
+                    09. Deployment preferences
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../day-2/">
+            
+                <a href="../day-2/">
+            
+                    
+                    Day 2
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                <a href="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                    
+                    01. Upload receipts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                <a href="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                    
+                    02. Extract receipt text
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                <a href="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                    
+                    03. Performance optimization - background processing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../day-2/04-COLD-START.html">
+            
+                <a href="../day-2/04-COLD-START.html">
+            
+                    
+                    04. Performance optimization - latency and cold starts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="../day-2/05-NO-LAMBDA.html">
+            
+                <a href="../day-2/05-NO-LAMBDA.html">
+            
+                    
+                    05. Performance optimization - skip Lambdas
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="../day-2/06-STREAMING.html">
+            
+                <a href="../day-2/06-STREAMING.html">
+            
+                    
+                    06. Serverless streaming patterns
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.7" data-path="../day-2/07-ORCHESTRATION.html">
+            
+                <a href="../day-2/07-ORCHESTRATION.html">
+            
+                    
+                    07. Orchestration using Step functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.8" data-path="../day-2/08-MIGRATION.html">
+            
+                <a href="../day-2/08-MIGRATION.html">
+            
+                    
+                    08. The Enterprise Migration Path to Serverless
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.9" data-path="../day-2/09-WARDLEY-MAPS.html">
+            
+                <a href="../day-2/09-WARDLEY-MAPS.html">
+            
+                    
+                    09. Build or outsource - Designing a Serverless Architecture with Wardley Maps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.10" data-path="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                <a href="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                    
+                    10. Business case for refactoring
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../CONCLUSION.html">
+            
+                <a href="../CONCLUSION.html">
+            
+                    
+                    Conclusion
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >03. CloudFormation Infra as Code</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="learning-cloudformation-and-sam">Learning CloudFormation and SAM</h1>
+<p>It&apos;s great that we&apos;ve created these placeholder AWS Lambdas for handling expense receipts, but our client &quot;Sauf Pompiers&quot; wants to speed up the process and hire more engineers which will have to collaborate. Now, we can&apos;t possibly imagine a team of engineers to work collaboratively, write and edit the code from the UI. We need to enable the engineers to use their favorite tools, version the codebase.</p>
+<p>Luckily, in the AWS ecosystem, there is a tool called CloudFormation. Simply put, its infrastructure-as-code. A YAML/JSON templating language that defines what infrastructure you need. Write it locally in your favorite editor, version it, edit and change and when you want to create, update or delete the specified infrastructure you just use the CloudFormation CLI to (re)deploy. An service / application in CloudFormation is defined as a Stack. Think of it as a recipe, where you write what ingredients you need and how to they interact and then you give it to CloudFormation,your chef, who makes it for you. If you write your recipe wrongly or with bad ingredients, it&apos; not the chef&apos;s fault.</p>
+<p>Now how do we define an AWS Lambda using CloudFormation?
+For example, our &quot;enter-expense&quot; AWS Lambda consists of two parts:</p>
+<ul>
+<li>the hardware, the provisioned AWS Lambda infrastructure</li>
+<li>its software, the codebase ran on the AWS Lambda infrastructure</li>
+</ul>
+<p>That&apos;s what we need to define with CloudFormation. First, let&apos;s start with the hardware, where the code is going to run.</p>
+<pre><code class="lang-yml"><span class="hljs-attr">  YourLambdaFunction:</span>
+<span class="hljs-attr">    Type:</span> AWS::Lambda::Function
+<span class="hljs-attr">    Properties:</span>
+<span class="hljs-attr">      Runtime:</span> nodejs12.x
+<span class="hljs-attr">      Code:</span> src/
+<span class="hljs-attr">      Handler:</span> index.handler
+</code></pre>
+<p>Let&apos;s explain this. This YAML code snippet represents an AWS resource, and in this case, an AWS Lambda. When you &quot;send&quot; this resource to AWS, it will create an AWS Lambda Function in your AWS account. The first line is the name of the resource, you can write whatever you want there. The next line, defines the type of the AWS resource you want to create. The <code>Type</code> property follows a certain naming structure. The first, <code>AWS</code>, represents its namespace. In this case its <code>AWS</code>, which means it belongs to native AWS resources. The next one is Resource Domain, which in this case is <code>Lambda</code>, and then you have <code>Function</code>, which represents the exact Resource Domain Type. Beside the <code>Function</code> type it can also be a <code>Permission</code> for example, and so on.</p>
+<p>The next line are the resource&apos;s <code>Properties</code>. A resource can have many properties, most of which are optional and the few are required. You can see all the properties for AWS Lambda <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html" target="_blank">here</a>.</p>
+<p>The next three: <code>Handler</code>, <code>Code</code> and <code>Runtime</code> are the only required ones (as you could presume). The <code>Runtime</code> is simply the function&apos;s runtime, based on the programming language you want your function to run. The <code>Code</code> represents the function code, and it can be defined either as the folder path, like here in the example, or even inline. The <code>Handler</code> is the name of the file and its method within its code that Lambda calls to execute your function. For more, open the link to the <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html" target="_blank">AWS Lambda documentation</a>.</p>
+<p>Now, as AWS Lambda is run only when an event triggers it, with CloudFormation you will also need to define which kind of trigger, in form of a permission, <code>AWS::Lambda::Permission</code>. For example here is one which triggers a Lambda when something happens in an S3 bucket:</p>
+<pre><code class="lang-yml"><span class="hljs-attr">  BucketPermission:</span>
+<span class="hljs-attr">    Type:</span> AWS::Lambda::Permission
+<span class="hljs-attr">    Properties:</span>
+<span class="hljs-attr">      Action:</span> <span class="hljs-string">&apos;lambda:InvokeFunction&apos;</span>
+<span class="hljs-attr">      FunctionName:</span> !Ref BucketWatcher
+<span class="hljs-attr">      Principal:</span> s3.amazonaws.com
+<span class="hljs-attr">      SourceAccount:</span> !Ref <span class="hljs-string">&quot;AWS::AccountId&quot;</span>
+<span class="hljs-attr">      SourceArn:</span> !Sub <span class="hljs-string">&quot;arn:aws:s3:::${BucketName}&quot;</span>
+</code></pre>
+<p>As you can see just by reading this piece of code, it allows the S3 service of a Source Bucket from an AWS Account to invoke an AWS Lambda Function named <code>BucketWatcher</code>.</p>
+<p>And that&apos;s not all. You also need to write a Lambda Execution Role (a <code>AWS::IAM::Role</code> resource type). So, imagine, for a simple Lambda, you have to write both an AWS Lambda resourceSome of you may be seeing this for the first time, and as you guessed it, its a bit to verbose, right?</p>
+<p>For that reason, AWS has created tool, which is 100% based on AWS CloudFormation and a <em>lot</em> less verbose, called <strong>AWS SAM</strong>.</p>
+<h2 id="aws-sam">AWS SAM</h2>
+<p>AWS SAM, or AWS Serverless Application Model, is an AWS-built open-source framework for creating serverless application. Based 100% on AWS CloudFormation, AWS SAM is the most dominant way of defining serverless applications.</p>
+<p>Let&apos;s go straight to the example:</p>
+<pre><code class="lang-yml">YourSAMLambdaFunction
+<span class="hljs-attr">  Type:</span> AWS::Serverless::Function
+<span class="hljs-attr">  Properties:</span>
+<span class="hljs-attr">    Runtime:</span> nodejs12.x
+<span class="hljs-attr">    CodeUri:</span> src/
+<span class="hljs-attr">    Handler:</span> index.handler
+</code></pre>
+<p>Doesn&apos;t seem to different, right? The only change is in the Resource Domain, which instead of Lambda is Serverless? The Serverless resource domain means that it will create a resource from the AWS SAM domain.</p>
+<p>Again, not a lot.</p>
+<p>It&apos;s main difference lies in its definition of the AWS Lambda triggers. Instead of manually defining the <code>AWS::Lambda::Permission</code> and the AWS Execution Role, you will be just adding a property <code>Events</code> inside the <code>Properties</code> for your Serverless Function, like in the following example:</p>
+<pre><code class="lang-yml">YourSAMLambdaFunction
+<span class="hljs-attr">  Type:</span> AWS::Serverless::Function
+<span class="hljs-attr">  Properties:</span>
+<span class="hljs-attr">    Runtime:</span> nodejs12.x
+<span class="hljs-attr">    CodeUri:</span> src/
+<span class="hljs-attr">    Handler:</span> index.handler
+<span class="hljs-attr">    Events:</span>
+<span class="hljs-attr">      S3ObjectCreatedEvent:</span>
+<span class="hljs-attr">        Type:</span> S3
+<span class="hljs-attr">        Properties:</span>
+<span class="hljs-attr">          Bucket:</span> !Ref SrcBucket
+<span class="hljs-attr">          Events:</span> s3:ObjectCreated:*
+<span class="hljs-attr">SrcBucket:</span>
+<span class="hljs-attr">  Type:</span> AWS::S3::Bucket
+</code></pre>
+<p>The <code>Events</code> property specifies all the possible events that can trigger your function, and it abstracts by defaulting the <em>AWS Lambda Permission</em> and the <em>AWS Lambda Role</em> into a single Lambda Event definition. You can see that you need to:</p>
+<ol>
+<li>Name the event, in this case <code>S3ObjectCreatedEvent</code>. You can name it how you prefer.</li>
+<li>Define its Event Type, its <code>S3</code>.</li>
+<li>Define the Event properties based on the Event Type, in this case its <code>Bucket</code> and <code>Events</code>, which specify the event trigger source bucket and the S3 events which will invoke the Lambda, respectively.</li>
+</ol>
+<p>All event triggers follow the similar rule as the definition for AWS resource types. It&apos;s a lot easier, as you can see!</p>
+<h2 id="lambda-code">Lambda Code</h2>
+<p>For either of these cases, AWS CloudFormation and AWS SAM, the way you will write the code is the same. For example, here is the Hello World code from the previous example:</p>
+<pre><code class="lang-javascript">exports.handler = <span class="hljs-keyword">async</span> (event) =&gt; {
+    <span class="hljs-comment">// TODO implement</span>
+    <span class="hljs-keyword">const</span> response = {
+        statusCode: <span class="hljs-number">200</span>,
+        body: <span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-string">&apos;Hello from Lambda!&apos;</span>),
+    };
+    <span class="hljs-keyword">return</span> response;
+};
+</code></pre>
+<p>This code should now be inside a file called <code>index.js</code>. That file should be in a folder called <code>src</code> within your serverless project. That way, when AWS wants to execute your Lambda function, it will search within the folder <code>src</code>, because of the <code>CodeUri</code> property. Then it will search for a file named <code>index</code> with a method <code>handler</code>.</p>
+<h2 id="deployment">Deployment</h2>
+<p>This is the main benefit of AWS SAM. It has a really greate CLI tool called AWS SAM CLI ( who would&apos;ve guessed?! )
+Within the tool there is a command <code>sam deploy</code>. You can try it out yourself, it&apos;s slightly magical, as it tries to detect your current setup and will create a <strong>samconfig.toml</strong> file with all your configurations. If it doesn&apos;t it will do a &quot;guided deployment&quot;, where it will ask you for the missing parameters.</p>
+<p>It&apos;s parameters are:</p>
+<ul>
+<li>stack name, the name of the CloudFormation stack you are creating,</li>
+<li>template name, the name of the CloudFormation template file (which defines the AWS infrastructure you want to create),</li>
+<li>region, the AWS region in which you want to deploy,</li>
+<li>deployment bucket, where it packages your whole application before deploying it,</li>
+<li>capabilities, which represent the IAM (Identity Access Management), which you can guess, just give its adequate permissions to deploy,</li>
+<li>parameter overrides, if your CloudFormation stack accepts some paramters before being created you can override their default state using this parameter</li>
+</ul>
+<p>You can see more about the <code>sam deploy</code> <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html" target="_blank">here</a>.</p>
+<p>Now that you know the basics on how to create a Lambda function, it&apos;s time for your tasks!</p>
+<h2 id="task">Task</h2>
+<ol>
+<li>Create a project folder for your Expense Receipts</li>
+<li>Setup your Serverless project (per your chosen language) and copy the code into separate handlers.</li>
+<li>Inside the project folder, create the <code>template.yml</code> file for your CloudFormation stack</li>
+<li>Define your three AWS Lambda functions infrastructure within the <code>template.yml</code>. No need to define your Lambda Function trigger events, so <code>Events</code> property isn&apos;t needed.</li>
+<li>Deploy it using SAM CLI</li>
+<li>Try the code from the UI</li>
+</ol>
+<h2 id="hints">Hints</h2>
+<ol>
+<li><p>Feel free to simply copy and paste the function template and just change the name, but it is recommended to type it in yourself, to get the &quot;feeling&quot; of writing serverless resources under your belt.</p>
+</li>
+<li><p>Try a <code>sam deploy -- guided</code> first. Feel free to remove the <strong>samconfig.toml</strong> file, as much as you want. But remember, it does deploy your whole stack.</p>
+</li>
+<li><p>To delete the CloudFormation stack without leaving console, just run <code>aws cloudformation delete-stack --stack-name xyz</code>.#1</p>
+</li>
+<li><p>As this is a very easy exercise, there are no more hints now. Feel free to ask me, if you have any questions.</p>
+</li>
+</ol>
+<blockquote>
+<p><strong>Interesting fact #1 </strong>. There is an ongoing PR for <code>sam destroy</code> - <a href="https://github.com/awslabs/aws-sam-cli/pull/1304" target="_blank">see here</a></p>
+</blockquote>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="2-LAMBDA.html" class="navigation navigation-prev " aria-label="Previous page: 02. Serverless app with AWS Lambda">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="4-APIGW.html" class="navigation navigation-next " aria-label="Next page: 04. APIs withs API Gateway">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"03. CloudFormation Infra as Code","level":"1.3.3","depth":2,"next":{"title":"04. APIs withs API Gateway","level":"1.3.4","depth":2,"path":"day-1/4-APIGW.md","ref":"day-1/4-APIGW.md","articles":[]},"previous":{"title":"02. Serverless app with AWS Lambda","level":"1.3.2","depth":2,"path":"day-1/2-LAMBDA.md","ref":"day-1/2-LAMBDA.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["page-toc","accordion"],"pluginsConfig":{"page-toc":{"position":"before-first","selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4","showByDefault":true},"accordion":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"day-1/3-CLOUDFORMATION.md","mtime":"2020-02-26T14:56:07.290Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-26T22:03:57.845Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/anchor-3.1.1.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/page-toc.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-accordion/accordionSelector.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

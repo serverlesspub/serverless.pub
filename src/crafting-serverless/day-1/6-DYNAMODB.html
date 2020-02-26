@@ -1,0 +1,673 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>06. DynamoDB a serverless database · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-toc/page-toc.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-accordion/accordion.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="7-TESTING.html" />
+    
+    
+    <link rel="prev" href="5-DEBUG.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../WARMUPS.html">
+            
+                <a href="../WARMUPS.html">
+            
+                    
+                    Warmups
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Day 1
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="1-SETUP.html">
+            
+                <a href="1-SETUP.html">
+            
+                    
+                    01. Setup your AWS Account
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="2-LAMBDA.html">
+            
+                <a href="2-LAMBDA.html">
+            
+                    
+                    02. Serverless app with AWS Lambda
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="3-CLOUDFORMATION.html">
+            
+                <a href="3-CLOUDFORMATION.html">
+            
+                    
+                    03. CloudFormation Infra as Code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="4-APIGW.html">
+            
+                <a href="4-APIGW.html">
+            
+                    
+                    04. APIs withs API Gateway
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="5-DEBUG.html">
+            
+                <a href="5-DEBUG.html">
+            
+                    
+                    05. Debugging serverless apps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.6" data-path="6-DYNAMODB.html">
+            
+                <a href="6-DYNAMODB.html">
+            
+                    
+                    06. DynamoDB a serverless database
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="7-TESTING.html">
+            
+                <a href="7-TESTING.html">
+            
+                    
+                    07. Designing Testable Functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="8-CICD.html">
+            
+                <a href="8-CICD.html">
+            
+                    
+                    08. CI/CD
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="9-DEPLOYMENT.html">
+            
+                <a href="9-DEPLOYMENT.html">
+            
+                    
+                    09. Deployment preferences
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../day-2/">
+            
+                <a href="../day-2/">
+            
+                    
+                    Day 2
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                <a href="../day-2/01-UPLOAD-RECEIPTS.html">
+            
+                    
+                    01. Upload receipts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                <a href="../day-2/02-EXTRACT-RECEIPT-TEXT.html">
+            
+                    
+                    02. Extract receipt text
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                <a href="../day-2/03-BACKGROUND-PROCESSING.html">
+            
+                    
+                    03. Performance optimization - background processing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../day-2/04-COLD-START.html">
+            
+                <a href="../day-2/04-COLD-START.html">
+            
+                    
+                    04. Performance optimization - latency and cold starts
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="../day-2/05-NO-LAMBDA.html">
+            
+                <a href="../day-2/05-NO-LAMBDA.html">
+            
+                    
+                    05. Performance optimization - skip Lambdas
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="../day-2/06-STREAMING.html">
+            
+                <a href="../day-2/06-STREAMING.html">
+            
+                    
+                    06. Serverless streaming patterns
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.7" data-path="../day-2/07-ORCHESTRATION.html">
+            
+                <a href="../day-2/07-ORCHESTRATION.html">
+            
+                    
+                    07. Orchestration using Step functions
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.8" data-path="../day-2/08-MIGRATION.html">
+            
+                <a href="../day-2/08-MIGRATION.html">
+            
+                    
+                    08. The Enterprise Migration Path to Serverless
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.9" data-path="../day-2/09-WARDLEY-MAPS.html">
+            
+                <a href="../day-2/09-WARDLEY-MAPS.html">
+            
+                    
+                    09. Build or outsource - Designing a Serverless Architecture with Wardley Maps
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.10" data-path="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                <a href="../day-2/10-SERVERLESS-FOR-CFOS.html">
+            
+                    
+                    10. Business case for refactoring
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../CONCLUSION.html">
+            
+                <a href="../CONCLUSION.html">
+            
+                    
+                    Conclusion
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >06. DynamoDB a serverless database</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="dynamodb---a-serverless-database">DynamoDB - a serverless database</h1>
+<p>So far so good. Now that we know how to discover if a problem occurs, we can continue.</p>
+<p>After creating the API Gateway endpoints, the &quot;Sauf Pompiers&quot; SARL folks want us to actually store and list the receipts into the database.
+Which database and how do we do that with an AWS Lambda?</p>
+<p>You can see what we did so far in the following diagram.</p>
+<p><img src="images/day-01-06.png" alt="Current Expense Tracker status"></p>
+<p>Now we need a database to fulfill what we promised. But how do we store state within a serverless environment? We can connect each of our Lambda&apos;s to the current database we use (on-premise / RDS) but what seems to be the problem here?</p>
+<p>It can scale from 0 to 1000 concurrent connections, from day one.</p>
+<p>AWS Lambda, as a Function as a Service, tends to scale independently and massively, by default up to 1000 concurrent invocations per one Lambda. And how many DB connections do we have usually on a project?</p>
+<p>Our databases should be able to scale as well. But this contradicts our Serverless Model - Pay per Use. Let&apos;s take an example that we had a full-blown serverless database, a Serverless RDS. That would also be against our model.</p>
+<p>Do you know <strong>why</strong>?</p>
+<p>Take some time to think about the answer.</p>
+<div class="accordion accordionClose"><div class="accordionButton"><div class="accordionTitle">Want to know the answer?</div><div class="accordionSpinnerBox"><div class="accordionSpinner"></div></div></div><div class="accordionContent">
+<p>It&apos;s because we are scaling unneeded infra for the data we don&apos;t need!</p>
+<p>Imagine you have a 100GB database. To make it scalable, you would need to instantly load up or cache such a quantity of data, or some other shenanings. Of course, that is possible, if we hide away all of such mechanics as well, as you might have heard about Serverless Aurora, but regardless we need a different approach.</p>
+</div></div>
+<p>Now that you know why do we need a different approach, we need to ask ourselves what would be an equivalent in the concept of a Function as a Service.</p>
+<div class="accordion accordionClose"><div class="accordionButton"><div class="accordionTitle">The answer is pretty obvious.</div><div class="accordionSpinnerBox"><div class="accordionSpinner"></div></div></div><div class="accordionContent">
+<p>A data table as a service.</p>
+</div></div>
+<p>Do we know such a service?</p>
+<p>And as some of you may have already guessed, its DynamoDB.</p>
+<h2 id="dynamodb">DynamoDB</h2>
+<p>As you can read from the AWS website it is:</p>
+<blockquote>
+<p>Amazon DynamoDB is a key-value and document database, fully managed, multiregion, ultimaster, durable database with built-in security, backup and restore, and in-memory caching for internet-scale applications. DynamoDB can handle more than 10 trillion requests per day and can support peaks of more than 20 million requests per second.</p>
+</blockquote>
+<p>Seems good, but how do we use it?</p>
+<p>Here is an example with CloudFormation:</p>
+<pre><code class="lang-yml"><span class="hljs-attr">DynamoDBTable:</span>
+<span class="hljs-attr">  Type:</span> AWS::DynamoDB::Table
+<span class="hljs-attr">  Properties:</span>
+<span class="hljs-attr">    TableName:</span> <span class="hljs-string">&quot;YourTableName&quot;</span>
+<span class="hljs-attr">    AttributeDefinitions:</span>
+<span class="hljs-attr">      - AttributeName:</span> <span class="hljs-string">&quot;YourTableNameId&quot;</span>
+<span class="hljs-attr">        AttributeType:</span> S
+<span class="hljs-attr">    KeySchema:</span>
+<span class="hljs-attr">      - AttributeName:</span> <span class="hljs-string">&quot;YourTableNameId&quot;</span>
+<span class="hljs-attr">        KeyType:</span> HASH
+<span class="hljs-attr">    BillingMode:</span> PAY_PER_REQUEST
+<span class="hljs-attr">    SSESpecification:</span>
+<span class="hljs-attr">      SSEEnabled:</span> <span class="hljs-literal">True</span>
+</code></pre>
+<p>What are all these properties? You can guess some, but some are quite intruiging.</p>
+<ul>
+<li><code>AttributeDefinitions</code>, simply a list of attributes</li>
+<li><code>KeySchema</code>, the keys schema for all the database keys</li>
+<li><code>BillingMode</code>, configures how you want to pay for DynamoDB, two available options are <code>PROVISIONED</code> and <code>PAY_PER_REQUEST</code>.</li>
+<li><code>SSESpecification</code>, one of the most important, enables Server Side Encryption.</li>
+</ul>
+<p>But what is most interesting is actually the <code>Type</code>. We are actually creating <code>AWS::DynamoDB::Table</code> - a table, not a whole database.</p>
+<p>Most importantly, it is a NoSQL database, with support of Primary Indexes, Secondary Indexes, and Sort Indexes.</p>
+<h2 id="indexes">Indexes</h2>
+<p>What are these indexes and how do work?</p>
+<p>Amazon DynamoDB provides fast access to items in a table by specifying primary key values. But if you want to fetch the data of attributes other than the primary key, indexing comes into the picture. Most of you know that, so let&apos;s jump into the DynamoDB details.</p>
+<p>Now, what is a primary, and what is a secondary index?</p>
+<div class="accordion accordionClose"><div class="accordionButton"><div class="accordionTitle">Answer</div><div class="accordionSpinnerBox"><div class="accordionSpinner"></div></div></div><div class="accordionContent">
+<p>A primary index is an index on a set of fields that includes the unique primary key and is guaranteed not to contain duplicates. In contrast, a secondary index is an index that is not a primary index and may have duplicates.</p>
+</div></div>
+<p>AWS DynamoDB offers both Local and Global Secondary Indexes.</p>
+<p><strong>Global Secondary Index</strong> &#x2212; This index includes a partition key and sort key, which may differ from the source table. It uses the label &#x201C;global&#x201D; due to the capability of queries/scans on the index to span all table data, and over all partitions.</p>
+<p><strong>Local Secondary Index</strong> &#x2212; This index shares a partition key with the table, but uses a different sort key. Its &#x201C;local&#x201D; nature results from all of its partitions scoping to a table partition with identical partition key value.</p>
+<p>Now we&apos;re ready to jump into actually get our Lambda to interact with DynamoDB.</p>
+<h2 id="how-to-use-a-dynamodb-with-aws-lambda">How to use a DynamoDB with AWS Lambda</h2>
+<p>To get our Lambda code to get /store data from a DynamoDB Table, we need to use the AWS SDK.
+Here are some example AWS SDK API links for JavaScript and Java for DynamoDB.</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html" target="_blank">JavaScript</a></li>
+<li><a href="https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/dynamodbv2/AmazonDynamoDBClient.html" target="_blank">Java</a></li>
+</ul>
+<p>An example JavaScript code for getting data from a DynamoDB table</p>
+<pre><code class="lang-javascript">
+<span class="hljs-keyword">await</span> dynamoDb.scan( {
+    TableName: TABLE_NAME
+  }).promise();
+</code></pre>
+<p>And here is the example of storing data into a DynamoDB table:</p>
+<pre><code class="lang-javascript"> <span class="hljs-keyword">await</span> dynamoDb.put({
+    TableName: TABLE_NAME,
+    Item: {
+      someTableId: <span class="hljs-string">&quot;value&quot;</span>
+      attr1: <span class="hljs-string">&quot;value&quot;</span>
+    }
+  }).promise();
+</code></pre>
+<p>This looks simple enought, right?</p>
+<p>But unfortunately, if you remember, Lambda functions are isolated and <em>permissionless</em>. And in this case they really don&apos;t have any permissions.</p>
+<p>To add those you need to give a Lambda a Policy with a Statement, like this:</p>
+<pre><code class="lang-yml"><span class="hljs-attr">  Properties:</span>
+<span class="hljs-attr">  Policies:</span>
+<span class="hljs-attr">    - Version:</span> <span class="hljs-string">&apos;2012-10-17&apos;</span>
+<span class="hljs-attr">      Statement:</span>
+<span class="hljs-attr">        - Effect:</span> Allow
+<span class="hljs-attr">          Action:</span>
+<span class="hljs-attr">            - dynamodb:</span>PutItem
+<span class="hljs-attr">          Resource:</span> !GetAtt <span class="hljs-string">&quot;YourDynamoTable.Arn&quot;</span>
+</code></pre>
+<p>This policy allows the function to put data into the <code>YourDynamoTable</code> DynamoDB table, based on its ARN - which is Amazon Resource Name.</p>
+<blockquote>
+<p><strong>Note</strong>: You can add more than one <code>Action</code> Item, but not more than one <code>Resource</code>. You will need to create a separate Policy <code>Statement</code> for each <code>Resource</code>. Meaning that one Lambda is able to access more than one DynamoDB table. The <code>Resource</code> parameter requires a ARN.</p>
+</blockquote>
+<h2 id="task">Task</h2>
+<p>This covers the basics, but for the Task you&apos;ll have a slightly elevated challenge.</p>
+<p>This task is going to e Steps are:</p>
+<ol>
+<li>Create a DynamoDB table <code>expenses</code>.</li>
+<li>Add the permissions to the Lambda to be able to save to the database but by using <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html" target="_blank">AWS SAM Policy Templates</a>.</li>
+<li>Implement the necessary code to save the receipt to the DynamoDB table from the  <code>enter-expense</code> Lambda function.</li>
+<li>(Bonus) Enable the <code>list-expenses</code> Lambda to retrieve all the data from the database.</li>
+<li>(Bonus) Enable the <code>update-expense</code> Lambda to update data from the database.</li>
+</ol>
+<h2 id="next-lesson">Next Lesson</h2>
+<p>When you finish this, feel free to go ahead to Testing!</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="5-DEBUG.html" class="navigation navigation-prev " aria-label="Previous page: 05. Debugging serverless apps">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="7-TESTING.html" class="navigation navigation-next " aria-label="Next page: 07. Designing Testable Functions">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"06. DynamoDB a serverless database","level":"1.3.6","depth":2,"next":{"title":"07. Designing Testable Functions","level":"1.3.7","depth":2,"path":"day-1/7-TESTING.md","ref":"day-1/7-TESTING.md","articles":[]},"previous":{"title":"05. Debugging serverless apps","level":"1.3.5","depth":2,"path":"day-1/5-DEBUG.md","ref":"day-1/5-DEBUG.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["page-toc","accordion"],"pluginsConfig":{"page-toc":{"position":"before-first","selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4","showByDefault":true},"accordion":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"day-1/6-DYNAMODB.md","mtime":"2020-02-26T15:26:18.008Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-26T22:03:57.845Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/anchor-3.1.1.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc/page-toc.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-accordion/accordionSelector.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
