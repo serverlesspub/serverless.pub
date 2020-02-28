@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Day 2 · GitBook</title>
+        <title>03. Performance optimization - background processing · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -65,10 +65,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="01-UPLOAD-RECEIPTS.html" />
+    <link rel="next" href="04-COLD-START.html" />
     
     
-    <link rel="prev" href="../day-1/9-DEPLOYMENT.html" />
+    <link rel="prev" href="02-EXTRACT-RECEIPT-TEXT.html" />
     
 
     </head>
@@ -259,7 +259,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4" data-path="./">
+        <li class="chapter " data-level="1.4" data-path="./">
             
                 <a href="./">
             
@@ -299,7 +299,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.3" data-path="03-BACKGROUND-PROCESSING.html">
+        <li class="chapter active" data-level="1.4.3" data-path="03-BACKGROUND-PROCESSING.html">
             
                 <a href="03-BACKGROUND-PROCESSING.html">
             
@@ -451,7 +451,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Day 2</a>
+        <a href=".." >03. Performance optimization - background processing</a>
     </h1>
 </div>
 
@@ -466,7 +466,33 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="day-2">Day 2</h1>
+                                <h1 id="performance-optimization-run-ocr-in-the-background">Performance optimization: run OCR in the background</h1>
+<p>As you probably realized, our solution has many limitations. For example, photos can&apos;t be larger than 10MB. Also Textract processing can take a few seconds, and API Gateway can&apos;t run longer than 30 seconds. For serverless applications, performance directly affects the cost of the infrastructure. Lambda funtion that runs for 30 seconds is 300x more expensive than a function that runs for 100ms!</p>
+<p>What&apos;s the best way to optimize the performance and cost of our solution?</p>
+<p>Textract allows us to send a file via SDK method or Amazon S3. As we need to upload a photo to S3 anyways, we can use that to trigger Textract analysis. However that does not solve size limit, and analysis still takes dozens of seconds.</p>
+<p>Serverless applications are event driven, we can use events to make our app faster and cheaper. First, we can decouple upload from processing. Instead of uploading a file via API, we can use the API to get a presigned URL that will allow customers uploading a file directly to Amazon S3. Presigned URL is a temporary URL that allows our customers to interact with Amazon S3 directly. Presigned URLs support fine grained permissions, so you can allow customer to upload a photo to a specific path in a specific button, and make that URL valid for 10 minutes.</p>
+<p>Presigned URL will make our app faster and cheaper. Once the photo is uploaded, Amazon S3 can trigger a function that starts Textract analysys. Instead of waiting for analysis to be finished, we can use Amazon Simple Notification Service to trigger another Lambda function that will get the analysis data and store it to DynamoDB table. Once we connect the system, it should look similar to the following diagram.</p>
+<p><img src="../assets/Day2-03.png" alt=""></p>
+<p>Sounds more complex than it is, I promise!</p>
+<p>Why is this faster and cheaper?</p>
+<p>Getting the signed URL takes less than 200-300 ms, which makes first step faster and cheaper. Then customer uploads a file directly to Amazon S3, and the process is done for our customer. Everything after that is done in the backround, which makes our UX faster (for our customers, that&apos;s important than the real speed of the processing). We have two more Lambda functions in the process, but both of them have a few lines of code only, and they run for 100-300ms, which brings our Lambda execution from up to 30s to less than a second (and makes the app 30x cheaper). This adds Amazon S3 and SNS cost, however that&apos;s just a fraction of the cost of API Gateway.</p>
+<p>It&apos;s time to try to make this!</p>
+<h2 id="task">Task</h2>
+<p>Your task is to move the processing to the background and optimize our application performance and cost by doing the following:</p>
+<ol>
+<li>Create an endpoint that will return a presigned URL that will allow customers to upload a photo to a specified path for 30 seconds.</li>
+<li>Create an SNS topic that Textract will use to send a notification when analysis is finished.</li>
+<li>Create another Lambda function that will be triggered when a new file is uploaded to Amazon S3, and will start Textract document analysis.</li>
+<li>Create a third Lambda function that will be triggered by the SNS message, and will read Textract result and save the data to the DynamoDB table.</li>
+</ol>
+<p>Once you complete this exercise, take a minute and discuss this solution with your team. Does this solution seems faster for our customers? Is it more complex for maintenance than our first solution?</p>
+<h2 id="hints">Hints</h2>
+<p>Here are a few hints to help you with this task:</p>
+<ul>
+<li>There are many examples for creating presigned URL, other option is to use an open source application from Serverless Application Repository (SAR). Here&apos;s one of the apps on SAR that you can use as a part of your app, or at least as an inspiration: <a href="https://github.com/jbesw/sar-s3-serverless-uploader" target="_blank">Serverless S3 Uploader app on SAR</a>.</li>
+<li>Instead of using the <code>textract.analyzeDocument</code> method for photo analysis, you can use the <code>textract.startDocumentAnalysis</code> method that starts the analysis and uses SNS topic that trigger a function in the background when analysis is finished. For more info, see <a href="https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Textract.html#startDocumentAnalysis-property" target="_blank">AWS SDK documentation</a>.</li>
+<li>Don&apos;t forget to give your functions right permissions. For most of the functions you can use <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html" target="_blank">AWS SAM&apos;s policy templates</a>.</li>
+</ul>
 
                                 
                                 </section>
@@ -494,12 +520,12 @@
 
             
                 
-                <a href="../day-1/9-DEPLOYMENT.html" class="navigation navigation-prev " aria-label="Previous page: 09. Deployment preferences">
+                <a href="02-EXTRACT-RECEIPT-TEXT.html" class="navigation navigation-prev " aria-label="Previous page: 02. Extract receipt text">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="01-UPLOAD-RECEIPTS.html" class="navigation navigation-next " aria-label="Next page: 01. Upload receipts">
+                <a href="04-COLD-START.html" class="navigation navigation-next " aria-label="Next page: 04. Performance optimization - latency and cold starts">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -510,7 +536,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Day 2","level":"1.4","depth":1,"next":{"title":"01. Upload receipts","level":"1.4.1","depth":2,"path":"day-2/01-UPLOAD-RECEIPTS.md","ref":"day-2/01-UPLOAD-RECEIPTS.md","articles":[]},"previous":{"title":"09. Deployment preferences","level":"1.3.9","depth":2,"path":"day-1/9-DEPLOYMENT.md","ref":"day-1/9-DEPLOYMENT.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["page-toc","accordion"],"pluginsConfig":{"page-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4","position":"before-first","showByDefault":true},"accordion":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"day-2/README.md","mtime":"2020-02-17T16:08:57.022Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-28T08:17:42.016Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"03. Performance optimization - background processing","level":"1.4.3","depth":2,"next":{"title":"04. Performance optimization - latency and cold starts","level":"1.4.4","depth":2,"path":"day-2/04-COLD-START.md","ref":"day-2/04-COLD-START.md","articles":[]},"previous":{"title":"02. Extract receipt text","level":"1.4.2","depth":2,"path":"day-2/02-EXTRACT-RECEIPT-TEXT.md","ref":"day-2/02-EXTRACT-RECEIPT-TEXT.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["page-toc","accordion"],"pluginsConfig":{"page-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4","position":"before-first","showByDefault":true},"accordion":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"day-2/03-BACKGROUND-PROCESSING.md","mtime":"2020-02-26T11:38:43.108Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-28T08:17:42.016Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
