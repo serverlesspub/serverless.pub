@@ -317,7 +317,7 @@ Resolvers connect GraphQL and a data source. AppSync lets you use VTL to write a
 
 [Apache Velocity Template Language](https://velocity.apache.org/engine/1.7/user-guide.html) (VTL) is a Java-based alien language. Pardon, its Java-based templating engine. VTL allows you to write request and response Resolver Mapping Templates. You can embed these templates in your CloudFormation template or put them in your Amazon S3 bucket. Whatever you do, VTL templates will be hard to test in isolation. However, they are useful. Here's the example of the VTL template that allows the owner only to do the selected action:
 
-```velocity
+```
 #if($context.result["Owner"] == $context.identity.username)
     $utils.toJson($context.result)
 #else

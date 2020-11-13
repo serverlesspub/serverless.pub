@@ -14,7 +14,7 @@
     {% if enable_retina %}
     <script type='application/javascript' src='{{ "/js/vendor/retina.min.js" | prepend: site.baseurl }}'></script>
     {% endif %}
-    <script src=' {{ "/js/main.js?v=2" | prepend: site.baseurl }}'></script>
+    <script src=' {{ "/js/main.js?v=" | append: site.version | prepend: site.baseurl }}'></script>
   </body>
 
 </html>
