@@ -68,7 +68,7 @@ var s,
                 newWindow;
 
             if( platform == 'twitter'){
-                popUrl = 'http://twitter.com/home?status=' + encodeURI(message) + '+' + url;
+                popUrl = 'https://twitter.com/intent/tweet?text=' + encodeURI(message) + '+' + url;
 
             } else if(platform == 'facebook'){
                 popUrl = 'http://www.facebook.com/share.php?u=' + url + '&amp;title=' + encodeURI(message);
