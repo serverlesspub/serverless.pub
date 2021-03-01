@@ -17,7 +17,7 @@ square_related: recommend-slobodan
 
 If you ever opened your CloudWatch logs and saw that the error happened in the `/var/task/index.js:1:2345`, this post is for you. It'll teach you how to transform this meaningless stack trace into something that matches your source code and you understand.
 
-> TL;DR: If you are here just for the solution, not the article itself, the easiest way to get the useful Error stack traces is to add the following environment variable to your Lambda function: `NODE_OPTIONS=--enable-source-maps`. This works only for Node.js v12+, and you'll need to deploy your source maps to your Lambda function with your code. See the rest of the article or the summary at the bottom of the article for more info.
+> TL;DR: If you are here just for the solution, not the article itself, the easiest way to get the useful error stack traces is to add the following environment variable to your Lambda function: `NODE_OPTIONS=--enable-source-maps`. This works only for Node.js v12+, and you'll need to deploy your source maps to your Lambda function with your code. See the rest of the article or the summary at the bottom of the article for more info.
 
 ![](/img/sourcemaps.png)
 
