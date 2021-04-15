@@ -11,18 +11,24 @@ $title-color: #841c1c
       text-align: center
       text-transform: uppercase
 
-      +breakpoint(sm)
-        +font-size(60)
+      +breakpoint(s)
+        +font-size(40)
 
       label
-        font-size: 6rem !important
+        font-size: 6rem
         font-weight: 600
+
+        +breakpoint(s)
+          +font-size(32)
 
     h2
       font-family: Alegreya
       font-size: 3rem
       font-weight: 600
       text-align: center
+
+      +breakpoint(s)
+        +font-size(24)
 
   img.cover
     display: block
