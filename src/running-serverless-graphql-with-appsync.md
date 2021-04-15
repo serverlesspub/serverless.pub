@@ -4,7 +4,7 @@ seriesTitle: "Running Serverless"
 seriesSubTitle: "Realtime GraphQL Applicatins with AppSync"
 title: "Running Serverless: Realtime GraphQL Applicatins with AppSync"
 excerpt: "New book by AWS Heroes Aleksandar Simovic, Slobodan Stojanovic and Gojko Adzic. Learn how to build and operate responsive, collaborative applications at scale with AWS AppSync and GraphQL."
-feature_image: running-serverless-realtime-graphql-applications-with-appsync.jpg
+feature_image: running-serverless-realtime-graphql-applications-with-appsync-cover.jpg
 permalink: /running-serverless-realtime-graphql-applications-with-appsync/
 ---
 
@@ -18,7 +18,7 @@ The book will be available in Q3 2021, subscribe below, and we'll notify you whe
 
 This book will teach you how to build, test, and operate a GraphQL application using AWS AppSync and AWS Cloud Development Kit (AWS CDK).
 
-<img class="cover" src="/img/running-serverless-realtime-graphql-applications-with-appsync.jpg" alt="Running Serverless: Realtime GraphQL Applications with AppSync" />
+<img class="cover" src="/img/running-serverless-realtime-graphql-applications-with-appsync-cover.jpg" alt="Running Serverless: Realtime GraphQL Applications with AppSync" />
 
 ## Table of Contents
 
