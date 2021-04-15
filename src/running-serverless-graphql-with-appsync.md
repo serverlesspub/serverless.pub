@@ -7,11 +7,13 @@ permalink: /running-serverless-realtime-graphql-applications-with-appsync/
 
 ## Book coming in Q3 2021
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+New book by AWS Heroes Aleksandar Simovic, Slobodan Stojanovic and Gojko Adzic. Learn how to build and operate responsive, collaborative applications at scale with AWS AppSync and GraphQL.
+
+A book will be available in Q3 2021, subscribe below, and we'll notify you when the early release is ready.
 
 <script async data-uid="62d5ced01c" src="https://tremendous-designer-7712.ck.page/62d5ced01c/index.js"></script>
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+This book will teach you how to build, test, and operate a GraphQL application using AWS AppSync and AWS Cloud Development Kit (AWS CDK).
 
 <img class="cover" src="/img/running-serverless-realtime-graphql-applications-with-appsync.jpg" alt="Running Serverless: Realtime GraphQL Applications with AppSync" />
 
@@ -240,6 +242,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ## Subscribe and get notified
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+A book will be available in Q3 2021, subscribe below, and we'll notify you when the early release is ready.
 
 <script async data-uid="62d5ced01c" src="https://tremendous-designer-7712.ck.page/62d5ced01c/index.js"></script>

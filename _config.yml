@@ -9,11 +9,12 @@ permalink: :title/
 nav_list:
   Home : ['Home', '/', 'fa-home']
   About : ['About', '/about', 'fa-anchor']
-  Book : ['Book', '/book', 'fa-book']
+  New Book : ['Book', '/running-serverless-realtime-graphql-applications-with-appsync', 'fa-book']
 single_footer: '<p>Serverless.Pub &copy; 2018 <a href="/">latest posts</a></p>'
 footer_links:
   Blog: ['Blog', '/']
   About: ['About', '/about']
+  New Book : ['Book', '/running-serverless-realtime-graphql-applications-with-appsync', 'fa-book']
 
 
 # Build settings

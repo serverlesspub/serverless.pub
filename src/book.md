@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Book
+title: Serverless Applications with Node.js
 permalink: /book/
 feature_image: feature-spiderman.jpg
 ---
