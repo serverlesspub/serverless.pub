@@ -1,0 +1,65 @@
+$title-color: #841c1c
+
+.book-landing
+  .single-content 
+    h1
+      color: $title-color
+      font-family: Alegreya
+      font-size: 8rem
+      font-weight: 900
+      margin-top: 15rem
+      text-align: center
+      text-transform: uppercase
+
+      +breakpoint(sm)
+        +font-size(60)
+
+      label
+        font-size: 6rem !important
+        font-weight: 600
+
+    h2
+      font-family: Alegreya
+      font-size: 3rem
+      font-weight: 600
+      text-align: center
+
+  img.cover
+    display: block
+    margin: 0 auto 40px
+    max-width: 50%
+    width: 500px
+
+  .book-toc
+    padding-top: 0
+    margin-bottom: 100px
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+    font-size: 18px
+    text-transform: none
+
+    h3
+      border-bottom: solid thin $title-color
+      color: $title-color
+      font-size: 21px !important
+      line-height: 1.5em
+      padding-bottom: 0.25em
+
+    h3, h4
+      text-transform: uppercase
+      font-weight: bold
+
+    .sect0
+      font-weight: bold
+      margin-top: 40px
+      text-transform: uppercase
+
+    .sect1
+      margin-bottom: 20px
+
+      p
+        font-size: 18px
+        margin: 0
+        padding-left: 20px

@@ -1,0 +1,28 @@
+---
+layout: default
+---
+
+<header>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    {% include nav.html %}
+</header>
+
+<main class="container book-landing">
+    <div class="row">
+        <div class="col-xs-12 single-content">
+
+            <h1>{{ page.seriesTitle }} <label>{{ page.title }}</label></h1>
+
+            {{ content }}
+
+        </div> <!-- main-content/col -->
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+{% include footer-page.html %}
