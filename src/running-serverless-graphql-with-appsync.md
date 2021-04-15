@@ -12,7 +12,7 @@ permalink: /running-serverless-realtime-graphql-applications-with-appsync/
 
 New book by AWS Heroes Aleksandar Simovic, Slobodan Stojanovic and Gojko Adzic. Learn how to build and operate responsive, collaborative applications at scale with AWS AppSync and GraphQL.
 
-A book will be available in Q3 2021, subscribe below, and we'll notify you when the early release is ready.
+The book will be available in Q3 2021, subscribe below, and we'll notify you when the early release is ready.
 
 <script async data-uid="62d5ced01c" src="https://tremendous-designer-7712.ck.page/62d5ced01c/index.js"></script>
 
@@ -245,6 +245,6 @@ This book will teach you how to build, test, and operate a GraphQL application u
 
 ## Subscribe and get notified
 
-A book will be available in Q3 2021, subscribe below, and we'll notify you when the early release is ready.
+The book will be available in Q3 2021, subscribe below, and we'll notify you when the early release is ready.
 
 <script async data-uid="62d5ced01c" src="https://tremendous-designer-7712.ck.page/62d5ced01c/index.js"></script>

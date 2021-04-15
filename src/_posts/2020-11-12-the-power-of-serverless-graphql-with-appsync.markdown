@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Power of Serverless GraphQL with AWS AppSync"
-excerpt: "A serverless application for handling webhooks using EventBridge event bus, API Gateway's HTTP API and Lambda function"
+excerpt: "A story about serverless GraphQL on AWS with AWS AppSync"
 date: 2020-11-12 11:00:00 +0200
 categories: Serverless
 author_name : Slobodan Stojanović
