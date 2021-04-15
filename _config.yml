@@ -30,4 +30,4 @@ kramdown:
 plugins:
   - jekyll-sitemap
 
-version: 10
+version: 11
