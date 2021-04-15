@@ -192,7 +192,7 @@ This book will teach you how to build, test, and operate a GraphQL application u
   </div>
 
   <div class="sect1">
-    <h4 id="chapter_id_18">18 Processingtransientdatawithlocalresolvers</h4>
+    <h4 id="chapter_id_18">18 Processing transient data with local resolvers</h4>
     <p>Triggering custom notifications </p>
   </div>
   
