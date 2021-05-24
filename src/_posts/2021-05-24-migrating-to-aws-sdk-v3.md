@@ -58,7 +58,7 @@ Notice that there's no `.promise()` in v3 calls, and that the parameters are pre
 
 Also note that the v3 code requires the (minimal) client and a specific command, so JavaScript bundlers produce much smaller results. Here are the results for the two snippets above:
 
-| variant | esbuild without minification | esbuild --minify |
+| variant | esbuild | esbuild --minify |
 | --- | --- | --- |
 | v2 | 13 MB | 5.4 MB |
 | v3 | 1.4 MB | 666.9 KB |
@@ -80,7 +80,9 @@ The last one is an example where things get a bit tricky. The method changes fro
 //v2
 const s3 = aws = require('aws-sdk'),
   s3 = new aws.S3(),
-  result = s3.getSignedUrl('getObject', {Bucket: 'some-bucket', Key: 'file-key', Expires: expiresIn});
+  result = s3.getSignedUrl('getObject', {
+    Bucket: 'some-bucket', Key: 'file-key', Expires: expiresIn
+  });
 
 //v3
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3'),
@@ -91,7 +93,7 @@ const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3'),
 
 Another place where good JS affordance utilities have been lost is retrieving the body of S3 objects. In v2, the `getObject` method had several utilities for consuming the result body into a string, or a buffer, or a stream. With v3 SDK, the result is a stream, and you'll have to convert it to string yourself. Here is a comparison of v2 and v3 code:
 
-```
+```js
 //v2
 const data = s3.getObject(params).promise(),
   return data.Body.toString();
@@ -99,15 +101,15 @@ const data = s3.getObject(params).promise(),
 // v3
 const streamToString = function (stream) {
 	const chunks = [];
-	return new Promise((resolve, reject) => {
-		stream.setEncoding('utf8');
-		stream.on('data', (chunk) => chunks.push(chunk));
-		stream.on('error', (err) => reject(err));
-		stream.on('end', () => resolve(chunks.join('')));
-	}),
+  return new Promise((resolve, reject) => {
+    stream.setEncoding('utf8');
+    stream.on('data', (chunk) => chunks.push(chunk));
+    stream.on('error', (err) => reject(err));
+    stream.on('end', () => resolve(chunks.join('')));
+  }),
   data = await s3Client.send(new GetObjectCommand(params));
 return streamToString(data.Body);
-
+```
 
 ## Client initialisation is different
 
@@ -120,8 +122,8 @@ Another common customisation for SDK clients are HTTP parameters, especially tim
 const aws = require('aws-sdk'),
   s3 = new aws.S3({
     logger: console,
-		httpOptions: {timeout: 10000, connectTimeout: 1000}
-	});
+    httpOptions: {timeout: 10000, connectTimeout: 1000}
+  });
 
 //v3
 const { S3Client } = require('@aws-sdk/client-s3'),
@@ -129,7 +131,7 @@ const { S3Client } = require('@aws-sdk/client-s3'),
   requestHandler = new NodeHttpHandler({
     connectionTimeout: 1000,
     socketTimeout: 10000
-	}),
+  }),
   s3Client = new S3Client({
     logger: console,
     requestHandler
@@ -142,7 +144,8 @@ One particularly problematic aspect of the new initialisation is how it handles 
 I assume this will be changed at some point, because the only way to post to web sockets now with SDK v3 is to patch the request paths with a middleware. (There's an [active issue on GitHub about this](https://github.com/aws/aws-sdk-js-v3/issues/1830)). For anyone else hopelessly fighting with phantom `ForbiddenException` errors, here's the code to make it work. It expects the endpoint to have a stage at the end (eg produced by CloudFormation using `https://${ApiID}.execute-api.${AWS::Region}.amazonaws.com/${Stage}`).
 
 ```js
-const {PostToConnectionCommand, ApiGatewayManagementApiClient} = require('@aws-sdk/client-apigatewaymanagementapi'),
+const {PostToConnectionCommand, ApiGatewayManagementApiClient}
+    = require('@aws-sdk/client-apigatewaymanagementapi'),
 	path = require('path'),
   client = new ApiGatewayManagementApiClient({endpoint, logger});
   // https://github.com/aws/aws-sdk-js-v3/issues/1830
@@ -166,12 +169,12 @@ await apiClient.send(new PostToConnectionCommand({
 
 Lastly, v2 SDK throws exceptions with a `code` field in case of errors, that was useful for detecting the type of the error. That no longer exists in `v3`. Instead, check the `name` field. 
 
-```
+```js
 try {
   await apiClient.send(new PostToConnectionCommand({
-				Data: JSON.stringify(messageObject),
-				ConnectionId: connectionId
-			}));
+    Data: JSON.stringify(messageObject),
+    ConnectionId: connectionId
+  }));
 } catch (e) {
   //v2
 	if (e.code === 'GoneException') { return; }
