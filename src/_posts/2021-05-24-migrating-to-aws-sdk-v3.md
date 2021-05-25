@@ -2,7 +2,7 @@
 layout: post
 title:  "Migrating to AWS SDK v3 for Javascript"
 excerpt: "tips, gotchas and surprises with the new AWS SDK"
-date: 2021-05-24 11:00:00 +0200
+date: 2021-05-25 11:00:00 +0200
 categories: 
   - Serverless
 author_name : Gojko Adzic
@@ -14,8 +14,6 @@ feature_image: change-seo.jpg
 show_related_posts: false
 square_related: recommend-gojko
 ---
-
-_(last updated 24 May 2021)_
 
 AWS SDK for JavaScript is going through a major update, with version 3 becoming ready for production usage. The API is not backwards compatible with the old version, so migrating requires a significant change in client code. Some of it is for the better, some not so much. We've recently migrated a large project from v2 to v3. In this article, I'll go through the key points for migration, including the things that surprised us, including the stuff that required quite a lot of digging.
 
@@ -67,9 +65,10 @@ Also note that the v3 code requires the (minimal) client and a specific command,
 
 The basic V3 SDK maps pretty much directly to the AWS service APIs, which means that the SDK clients are mostly automatically generated from AWS service definitions, including the documentation. The v2 documentation is amazing, with lots of examples to demonstrate how to use the key methods. V3 documentation is by comparison very basic. It's effectively a type reference, no more and no less. Hopefully as the SDK matures, someone at AWS will end up writing better docs. 
 
-Although this looks as if it would be possible to just migrate between the SDK versions with a few lines of clever `sed` scripts, things get a bit more tricky with higher-level functions. The V2 SDK was closely related to the AWS service APIs, but not restricted by it. It also included a bunch of functions that made life much easier for JavaScript developers than if they used the bare-bones API directly. For example, the `S3` service object had a useful method for multipart batch uploading large files (`.upload()`) that doesn't exist in the API. Those methods do not exist as commands in the v3 SDK. DynamoDB had a `DocumentClient` class that automatically converted between Dynamo data types and JavaScript data types. Some utilities are provided in additional packages, but some are still missing. 
+Although this looks as if it would be possible to just migrate between the SDK versions with a few lines of clever `sed` scripts, things get a bit more tricky with higher-level functions. The V2 SDK was closely related to the AWS service APIs, but not restricted by it. It also included a bunch of functions that made life much easier for JavaScript developers than if they used the bare-bones API directly. For example, the `S3` service object had a useful method for multipart batch uploading large files (`.upload()`) that doesn't exist in the API. Those methods do not exist as commands in the v3 SDK. Some utilities are provided in additional packages. This has the benefit of reducing bundle size for projects that do not need them, but it also means they are not as easy to discover as before. Here are some of the most important ones:
 
 * Utility methods for converting between DynamoDB structures and JavaScript types (`aws.DynamoDB.Converter`) are no longer in the basic `DynamoDB` service, but in the  [`@aws-sdk/util-dynamodb`](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/modules/_aws_sdk_util_dynamodb.html)
+* DynamoDB `DocumentClient` is now in [`@aws-sdk/lib-dynamodb`](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/modules/_aws_sdk_lib_dynamodb.html)
 * The implementation for `s3.upload` is now in [`@aws-sdk/lib-storage`](https://github.com/aws/aws-sdk-js-v3/blob/main/lib/lib-storage/README.md)
 * The implementation for `s3.createPresignedPost` is now in [`@aws-sdk/s3-presigned-post`](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/modules/_aws_sdk_s3_presigned_post.html)
 * The implementation for `s3.getSignedUrl` is now in [`@aws-sdk/s3-request-presigner`](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/classes/_aws_sdk_s3_request_presigner.s3requestpresigner-1.html)

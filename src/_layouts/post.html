@@ -18,9 +18,9 @@ layout: default
             <h1>{{ page.title }}</h1>
 
             <p class="meta">
-                <a href="{{ page.author_url | prepend: site.baseurl }}">{{ page.author_name }}</a> in <a href='{{ "/category/" | append: page.categories.first | prepend: site.baseurl }}'>{{ page.categories[0] }}</a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> {% include read_time.html %}
+                <a href="{{ page.author_url | prepend: site.baseurl }}">{{ page.author_name }}</a> in <a href='{{ "/category/" | append: page.categories.first | prepend: site.baseurl }}'>{{ page.categories[0] }}</a> <i class="link-spacer"></i> <i class="fa fa-bookmark"></i> {% include read_time.html %} <i class="link-spacer"></i> Last updated {{ page.date | date: "%b %-d, %Y" }}
             </p>
-
+				
             {{ content }}
 
             <div class="related-posts">
