@@ -2,7 +2,7 @@
 layout: post
 title:  "Migrating to AWS SDK v3 for Javascript"
 excerpt: "tips, gotchas and surprises with the new AWS SDK"
-date: 2021-05-25 11:00:00 +0200
+date: 2021-05-25 01:00:00 +0000
 categories: 
   - Serverless
 author_name : Gojko Adzic
