@@ -2,7 +2,7 @@
 layout: post
 title:  "Migrating to AWS SDK v3 for Javascript"
 excerpt: "tips, gotchas and surprises with the new AWS SDK"
-date: 2021-05-26 01:00:00 +0000
+date: 2021-05-27 01:00:00 +0000
 categories: 
   - Serverless
 author_name : Gojko Adzic
@@ -183,9 +183,6 @@ try {
 }
 ```
 
-## Beware of parallel requests
-
-With v2 SDK, executing multiple calls in parallel on the same service object works perfectly fine. With v3 SDK, we sometimes got weird responses when running multiple requests in parallel on the same client object (using `Promise.all`). For example, the `HeadObjectCommand` sometimes returned an invalid response object for non-existing keys. This doesn't happen if each parallel request uses a separate `S3Client` object. I guess this is a bug that will be fixed at some point, but beware of running things in parallel for now. Best not to reuse client objects.
 
 ## To Migrate or Not to Migrate
 
